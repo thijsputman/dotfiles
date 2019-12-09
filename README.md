@@ -5,10 +5,10 @@ into your home-directory.
 
 ## `📄.bashrc`
 
-### Git Prompt
+### Powerline Go
 
-Retrieve `📄~/.git-prompt.sh` from
-https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh.
+Retrieve the latest Linux binary from https://github.com/justjanne/powerline-go
+and store as `~/.local/bin/powerline-go`.
 
 ### Direnv
 

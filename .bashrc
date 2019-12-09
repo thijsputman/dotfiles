@@ -114,28 +114,17 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Git-prompt
-source ~/.git-prompt.sh
+# Powerline Go
+PWRLN_MODULES=nix-shell,venv,user,ssh,cwd,perms,git,jobs,exit,root,vgo
+PWRLN_ALIASES=/mnt/c=C:,/mnt/d=D:,/mnt/d/GitHub=GIT
 
-GIT_PS1_SHOWDIRTYSTATE=true
-GIT_PS1_SHOWSTASHSTATE=true
-GIT_PS1_SHOWUNTRACKEDFILES=true
-GIT_PS1_SHOWUPSTREAM="verbose"
-GIT_PS1_SHOWCOLORHINTS=true
-
-# Python-venv prompt
-show_virtual_env() {
-  if [[ -n "$VIRTUAL_ENV" && -n "$DIRENV_DIR" ]]; then
-    echo " (\[\e[90m\]$(basename $VIRTUAL_ENV)\[\e[0m\])"
-  fi
+function _powerline_ps1() {
+    PS1="$(powerline-go -error $? -cwd-max-depth 4 -modules $PWRLN_MODULES -path-aliases $PWRLN_ALIASES)"
 }
-export -f show_virtual_env
 
-# Prepare PS1 for use with git-prompt's PROMPT_COMMAND approach
-BASE_PROMPT=${PS1/\\\$ /}
-
-# Add the "cleaned" PS1 and Python-venv to the prompt using Git-prompt
-PROMPT_COMMAND='__git_ps1 "$BASE_PROMPT$(show_virtual_env)" "\\\$ "'
+if [ "$TERM" != "linux" ] && [ -f "$HOME/.local/bin/powerline-go" ]; then
+    PROMPT_COMMAND='_powerline_ps1; echo -ne "\033]0;${debian_chroot:+($debian_chroot)}${USER}@${HOSTNAME}: $(dirs +0)\007"'
+fi
 
 # Allow GPG-AGENT to be invoked
 GPG_TTY=$(tty)
