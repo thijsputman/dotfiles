@@ -1,0 +1,37 @@
+[include]
+  path = .gitconfig_personal
+[includeIf "gitdir:GitHub/studyportals/"]
+  path = .gitconfig_studyportals
+[alias]
+	tree = log --decorate --oneline --graph
+	all = "!f() { ls -R -d */.git | sed s,/.git,, | xargs -P10 -I{} git -C {} $1; }; f"
+	pushup = "!f() { git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+[filter "hawser"]
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[color]
+	ui = auto
+[push]
+	default = simple
+[pull]
+  ff = only
+[core]
+	autocrlf = true
+	eol = crlf
+	excludesfile = ~/.gitignore_global
+	attributesfile = ~/.gitattributes_global
+	editor = code --reuse-window --wait
+[submodule]
+	recurse = true
+[commit]
+	gpgsign = true
