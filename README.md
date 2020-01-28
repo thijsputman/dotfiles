@@ -3,6 +3,8 @@
 **N.B.** The `📄.gitattributes` file in this repository should _not_ be moved
 into your home-directory.
 
+Additional documentation available in [`./docs`](docs/).
+
 ## `📄.bashrc`
 
 ### Powerline Go

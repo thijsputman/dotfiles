@@ -143,6 +143,17 @@ fi
 # Initialise direnv
 eval "$(direnv hook bash)"
 
+# Manually append (relevant) Windows path-entries for WSL-interop
+PATH+=:/mnt/c/WINDOWS/system32
+PATH+=:/mnt/c/WINDOWS
+PATH+=:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/
+PATH+=:/mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft VS Code/bin
+PATH+=:/mnt/c/Program Files/Oracle/VirtualBox # for Vagrant on WSL
+export PATH
+
+# Enable Vagrant on WSL
+export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+
 # Fake/mimick (and extend somewhat) a basic welcome-message
 WELCOME=$(cat /etc/issue)
 WELCOME_VERSION=$(cat /proc/sys/kernel/osrelease)
