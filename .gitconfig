@@ -5,7 +5,7 @@
 [alias]
 	tree = log --decorate --oneline --graph
 	all = "!f() { ls -R -d */.git | sed s,/.git,, | xargs -P10 -I{} git -C {} $1; }; f"
-	pushup = "!f() { git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
+	pushup = "!f() { git push -u origin $(git rev-parse --abbrev-ref HEAD) --no-verify; }; f"
 	co = checkout
 	br = branch
 	ci = commit
