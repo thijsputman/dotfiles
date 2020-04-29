@@ -26,8 +26,8 @@
 [pull]
   ff = only
 [core]
-	autocrlf = true
-	eol = crlf
+	autocrlf = input
+	eol = lf
 	excludesfile = ~/.gitignore_global
 	attributesfile = ~/.gitattributes_global
 	editor = code --reuse-window --wait
