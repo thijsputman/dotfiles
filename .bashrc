@@ -17,8 +17,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=2000
+HISTFILESIZE=20000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -143,16 +143,25 @@ fi
 # Initialise direnv
 eval "$(direnv hook bash)"
 
+# PATH additions
+PATH+=:/home/thijs/.ebcli-virtual-env/executables
+
 # Manually append (relevant) Windows path-entries for WSL-interop
 PATH+=:/mnt/c/WINDOWS/system32
 PATH+=:/mnt/c/WINDOWS
 PATH+=:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/
 PATH+=:/mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft VS Code/bin
+PATH+=:/mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps
 PATH+=:/mnt/c/Program Files/Oracle/VirtualBox # for Vagrant on WSL
+PATH+=:/mnt/c/Program Files/Docker/Docker/resources/bin
+
 export PATH
 
 # Enable Vagrant on WSL
-export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS=1
+
+# Docker
+export DOCKER_HOST=tcp://localhost:2375
 
 # Fake/mimick (and extend somewhat) a basic welcome-message
 WELCOME=$(cat /etc/issue)
