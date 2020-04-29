@@ -1,0 +1,3 @@
+(Massive) cleanup of .bashrc
+  \-> Move welcome to seperate script (and use lower-case vars)
+Introduce bash_profile (and figure out how to use it)?
