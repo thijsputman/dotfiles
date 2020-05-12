@@ -33,12 +33,12 @@ shopt -s checkwinsize
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+  debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color) color_prompt=yes;;
+  xterm-color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -47,20 +47,20 @@ esac
 force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
+  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+    # We have color support; assume it's compliant with Ecma-48
+    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+    # a case would tend to support setf rather than setaf.)
+    color_prompt=yes
+  else
+    color_prompt=
+  fi
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+  PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -75,14 +75,13 @@ esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+  test -n "$LS_COLORS" || { test -r ~/.dircolors && \
+    eval "$(dircolors -b ~/.dircolors)"; } || eval "$(dircolors -b)"
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
 fi
 
 # some more ls aliases
@@ -90,17 +89,13 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+  . ~/.bash_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -114,74 +109,73 @@ if ! shopt -oq posix; then
   fi
 fi
 
+## ==>                    End of Ubuntu 20.04 ".bashrc"                   <== ##
+
 # Powerline Go
-PWRLN_MODULES=nix-shell,venv,user,ssh,cwd,perms,git,jobs,exit,root,vgo
-PWRLN_ALIASES=/mnt/c=C:,/mnt/d=D:,/mnt/d/GitHub=GIT
+PWRLN_MODULES=nix-shell,venv,user,ssh,cwd,perms,git,docker,jobs,exit,root,vgo
+PWRLN_ALIASES=/mnt/c=C:,/mnt/d=D:,~/GitHub=GIT
 
 function _powerline_ps1() {
-    PS1="$(powerline-go -error $? -cwd-max-depth 4 -modules $PWRLN_MODULES -path-aliases $PWRLN_ALIASES)"
+  PS1="$(powerline-go -error $? -cwd-max-depth 3 -modules $PWRLN_MODULES -path-aliases $PWRLN_ALIASES)"
 }
 
 if [ "$TERM" != "linux" ] && [ -f "$HOME/.local/bin/powerline-go" ]; then
-    PROMPT_COMMAND='_powerline_ps1; echo -ne "\033]0;${debian_chroot:+($debian_chroot)}${USER}@${HOSTNAME}: $(dirs +0)\007"'
+  PROMPT_COMMAND='_powerline_ps1; echo -ne "\033]0;${debian_chroot:+($debian_chroot)}${USER}@${HOSTNAME}: $(dirs +0)\007"'
 fi
 
-# Allow GPG-AGENT to be invoked
+# GPG-Agent
 GPG_TTY=$(tty)
 export GPG_TTY
 
-# X11 / VcXsrv
-LIBGL_ALWAYS_INDIRECT=1
-DISPLAY=:0.0
-export LIBGL_ALWAYS_INDIRECT DISPLAY
+# Use GPG-Agent for SSH
+# https://wiki.archlinux.org/index.php/GnuPG#SSH_agent
 
-# Windows Terminal starts in Windows' %USERPROFILE% - redirect that to ~/
-if [[ $PWD == "/mnt/c/Users/"* ]]; then
-  cd ~ || return
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+
+  SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+  export SSH_AUTH_SOCK
+
+  gpg-connect-agent updatestartuptty /bye &> /dev/null
+
+fi
+
+# X11 / VcXsrv
+# Only export these when VcXsrv (X11) is running; otherwise many things (i.e.
+# depending on dbus; e.g. Python, screenfetch) will start to fail...
+
+if timeout 0.1 nc -z x1carbon.sgraastra 6000 ; then
+
+    LIBGL_ALWAYS_INDIRECT=1
+    DISPLAY=x1carbon.sgraastra:0.0
+    export \
+      LIBGL_ALWAYS_INDIRECT \
+      DISPLAY
+
+    if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] ; then
+        eval "$(dbus-launch --sh-syntax --exit-with-session)"
+    fi
+
 fi
 
 # Initialise direnv
 eval "$(direnv hook bash)"
 
 # PATH additions
-PATH+=:/home/thijs/.ebcli-virtual-env/executables
 
 # Manually append (relevant) Windows path-entries for WSL-interop
 PATH+=:/mnt/c/WINDOWS/system32
 PATH+=:/mnt/c/WINDOWS
-PATH+=:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/
-PATH+=:/mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft VS Code/bin
+PATH+=:/mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft\ VS\ Code/bin
+PATH+=:/mnt/c/Program\ Files/Docker/Docker/resources/bin
 PATH+=:/mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps
-PATH+=:/mnt/c/Program Files/Oracle/VirtualBox # for Vagrant on WSL
-PATH+=:/mnt/c/Program Files/Docker/Docker/resources/bin
 
 export PATH
 
-# Enable Vagrant on WSL
-export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS=1
+# If we're not showing the full MOTD, show its header line
 
-# Docker
-export DOCKER_HOST=tcp://localhost:2375
-
-# Fake/mimick (and extend somewhat) a basic welcome-message
-WELCOME=$(cat /etc/issue)
-WELCOME_VERSION=$(cat /proc/sys/kernel/osrelease)
-WELCOME_TTY=$(tty)
-
-WELCOME_UPD=$(/usr/lib/update-notifier/apt-check --human-readable)
-if [[ ${WELCOME_UPD::1} == "0" ]]; then
-  unset WELCOME_UPD
+if [ -z "$MOTD_SHOWN" ]; then
+    . /etc/update-motd.d/00-header
+    printf "\n"
 fi
 
-WELCOME_TTY=${WELCOME_TTY/\/dev\//}
-WELCOME=${WELCOME//\\n/$HOSTNAME}
-WELCOME=${WELCOME//\\l/$WELCOME_TTY}
-
-echo "Linux version "$WELCOME_VERSION
-echo $WELCOME$'\n'
-
-if [ "$WELCOME_UPD" ]; then
-  echo "$WELCOME_UPD"$'\n'
-fi
-
-unset WELCOME WELCOME_VERSION WELCOME_TTY WELCOME_UPD

@@ -1,31 +1,34 @@
 # shellcheck shell=bash
 
-alias cls=clear
-alias cd..="cd .."
-alias mklink="ln -s"
-
-alias C:="cd /mnt/c"
-alias D:="cd /mnt/d"
+# CMD.exe muscle memory
+alias cls='clear'
+alias cd..='cd ..'
+alias tracert='traceroute'
 
 git() {
 
-  if [[ "$1" == "clone" ]]; then
+  if [[ ${1,,} == clone ]]; then
+
     repoName=${2##*/}
     repoName=${repoName%.git}
-    command git clone "$2" "$repoName" --config core.fileMode=false
-    cd "$repoName" || exit 1
-    echo -n "core.fileMode="
-    command git config --get core.fileMode
 
-  elif [[ "$1" == "init" ]]; then
-    command git "$@" && git config core.fileMode false
-    echo -n "core.fileMode="
-    command git config --get core.fileMode
+    gpg-tty
+    command git clone "$2" "$repoName"
+    cd "$repoName" || exit 1
+
+  elif [[ ${1,,} =~ ^(pull|push)$ ]]; then
+
+    gpg-tty
+    command git "$@"
 
   else
     command git "$@"
   fi
 
+}
+
+gpg-tty() {
+  gpg-connect-agent updatestartuptty /bye &> /dev/null
 }
 
 generate-passphrase() {
