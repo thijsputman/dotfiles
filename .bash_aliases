@@ -1,9 +1,10 @@
 # shellcheck shell=bash
 
-# CMD.exe muscle memory
+# Windows/cmd.exe muscle memory
 alias cls='clear'
 alias cd..='cd ..'
 alias tracert='traceroute'
+alias ping='ping -c 4'
 
 git() {
 
