@@ -36,6 +36,12 @@ generate-passphrase() {
   head /dev/urandom | tr -dc A-Za-z0-9 | head -c "$1" ; echo ''
 }
 
+gs-pdf-compress() {
+
+  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE \
+    -dQUIET -dBATCH -sOutputFile="${1%.*}-compressed.pdf" "$1"
+}
+
 python-init-venv() {
   python3 -m venv .venv
   echo -e "export VIRTUAL_ENV=.venv\nlayout python-venv\n" > .envrc
