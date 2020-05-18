@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 printf "\n"
-screenfetch
+screenfetch -d '-host'
 printf "\n"
