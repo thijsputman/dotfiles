@@ -1,4 +1,6 @@
 # shellcheck shell=bash
+# shellcheck disable=SC1090,SC1091
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -109,73 +111,20 @@ if ! shopt -oq posix; then
   fi
 fi
 
-## ==>                    End of Ubuntu 20.04 ".bashrc"                   <== ##
+## ==>             Additions to Ubuntu 20.04 ".bashrc" below              <== ##
 
-# Powerline Go
-PWRLN_MODULES=nix-shell,venv,user,ssh,cwd,perms,git,docker,jobs,exit,root,vgo
-PWRLN_ALIASES=/mnt/c=C:,/mnt/d=D:,~/GitHub=GIT
+# Powerline Go configuration
+pwrln_modules=nix-shell,venv,user,ssh,cwd,perms,git,docker,jobs,exit,root,vgo
+pwrln_aliases=/mnt/c=C:,/mnt/d=D:,~/GitHub=GIT
 
-function _powerline_ps1() {
-  PS1="$(powerline-go -error $? -cwd-max-depth 3 -modules $PWRLN_MODULES -path-aliases $PWRLN_ALIASES)"
-}
+echo "$pwrln_modules$pwrln_aliases" > /dev/null # Silence shellcheck warning :/
 
-if [ "$TERM" != "linux" ] && [ -f "$HOME/.local/bin/powerline-go" ]; then
-  PROMPT_COMMAND='_powerline_ps1; echo -ne "\033]0;${debian_chroot:+($debian_chroot)}${USER}@${HOSTNAME}: $(dirs +0)\007"'
-fi
+# Source parts from ~/.bashrc.d
 
-# GPG-Agent
-GPG_TTY=$(tty)
-export GPG_TTY
+for file in "$HOME"/.bashrc.d/**; do
 
-# Use GPG-Agent for SSH
-# https://wiki.archlinux.org/index.php/GnuPG#SSH_agent
+  if [[ -x "$file" ]]; then
+    source "$file";
+  fi
 
-unset SSH_AGENT_PID
-if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-
-  SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-  export SSH_AUTH_SOCK
-
-  gpg-connect-agent updatestartuptty /bye &> /dev/null
-
-fi
-
-# X11 / VcXsrv
-# Only export these when VcXsrv (X11) is running; otherwise many things (i.e.
-# depending on dbus; e.g. Python, screenfetch) will start to fail...
-
-if timeout 0.1 nc -z x1carbon.sgraastra 6000 ; then
-
-    LIBGL_ALWAYS_INDIRECT=1
-    DISPLAY=x1carbon.sgraastra:0.0
-    export \
-      LIBGL_ALWAYS_INDIRECT \
-      DISPLAY
-
-    if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] ; then
-        eval "$(dbus-launch --sh-syntax --exit-with-session)"
-    fi
-
-fi
-
-# Initialise direnv
-eval "$(direnv hook bash)"
-
-# PATH additions
-
-# Manually append (relevant) Windows path-entries for WSL-interop
-PATH+=:/mnt/c/WINDOWS/system32
-PATH+=:/mnt/c/WINDOWS
-PATH+=:/mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft\ VS\ Code/bin
-PATH+=:/mnt/c/Program\ Files/Docker/Docker/resources/bin
-PATH+=:/mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps
-
-export PATH
-
-# If we're not showing the full MOTD, show its header line
-
-if [ -z "$MOTD_SHOWN" ]; then
-    . /etc/update-motd.d/00-header
-    printf "\n"
-fi
-
+done

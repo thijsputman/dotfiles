@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# If we're not showing the full MOTD, show its header line
+
+if [ -z "$MOTD_SHOWN" ]; then
+    . /etc/update-motd.d/00-header
+    printf "\n"
+fi
