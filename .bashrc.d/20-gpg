@@ -4,6 +4,10 @@
 GPG_TTY=$(tty)
 export GPG_TTY
 
+gpg-tty(){
+  gpg-connect-agent updatestartuptty /bye &> /dev/null
+}
+
 # Use GPG-Agent for SSH
 # https://wiki.archlinux.org/index.php/GnuPG#SSH_agent
 
@@ -13,6 +17,34 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
   SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
   export SSH_AUTH_SOCK
 
-  gpg-connect-agent updatestartuptty /bye &> /dev/null
+  gpg-tty
 
 fi
+
+git(){
+
+  if [[ ${1,,} == clone ]]; then
+
+    repoName=${2##*/}
+    repoName=${repoName%.git}
+
+    gpg-tty
+    command git clone "$2" "$repoName"
+    cd "$repoName" || exit 1  # While we're at it... 🙂
+
+  elif [[ ${1,,} =~ ^(pull|push)$ ]]; then
+
+    gpg-tty
+    command git "$@"
+
+  else
+    command git "$@"
+  fi
+
+}
+
+ssh(){
+
+  gpg-tty
+  command ssh "$@"
+}

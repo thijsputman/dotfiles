@@ -1,3 +1,16 @@
 #!/usr/bin/env bash
 
 eval "$(direnv hook bash)"
+
+python3-init-venv(){
+
+  python3 -m venv .venv
+  echo -e "export VIRTUAL_ENV=.venv\nlayout python-venv\n" > .envrc
+
+  direnv allow .
+
+  source .venv/bin/activate
+
+  .venv/bin/python3 -m pip install --upgrade pip
+
+}
