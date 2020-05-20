@@ -1,0 +1,9 @@
+# N.B.: Inspect "20auto-upgrades" to ensure it doesn't conflict wit the below
+# N.B.: On Debian this file is called "02periodic"
+
+APT::Periodic::Enable "1";
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Download-Upgradeable-Packages "0";
+APT::Periodic::Unattended-Upgrade "0";
+APT::Periodic::AutocleanInterval "21";
+APT::Periodic::Verbose "0";
