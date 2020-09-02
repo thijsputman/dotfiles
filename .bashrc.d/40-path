@@ -4,7 +4,6 @@
 PATH+=:/mnt/c/WINDOWS/system32
 PATH+=:/mnt/c/WINDOWS
 PATH+=:/mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft\ VS\ Code/bin
-PATH+=:/mnt/c/Program\ Files/Docker/Docker/resources/bin
 PATH+=:/mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps
 
 export PATH
