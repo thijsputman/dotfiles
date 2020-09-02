@@ -4,10 +4,10 @@
 # Only export these when VcXsrv (X11) is running; otherwise many things (i.e.
 # depending on dbus; e.g. Python, screenfetch) will start to fail...
 
-if timeout 0.1 nc -z x1carbon.sgraastra 6000 ; then
+if timeout 0.1 nc -z t14s.sgraastra 6000 ; then
 
     LIBGL_ALWAYS_INDIRECT=1
-    DISPLAY=x1carbon.sgraastra:0.0
+    DISPLAY=t14s.sgraastra:0.0
     export \
       LIBGL_ALWAYS_INDIRECT \
       DISPLAY
