@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+gpg-unlock(){
+  if
+    echo "Hello World!" | gpg --clearsign > /dev/null
+  then
+    echo OK!
+  fi
+}
