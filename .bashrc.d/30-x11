@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# X11 / VcXsrv
-# Only export these when VcXsrv (X11) is running; otherwise many things (i.e.
-# depending on dbus; e.g. Python, screenfetch) will start to fail...
+# X11 (via VcXsrv)
+# Only export these when VcXsrv is running; otherwise many things depending on
+# D-Bus (e.g. Python, screenfetch) will start to complain...
 
-if timeout 0.1 nc -z t14s.sgraastra 6000 ; then
+if timeout 0.1 nc -z t14s.sgraastra 6000 &> /dev/null ; then
 
     LIBGL_ALWAYS_INDIRECT=1
     DISPLAY=t14s.sgraastra:0.0
@@ -13,7 +13,7 @@ if timeout 0.1 nc -z t14s.sgraastra 6000 ; then
       DISPLAY
 
     if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] ; then
-        eval "$(dbus-launch --sh-syntax --exit-with-session)"
+        eval "$(dbus-launch --sh-syntax --exit-with-x11)"
     fi
 
 fi
