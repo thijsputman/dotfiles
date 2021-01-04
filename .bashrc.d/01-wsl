@@ -9,6 +9,6 @@ if ! pgrep -x rsyslogd > /dev/null || ! pgrep -x cron > /dev/null; then
   if sudo /usr/sbin/service anacron start > /dev/null;  then ((count++)); fi
   if sudo /usr/sbin/service dbus start > /dev/null;     then ((count++)); fi
 
-  echo "Started $count service(s)."
+  echo -e "Started $count service(s).\n\n"
 
 fi

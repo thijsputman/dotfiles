@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# See 00-header for more details
+if [[ $0 != 'ssh '* ]]; then
+  neofetch
+  printf "\n"
+fi
