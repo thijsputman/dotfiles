@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Don't duplicate on SSH (see 00-header) and only show for regular terminals
-if [[ $0 != 'ssh '* ]] && [[ $(tty) == '/dev/pts/'* ]]; then
+# Don't duplicate on SSH (see 00-header) or for "integrated" terminals
+if [[ $0 != 'ssh '* ]] && [ -z "$TERM_PROGRAM" ]; then
   neofetch
   printf "\n"
 fi
