@@ -2,6 +2,13 @@
 
 # Don't duplicate on SSH (see 00-header) or for "integrated" terminals
 if [[ $0 != 'ssh '* ]] && [ -z "$TERM_PROGRAM" ]; then
+
+  # Workaround missing new-lines on SSH
+  if [ "$MOTD_SHOWN" == "pam" ]; then
+    printf "\n\n"
+  fi
+
   neofetch
   printf "\n"
+
 fi
