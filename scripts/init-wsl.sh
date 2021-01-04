@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-ln -s .config/neofetch/config.conf ~/.config/neofetch/config.conf
+ln -s "$PWD/.config/neofetch/config-pi4.conf" ~/.config/neofetch/config.conf
 
 # .bashrc.d
 
-ln -s .bashrc.d ~/.bashrc.d
+ln -s "$PWD/.bashrc.d" ~/.bashrc.d

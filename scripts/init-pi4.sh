@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-ln -s .config/neofetch/config-pi4.conf ~/.config/neofetch/config.conf
+ln -s "$PWD/.config/neofetch/config-pi4.conf" ~/.config/neofetch/config.conf
 
 # .bashrc.d
 
-ln -s .bashrc.d ~/.bashrc.d
+ln -s "$PWD/.bashrc.d" ~/.bashrc.d
 
 chmod +x ~/.bashrc.d/01-pi4 \
   ~/.bashrc.d/20-gpg-pi4
