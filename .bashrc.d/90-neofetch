@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# See 00-header for more details
-if [[ $0 != 'ssh '* ]]; then
+# Don't duplicate on SSH (see 00-header) and only show for regular terminals
+if [[ $0 != 'ssh '* ]] && [[ $(tty) == '/dev/pts/'* ]]; then
   neofetch
   printf "\n"
 fi
