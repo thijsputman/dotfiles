@@ -12,11 +12,6 @@ Additional documentation available in [`./docs`](docs/).
 Retrieve the latest Linux binary from https://github.com/justjanne/powerline-go
 and store as `~/.local/bin/powerline-go`.
 
-### Direnv
-
-Retrieve `📄~/.config/direnv/direnvrc` from
-https://github.com/direnv/direnv/wiki/Python#venv-stdlib-module.
-
 ## Git
 
 Create `📄~/.gitconfig_personal` and `📄~/.gitconfig_studyportals` containing
