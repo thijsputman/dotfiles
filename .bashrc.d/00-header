@@ -1,12 +1,25 @@
 #!/usr/bin/env bash
 
-# If we're not showing the full MOTD, show the header line instead – *except*
-# when the first argument passed to Bash starts with 'ssh '. This is to ensure
-# the header doesn't show twice (once local, once for the SSH-session) in case
-# we use "bash -i -c $0 'ssh user@host'" to open an SSH-session (which in itself
-# is a slight hack to make the below work).
+# If we're not showing the full MOTD, show just the header line
+#
+# Except when:
+#   * The first argument passed to Bash starts with 'ssh '. This is to ensure
+#     the header doesn't show twice (once local, once for the SSH-session) in
+#     case "bash -i -c $0 'ssh ...'" is used to start an SSH-session (which is
+#     a slight hack to make the below work).
+#   * $TERM_PROGRAM is set (which in my current WSL/Windows Terminal setup is a
+#     good way to distinguish a "standalone" terminal from, say, one started by
+#     VS Code).
 
-if [ -z "$MOTD_SHOWN" ] && [[ $0 != 'ssh '* ]]; then
+if [ -z "$MOTD_SHOWN" ] && [[ $0 != 'ssh '* ]] && [ -z "$TERM_PROGRAM" ]; then
   . /etc/update-motd.d/00-header
   printf "\n\n"
+
+# If we're *not* starting a "standalone" terminal (but, for example, a VS Code
+# integrated terminal) always show the header line (regardless of MOTD status
+# and with a single additional new-line after it).
+
+elif [ -n "$TERM_PROGRAM" ]; then
+  . /etc/update-motd.d/00-header
+  printf "\n"
 fi

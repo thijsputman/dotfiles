@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Don't duplicate on SSH (see 00-header) or for "integrated" terminals
+# Don't duplicate on SSH (see 00-header) or for non-"standalone" terminals
 if [[ $0 != 'ssh '* ]] && [ -z "$TERM_PROGRAM" ]; then
 
   # Workaround missing new-lines on SSH
@@ -8,7 +8,7 @@ if [[ $0 != 'ssh '* ]] && [ -z "$TERM_PROGRAM" ]; then
     printf "\n\n"
   fi
 
-  neofetch
-  printf "\n"
+  # Prevent neofetch from showing output one line at a time
+  printf "%s\n" "$(neofetch)"
 
 fi
