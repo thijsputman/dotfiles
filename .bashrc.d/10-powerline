@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 function _powerline_ps1() {
-  PS1="$(powerline-go -error $? -cwd-max-depth 3 \
-    -east-asian-width -hostname-only-if-ssh \
+  PS1="$(powerline-go -error $? -jobs "$(jobs -p | wc -l)" -cwd-max-depth 3 \
+    -hostname-only-if-ssh \
     -modules "${pwrln_modules:=venv,user,host,ssh,cwd,perms,git,hg,jobs,exit,root}" \
     -path-aliases "${pwrln_aliases:=\~=\~}")" # path-aliases cannot be empty...
 }
