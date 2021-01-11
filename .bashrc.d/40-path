@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# Manually append (relevant) Windows path-entries for WSL-interop
-PATH+=:/mnt/c/WINDOWS/system32
-PATH+=:/mnt/c/WINDOWS
-PATH+=:/mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft\ VS\ Code/bin
-PATH+=:/mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps
-
-export PATH
