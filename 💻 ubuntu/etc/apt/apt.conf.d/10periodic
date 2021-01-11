@@ -1,5 +1,6 @@
 # N.B.: Inspect "20auto-upgrades" to ensure it doesn't conflict wit the below
 # N.B.: On Debian this file is called "02periodic"
+# Test with: sudo unattended-upgrade -d -v --dry-run
 
 APT::Periodic::Enable "1";
 APT::Periodic::Update-Package-Lists "1";

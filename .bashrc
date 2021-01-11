@@ -7,8 +7,8 @@
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+  *i*) ;;
+    *) return;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -111,7 +111,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-## ==>             Additions to Ubuntu 20.04 ".bashrc" below              <== ##
+## ==>        Additions to Ubuntu 20.04 / 20.10 ".bashrc" below           <== ##
 
 # Powerline Go configuration
 pwrln_modules=nix-shell,venv,user,host,ssh,cwd,perms,git,docker,exit,root,vgo
