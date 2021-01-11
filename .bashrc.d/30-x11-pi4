@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if [ -n "$DISPLAY" ] ; then
+
+  LIBGL_ALWAYS_INDIRECT=1
+  export LIBGL_ALWAYS_INDIRECT
+
+  if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] ; then
+      eval "$(dbus-launch --sh-syntax --exit-with-x11)"
+  fi
+
+fi
