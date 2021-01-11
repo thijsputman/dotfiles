@@ -1,19 +1,24 @@
 #!/usr/bin/env bash
 
-# X11 (via VcXsrv)
-# Only export these when VcXsrv is running; otherwise many things depending on
-# D-Bus (e.g. Python, screenfetch) will start to complain...
+# Only export these when an X11 server is running on the WSL host. Otherwise,
+# certain things depending on the combination of X11 and D-Bus might start to
+# complain...
 
-if timeout 0.1 nc -z t14s.sgraastra 6000 &> /dev/null ; then
+if [ -n "$WSL_IP" ] && timeout 0.1 nc -z "$WSL_IP" 6000 &> /dev/null ; then
 
-    LIBGL_ALWAYS_INDIRECT=1
-    DISPLAY=t14s.sgraastra:0.0
-    export \
-      LIBGL_ALWAYS_INDIRECT \
-      DISPLAY
+  LIBGL_ALWAYS_INDIRECT=1
+  DISPLAY="$WSL_IP":0.0
+  export \
+    LIBGL_ALWAYS_INDIRECT \
+    DISPLAY
 
-    if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] ; then
-        eval "$(dbus-launch --sh-syntax --exit-with-x11)"
+  if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] ; then
+    if eval "$(dbus-launch --sh-syntax --exit-with-x11)" ; then
+      return
     fi
+  fi
+
+  # Unset DISPLAY if D-Bus fails to launch
+  unset DISPLAY
 
 fi
