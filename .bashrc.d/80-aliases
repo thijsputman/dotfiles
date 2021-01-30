@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+alias ll='ls -alhF' # Include human-readable sizes in standard "ll"
