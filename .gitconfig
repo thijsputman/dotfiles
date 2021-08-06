@@ -21,6 +21,11 @@
 	smudge = git-lfs smudge -- %f
 [color]
 	ui = auto
+[color "status"]
+  added = green
+  changed = red
+  untracked = cyan
+  branch = yellow black bold ul
 [push]
 	default = simple
 [pull]
