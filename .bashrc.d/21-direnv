@@ -1,9 +1,3 @@
 #!/usr/bin/env bash
 
 eval "$(direnv hook bash)"
-
-python3-init-venv(){
-
-  echo -e "layout python3\n" > .envrc
-  direnv allow .
-}

@@ -8,3 +8,11 @@ gs-pdf-compress(){
   gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE \
     -dQUIET -dBATCH -sOutputFile="${1%.*}-compressed.pdf" "$1"
 }
+
+gpg-unlock(){
+  if
+    echo "Hello World!" | gpg --clearsign > /dev/null
+  then
+    echo OK!
+  fi
+}

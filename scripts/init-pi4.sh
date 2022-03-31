@@ -26,12 +26,8 @@ fi
 
 if [ -d ~/.bashrc.d ] && [ -L ~/.bashrc.d ]; then
 
-  chmod +x ~/.bashrc.d/05-pi4 \
-    ~/.bashrc.d/20-gpg-pi4
-
-  chmod -x ~/.bashrc.d/05-wsl \
-    ~/.bashrc.d/06-wsl-ip \
-    ~/.bashrc.d/20-gpg-wsl
+  chmod +x ~/.bashrc.d/*-pi4*
+  chmod -x ~/.bashrc.d/*-wsl*
 
 fi
 
