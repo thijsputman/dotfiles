@@ -12,6 +12,7 @@
 #     VS Code).
 
 if [ -z "$MOTD_SHOWN" ] && [[ $0 != 'ssh '* ]] && [ -z "$TERM_PROGRAM" ]; then
+  # shellcheck source=/dev/null
   . /etc/update-motd.d/00-header
   printf "\n\n"
 
@@ -20,6 +21,7 @@ if [ -z "$MOTD_SHOWN" ] && [[ $0 != 'ssh '* ]] && [ -z "$TERM_PROGRAM" ]; then
 # and with a single additional new-line after it).
 
 elif [ -n "$TERM_PROGRAM" ]; then
+  # shellcheck source=/dev/null
   . /etc/update-motd.d/00-header
   printf "\n"
 fi

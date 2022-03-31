@@ -4,7 +4,7 @@
 # in the last 10 minutes _and_ there's an active editor instance running,
 # terminate it.
 # Per run only one instance (the oldest) is killed. If run at a set interval
-# (i.e. every 5 minutes) should eventuelly churn through all active instances.
+# (i.e. every 5 minutes) should eventually churn through all active instances.
 #
 # This script is intended to be used with the (LinuxServer.io) code-server
 # Docker container: s6-overlay Inside the container restarts the "listener"
