@@ -5,9 +5,10 @@ function _powerline_ps1() {
     -hostname-only-if-ssh \
     -modules "${pwrln_modules:=venv,user,host,ssh,cwd,perms,git,hg,jobs,exit,root}" \
     -path-aliases "${pwrln_aliases:=\~=\~}")" # path-aliases cannot be empty...
+  # shellcheck disable=2154
+  PS1+="\[\033]0;\]${debian_chroot:+($debian_chroot)}${USER}@${HOSTNAME}: $(dirs +0)\[\007\]"
 }
 
 if [ "$TERM" != "linux" ] && [ -f "$HOME/.local/bin/powerline-go" ]; then
-  # shellcheck disable=2154
-  PROMPT_COMMAND='_powerline_ps1; echo -ne "\033]0;${debian_chroot:+($debian_chroot)}${USER}@${HOSTNAME}: $(dirs +0)\007"'
+  PROMPT_COMMAND="_powerline_ps1${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
 fi
