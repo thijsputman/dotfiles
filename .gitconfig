@@ -2,6 +2,8 @@
   path = .gitconfig_personal
 [includeIf "gitdir:GitHub/studyportals/"]
   path = .gitconfig_studyportals
+[includeIf "gitdir:GitHub/WincAcademy/"]
+  path = .gitconfig_wincacademy
 [alias]
 	tree = log --decorate --oneline --graph
 	all = "!f() { ls -R -d */.git | sed s,/.git,, | xargs -P10 -I{} git -C {} $1; }; f"
@@ -40,3 +42,5 @@
 	recurse = true
 [commit]
 	gpgsign = true
+[init]
+	defaultBranch = main
