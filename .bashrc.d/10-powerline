@@ -2,7 +2,7 @@
 
 function _powerline_ps1() {
   PS1="$(powerline-go -error $? -jobs "$(jobs -p | wc -l)")"
-  PS1+="\[\033]0;\]${debian_chroot:+($debian_chroot)}${USER}@${HOSTNAME}: $(dirs +0)\[\007\]"
+  PS1+="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]"
 }
 
 if [ "$TERM" != "linux" ] && [ -f "$HOME/.local/bin/powerline-go" ]; then
