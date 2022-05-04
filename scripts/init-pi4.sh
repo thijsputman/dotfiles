@@ -6,6 +6,11 @@ if [ ! -e ~/.config/neofetch/config.conf ]; then
     ~/.config/neofetch/config.conf
 fi
 
+if [ ! -e ~/.config/powerline-go/config.json ]; then
+  ln -s -r "$PWD/.config/powerline-go/config-pi4.json" \
+    ~/.config/powerline-go/config.json
+fi
+
 if [ ! -e ~/.inputrc ]; then
   ln -s -r "$PWD/.inputrc" ~/.inputrc
 fi

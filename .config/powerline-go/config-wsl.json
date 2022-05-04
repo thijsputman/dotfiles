@@ -1,0 +1,23 @@
+{
+  "modules": [
+    "nix-shell",
+    "venv",
+    "user",
+    "host",
+    "ssh",
+    "cwd",
+    "perms",
+    "git",
+    "docker",
+    "exit",
+    "root",
+    "vgo"
+  ],
+  "path-aliases": {
+    "/mnt/c": "C",
+    "/mnt/d": "D",
+    "~/GitHub": "GIT"
+  },
+  "cwd-max-depth": 3,
+  "hostname-only-if-ssh": true
+}

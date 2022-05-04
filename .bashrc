@@ -113,12 +113,6 @@ fi
 
 ## ==>        Additions to Ubuntu 20.04 / 20.10 ".bashrc" below           <== ##
 
-# Powerline Go configuration
-pwrln_modules=nix-shell,venv,user,host,ssh,cwd,perms,git,docker,exit,root,vgo
-pwrln_aliases=/mnt/c=C:,/mnt/d=D:,~/GitHub=GIT
-
-echo "$pwrln_modules$pwrln_aliases" > /dev/null # Silence shellcheck warning :/
-
 # Source parts from ~/.bashrc.d
 
 for file in "$HOME"/.bashrc.d/**; do
