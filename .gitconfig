@@ -37,7 +37,6 @@
 	eol = lf
 	excludesfile = ~/.gitignore_global
 	attributesfile = ~/.gitattributes_global
-	editor = code --reuse-window --wait
 [submodule]
 	recurse = true
 [commit]
