@@ -8,18 +8,3 @@ path-add /mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft\ VS\ Code/bin
 path-add /mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps
 
 export PATH
-
-# Services
-
-if ! pgrep -x rsyslogd > /dev/null || ! pgrep -x cron > /dev/null; then
-
-  count=0
-
-  if sudo /usr/sbin/service rsyslog start > /dev/null;  then ((count++)); fi
-  if sudo /usr/sbin/service cron start > /dev/null;     then ((count++)); fi
-  if sudo /usr/sbin/service anacron start > /dev/null;  then ((count++)); fi
-  if sudo /usr/sbin/service dbus start > /dev/null;     then ((count++)); fi
-
-  echo -e "Started $count service(s).\n\n"
-
-fi
