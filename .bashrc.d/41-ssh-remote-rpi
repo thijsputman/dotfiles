@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# In my hybrid Windows/WSL2-setup I'm sharing a Yubikey between both OSs for
+# SSH- and GPG-operations. The Yubikey is attached to and detached from WSL2
+# on-demand using usbipd-win.
+#
+# Much of my work in VS Code happens using the "Remote - SSH" extension. Those
+# SSH connections are authenticated using the Yubikey from the *Windows*-side.
+# Once inside the remote, both SSH- and GPG-operations rely on the Yubikey. GPG
+# is provided through agent-forwarding from WSL2; SSH by agent-forwarding from
+# Windows.
+# This is annoying as a common Git workflow (sign a commit using GPG; push it
+# using SSH) requires the Yubikey to be first used from WSL2 and subsequently
+# from the Windows-side.
+# The below aims to ensure a single SSH auth-sock is used for all SSH sessions,
+# regardless of whether they were initiated from Windows or WSL2 itself. This
+# prevents the Yubikey from constantly having to be toggled between both OSs...
+#
+# All SSH auth-socks point to that of the *last* opened SSH session. This
+# session should thus be initiated from WSL2 for things to work as intended.
+# Although naive, this solution is preferred to more elaborate ones as — for
+# example — opening a new VS Code SSH remote requires the Yubikey to be present
+# on the Windows-side. Retaining the existing WSL2 auth-sock in that case would
+# break both SSH and GPG; switching it over to Windows only breaks GPG.
+#
+# N.B. For this to work, "remote.SSH.enableAgentForwarding" in VS code should be
+# *disabled* to prevent VS Code from modifying SSH_AUTH_SOCK on its own...
+
+function ssh-remote-set {
+  # This function is idempotent: ~/.ssh/ssh_auth_sock Will always point to the
+  # SSH auth-sock for *this* SSH session. It can thus be used to "reattach" the
+  # socket should another session have inadvertently broken it...
+  if [[ -S "$SSH_AUTH_SOCK_ORIG" ]] ; then
+    ln -sf "$SSH_AUTH_SOCK_ORIG" ~/.ssh/ssh_auth_sock;
+  elif [[ -S "$SSH_AUTH_SOCK" && ! -L "$SSH_AUTH_SOCK" ]] ; then
+      export SSH_AUTH_SOCK_ORIG="$SSH_AUTH_SOCK"
+      ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock;
+  fi
+  ssh-remote-attach
+}
+
+function ssh-remote-attach {
+  export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock;
+}
+
+# In case of a VS Code terminal window, don't attempt to update the SSH auth-
+# sock — that'll definitely point it back to Windows' OpenSSH...
+if [ "$TERM_PROGRAM" == vscode ] ; then
+  ssh-remote-attach
+else
+  ssh-remote-set
+fi

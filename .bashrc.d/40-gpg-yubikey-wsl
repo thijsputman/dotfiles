@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+# GPG-Agent
+GPG_TTY=$(tty)
+export GPG_TTY
+
+gpg-tty(){
+  gpg-connect-agent updatestartuptty /bye &> /dev/null
+}
+
+yubikey-attach(){
+  # Yubikey is not attached
+  if [[ -n "$USBIP_HOST" && -n "$USBIP_BUSID" && \
+    ! "$(sudo usbip port)" =~ usbip://"$USBIP_HOST":3240/"$USBIP_BUSID" ]] ; then
+    # Yubikey is not not plugged into the host-machine
+    if [[ ! "$(usbip list -r "$USBIP_HOST" 2> /dev/null)" =~ "$USBIP_BUSID":\ Yubico\.com ]] ; then
+      read -n 1 -s -r -p "Insert Yubikey and press any key to continue..."
+      printf "\n"
+      yubikey-attach
+    # Attach Yubikey
+    else
+      sudo usbip attach -r "$USBIP_HOST" -b "$USBIP_BUSID"
+      # Upon attaching the Yubikey, the pcscd service needs to be restarted —
+      # wait a second for the Yubikey to properly attach before doing so...
+      sleep 1
+      sudo service pcscd restart > /dev/null
+      # Check if the serial number of the GPG key stubs matches the serial
+      # number of the Yubikey — if not, update the GPG key stubs with the serial
+      # number of the attached Yubikey. This allows multiple physical Yubikeys
+      # to be used interchangeably.
+      if [ \
+        "$(gpg --card-status 2> /dev/null | grep -oP 'Serial number \.\.\.\.: \K\d+')" != \
+        "$(gpg --card-status 2> /dev/null | grep -m 1 -oP 'card-no: 0006 \K\d+')" \
+      ] ; then
+        gpg-connect-agent "scd serialno" "learn --force" /bye > /dev/null
+      fi
+    fi
+  fi
+}
+
+yubikey-detach(){
+  # Yubikey is attached
+  if [[ -n "$USBIP_HOST" && -n "$USBIP_BUSID" && \
+    "$(sudo usbip port)" =~ usbip://"$USBIP_HOST":3240/"$USBIP_BUSID" ]] ; then
+    # This naively assumes the Yubikey is attached to port 00 — should at some
+    # point make this smarter...
+    sudo usbip detach -p 00 2> /dev/null
+  fi
+}
+
+# Use GPG-Agent for SSH
+# https://wiki.archlinux.org/index.php/GnuPG#SSH_agent
+
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+
+  SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+  export SSH_AUTH_SOCK
+
+  gpg-tty
+
+fi
+
+git(){
+  if [[ ${1,,} == clone ]]; then
+
+    repoName=${2##*/}
+    repoName=${repoName%.git}
+
+    yubikey-attach
+    gpg-tty
+
+    command git clone "$2" "$repoName"
+    # Change into the just cloned repository
+    cd "$repoName" || exit 1
+
+  elif [[ ${1,,} =~ ^(pull|push|commit)$ ]]; then
+
+    yubikey-attach
+    gpg-tty
+
+    command git "$@"
+
+  else
+    command git "$@"
+  fi
+}
+
+ssh(){
+  yubikey-attach
+  gpg-tty
+
+  command ssh "$@"
+}
