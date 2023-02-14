@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+sudo chmod --silent -x /etc/update-motd.d/10-help-text
+sudo chmod --silent -x /etc/update-motd.d/50-landscape-sysinfo
+sudo chmod --silent -x /etc/update-motd.d/50-motd-news

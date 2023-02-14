@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ ! -e ~/.inputrc ]; then
+  ln -s -r "${base:?}/.inputrc" ~/.inputrc
+fi
+
+if [ ! -e ~/.nanorc ]; then
+  ln -s -r "${base:?}/.nanorc" ~/.nanorc
+fi

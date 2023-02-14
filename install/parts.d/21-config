@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.config
+
+if [ ! -e ~/.config/gh/config.yml ]; then
+  mkdir -p ~/.config/gh
+  ln -s -r "${base:?}/.config/gh/config.yml" \
+    ~/.config/gh/config.yml
+fi
+
+if [ ! -e ~/.config/neofetch/config.conf ]; then
+  mkdir -p ~/.config/neofetch
+  ln -s -r "${base:?}/.config/neofetch/config.conf" \
+    ~/.config/neofetch/config.conf
+fi

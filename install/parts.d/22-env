@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+if [ ! -e ~/.env ]; then
+  cp "${base:?}/.env.default" ~/.env
+fi

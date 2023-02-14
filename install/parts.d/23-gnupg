@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.gnupg
+
+if [ ! -e ~/.gnupg/gpg.conf ]; then
+  ln -s -r "${base:?}/.gnupg/gpg.conf" ~/.gnupg/gpg.conf
+fi
+
+if [ ! -e ~/.gnupg/gpg-agent.conf ]; then
+  ln -s -r "${base:?}/.gnupg/gpg-agent.conf" ~/.gnupg/gpg-agent.conf
+fi

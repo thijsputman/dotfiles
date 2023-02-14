@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Remove some of the Ubuntu Pro "nudges" — courtesy of
+# https://askubuntu.com/a/1452520
+
+sudo systemctl mask apt-news.service
+sudo systemctl mask esm-cache.service
+
+if [ -e /etc/apt/apt.conf.d/20apt-esm-hook.conf ]; then
+
+  sudo mv -f -b /etc/apt/apt.conf.d/20apt-esm-hook.conf \
+    /etc/apt/apt.conf.d/20apt-esm-hook.conf.disabled
+
+fi

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [ ! -e ~/.gitattributes_global ]; then
+  ln -s -r "${base:?}/.gitattributes_global" ~/.gitattributes_global
+fi
+
+if [ ! -e ~/.gitconfig ]; then
+  ln -s -r "${base:?}/.gitconfig" ~/.gitconfig
+fi
+
+if [ ! -e ~/.gitignore_global ]; then
+  ln -s -r "${base:?}/.gitignore_global" ~/.gitignore_global
+fi

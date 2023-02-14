@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ ! -e ~/.config/powerline-go/config.json ]; then
+  mkdir -p ~/.config/powerline-go
+  ln -s -r "${base:?}/.config/powerline-go/config-rpi.json" \
+    ~/.config/powerline-go/config.json
+fi
