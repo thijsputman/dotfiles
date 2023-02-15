@@ -9,12 +9,13 @@
 - WSL2 is instructed to _not_ create `resolv.conf` (instead it is manually
   added, see below)
 - Interop is enabled, but no Windows directories are added to the `PATH`
-  automatically (this is done manually via a script in `📂 ~/.bashrc.d`)
-- A default username is set and a handful of services are automatically started
-  (in the `/init` version of WSL2).
+  automatically (this is done manually via
+  [`📄 ~/.bashrc.d/05-wsl`](../../../.bashrc.d/05-wsl))
+- A default username is set
 
-Alternatively, use `📄 wsl.systemd.conf` (rename it to `📄 wsl.conf`) to run
-WSL2 with `systemd`. In that case no services have to be started manually.
+Alternatively, use `📄 wsl.init.conf` (rename it to `📄 wsl.conf`) when running
+WSL2 using Microsoft's `/init` system. In this case, a handful of services are
+automatically started via the WSL configuration.
 
 ### `📄 resolv.conf`
 

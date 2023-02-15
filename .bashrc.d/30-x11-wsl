@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Only necessary when running WSL2's /init system; in case of systemd this is
+# not required...
+
 if [ -n "$DISPLAY" ] ; then
 
   if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] ; then
