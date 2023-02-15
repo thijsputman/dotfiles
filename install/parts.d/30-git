@@ -8,6 +8,10 @@ if [ ! -e ~/.gitconfig ]; then
   ln -s -r "${base:?}/.gitconfig" ~/.gitconfig
 fi
 
+if [ ! -e ~/.gitconfig_personal ]; then
+  ln -s -r "${base:?}/.gitconfig_personal" ~/.gitconfig_personal
+fi
+
 if [ ! -e ~/.gitignore_global ]; then
   ln -s -r "${base:?}/.gitignore_global" ~/.gitignore_global
 fi

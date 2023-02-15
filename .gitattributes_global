@@ -1,4 +1,6 @@
 * text=auto
 
-# Shell scripts
+# Shell-scripts require LF
 *.sh eol=lf
+# Powershell requires CRLF
+*.ps1 eol=crlf

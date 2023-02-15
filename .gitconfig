@@ -1,45 +1,41 @@
 [include]
   path = .gitconfig_personal
-[includeIf "gitdir:GitHub/studyportals/"]
-  path = .gitconfig_studyportals
-[includeIf "gitdir:GitHub/WincAcademy/"]
-  path = .gitconfig_wincacademy
 [alias]
-	tree = log --decorate --oneline --graph
-	all = "!f() { ls -R -d */.git | sed s,/.git,, | xargs -P10 -I{} git -C {} $1; }; f"
-	pushup = "!f() { git push -u origin $(git rev-parse --abbrev-ref HEAD) --no-verify; }; f"
-	co = checkout
-	br = branch
-	ci = commit
-	st = status
+  tree = log --decorate --oneline --graph
+  all = "!f() { ls -R -d */.git | sed s,/.git,, | xargs -P10 -I{} git -C {} $1; }; f"
+  pushup = "!f() { git push -u origin $(git rev-parse --abbrev-ref HEAD) --no-verify; }; f"
+  co = checkout
+  br = branch
+  ci = commit
+  st = status
 [filter "hawser"]
-	clean = git hawser clean %f
-	smudge = git hawser smudge %f
-	required = true
+  clean = git hawser clean %f
+  smudge = git hawser smudge %f
+  required = true
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
 [color]
-	ui = auto
+  ui = auto
 [color "status"]
   added = green
   changed = red
   untracked = cyan
   branch = yellow black bold ul
 [push]
-	default = simple
+  default = simple
 [pull]
   ff = only
 [core]
-	autocrlf = input
-	eol = lf
-	excludesfile = ~/.gitignore_global
-	attributesfile = ~/.gitattributes_global
+  autocrlf = input
+  eol = lf
+  excludesfile = ~/.gitignore_global
+  attributesfile = ~/.gitattributes_global
 [submodule]
-	recurse = true
+  recurse = true
 [commit]
-	gpgsign = true
+  gpgsign = true
 [init]
-	defaultBranch = main
+  defaultBranch = main
