@@ -5,5 +5,7 @@ if [ -d "$HOME/.pyenv/bin" ] ; then
   path-add "$HOME/.pyenv/bin"
   eval "$(pyenv init --path)"
   eval "$(pyenv virtualenv-init -)"
+  # shellcheck disable=SC1091
+  source "$(pyenv root)"/completions/pyenv.bash
 
 fi
