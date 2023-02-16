@@ -334,8 +334,8 @@ that script for more details.
 
 To prevent relentless `sudo`-prompts, update your configuration with the
 following:
-[`📄 /etc/sudoers.d/yubikey`](../../static/linux/etc/sudoers.d/yubikey)
-(`sudo visudo -f /etc/sudoers.d/yubikey`).
+[`📄 /etc/sudoers.d/80-yubikey`](../../static/linux/etc/sudoers.d/80-yubikey)
+(`sudo visudo -f /etc/sudoers.d/80-yubikey`).
 
 Additional convenience for using the Yubikey via SSH on remote machines is
 provided through
