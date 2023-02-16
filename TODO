@@ -1,5 +1,7 @@
+<!-- vim: syntax=Markdown -->
+
 # ToDo
 
-- [ ] Find better way to set Powerline defaults in `.bashrc` (i.e. don't set
-      them in `.bashrc` but instead source a file that isn't version controlled
-      to allow for easy customisation between machines)
+- [ ] List all active `screen` sessions on Bash logon
+- [ ] Schedule `pyenv update` to run once in a while (or provide some kind of
+      reminder to do so manually)

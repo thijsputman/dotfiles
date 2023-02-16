@@ -1,25 +1,53 @@
 # Collection of Personal `.files`
 
-**N.B.** The `📄.gitattributes` file in this repository should _not_ be moved
-into your home-directory.
+Personalising an **Ubuntu 22.04** (or **20.04**) installation.
 
-Additional documentation available in [`./docs`](docs/).
+- [Bash-scripts](#bash-scripts)
+- [Static modifications](#static-modifications)
+  - [WSL2](#wsl2)
+- [Extras](#extras)
+- [TODO](#todo)
 
-## `📄.bashrc`
+## Bash-scripts
 
-### Powerline Go
+The core of this repository is a set of Bash-scripts in
+[`📂 .bashrc.d`](./.bashrc.d/) that are sourced as part of `📄 ~/.bashrc`.
 
-Retrieve the latest Linux binary from https://github.com/justjanne/powerline-go
-and store as `~/.local/bin/powerline-go`.
+See [`📂 install`](./install/README.md) for installation instructions.
 
-## Git
+## Static modifications
 
-Create `📄~/.gitconfig_personal` and `📄~/.gitconfig_studyportals` containing
-the username and e-mail address to use globally and for Studyportals-specific
-projects respectively:
+Apart from the Bash-scripts, there's a set of static/manual modifications in
+[`📂 static`](./static/README.md).
 
-```
-[user]
-	name = John Doe
-	email = john@doe.com
-```
+### WSL2
+
+To setup a WSL2 instance, _copy_ [`📄 wsl.conf`](./static/linux/etc/wsl.conf)
+and [`📄 resolv.conf`](./static/linux/etc/resolv.conf) to `📂 /etc` — on the
+Windows-side, copy [`📄 .wslconfig`](./static/windows/.wslconfig) and
+[`📄 .wslgconfig`](./static/windows/.wslgconfig) to `📂 %USERPROFILE%`.
+
+Several of the Bash-scripts rely on the modifications made in these
+configuration files to function properly.
+
+#### systemd
+
+In their default state, the Bash-scripts and configuration files assume the WSL2
+instance is running **`systemd`**.
+
+When using Microsoft's `/init` system, copy
+[`📄 wsl.init.conf`](./static/linux/etc/wsl.init.conf) to `📂 /etc` instead (and
+rename it to `📄 wsl.conf`) and `chmod +x`
+[`📄 .bashrc.d/30-x11-wsl`](./.bashrc.d/30-x11-wsl).
+
+In this case no services are started automatically, so several required services
+are started through `📄 /etc/wsl.conf`. Furthermore, a `dbus`-session (required
+for X11/GUI-applications) is launched.
+
+## Extras
+
+See [`📂 extras`](./extras/README.md).
+
+## TODO
+
+See [`📄 TODO`](./TODO).
