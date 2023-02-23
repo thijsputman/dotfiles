@@ -4,8 +4,36 @@ sudo add-apt-repository ppa:git-core/ppa
 sudo add-apt-repository ppa:ondrej/php
 sudo add-apt-repository ppa:yubico/stable
 
-curl -sSL https://packages.microsoft.com/keys/microsoft.asc | \
-  sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
-sudo apt-add-repository https://packages.microsoft.com/ubuntu/22.04/prod
-
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+
+sudo mkdir -m 0755 -p /usr/share/keyrings/
+
+# GitHub CLI
+
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
+  sudo dd of=/usr/share/keyrings/github-cli.gpg \
+
+echo \
+  deb [arch="$(dpkg --print-architecture)" signed-by=/usr/share/keyrings/github-cli.gpg] \
+  https://cli.github.com/packages stable main | \
+  sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+
+# Microsoft packages
+
+curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | \
+  sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+
+echo \
+  deb [arch="$(dpkg --print-architecture)" signed-by=/usr/share/keyrings/microsoft.gpg] \
+  https://packages.microsoft.com/ubuntu/22.04/prod "$(lsb_release -cs)" main | \
+  sudo tee /etc/apt/sources.list.d/microsoft.list > /dev/null
+
+# Docker
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+  sudo gpg --dearmor -o /usr/share/keyrings/docker.gpg
+
+echo \
+  deb [arch="$(dpkg --print-architecture)" signed-by=/usr/share/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu "$(lsb_release -cs)" stable | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
