@@ -24,19 +24,5 @@
       "AliasFg": 235,
       "SSHFg": 235
     }
-  },
-  "Modes": {
-    "patched": {
-      "Lock": "\uE0A2\uFE0E",
-      "Network": "\u260E\uFE0E",
-      "RepoBranch": "\uE0A0\uFE0E",
-      "RepoDetached": "\u2693\uFE0E",
-      "RepoAhead": "\u2B06\uFE0E",
-      "RepoBehind": "\u2B07\uFE0E",
-      "RepoConflicted": "\u273C\uFE0E",
-      "RepoStashed": "\u2691\uFE0E",
-      "RepoNotStaged": "\u270E\uFE0E",
-      "RepoStaged": "\u2714\uFE0E"
-    }
   }
 }
