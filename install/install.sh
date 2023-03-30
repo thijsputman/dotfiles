@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1090,SC2034
 
+set -euo pipefail
+
 bashrc=~/.bashrc
 base=$(dirname "$(realpath "$(dirname "${BASH_SOURCE[0]}")")")
 

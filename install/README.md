@@ -72,6 +72,23 @@ lines of:
   ...
 ```
 
+To prevent a locally modified version of `📄 ~/.gitconfig` from (accidentally)
+getting committed back into the repository, this "trick" can be applied:
+
+```shell
+git update-index --assume-unchanged .gitconfig
+```
+
+Note that remote updates to the file (i.e., `git pull`) will _nuke_ your local
+changes, so use with caution! This of course works for any — locally modified —
+files you don't want to commit back into the repository...
+
+To undo:
+
+```shell
+git update-index --no-assume-unchanged .gitconfig
+```
+
 ### Raspberry Pi
 
 By default, `📄 install.sh` installs the WSL2-setup. To have it install the

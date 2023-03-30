@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
-sudo chmod --silent -x /etc/update-motd.d/10-help-text
-sudo chmod --silent -x /etc/update-motd.d/50-landscape-sysinfo
-sudo chmod --silent -x /etc/update-motd.d/50-motd-news
+# Despite its name, this file works fine on Debian/RPi OS too...
+
+sudo chmod --silent -x /etc/update-motd.d/10-help-text || true
+sudo chmod --silent -x /etc/update-motd.d/50-landscape-sysinfo || true
+sudo chmod --silent -x /etc/update-motd.d/50-motd-news || true
+
+# Empty out the static message of the day — an empty file is intentionally left
+# behind: This ensures there are sufficient newlines between the various other
+# parts of the MoTD.
+
+echo "" | sudo tee /etc/motd > /dev/null

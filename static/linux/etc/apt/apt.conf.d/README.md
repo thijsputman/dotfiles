@@ -1,11 +1,22 @@
-# Unattended-upgrades
+# `unattended-upgrades`
 
-Notify (via MOTD) about available upgrades, but don't automatically install
-them. This works for Ubuntu (20.04 and 22.04); on Debian the file is called
-`📄 02periodic`.
+Installed by default on Ubuntu; for Debian/RPi OS:
+
+```shell
+apt install unattended-upgrades
+apt install needrestart # optional, for restart/outdated-binaries notification
+```
+
+## Disable automatic upgrade
+
+Notify (via MoTD) about available upgrades, but don't automatically download or
+install anything. Based on Ubuntu's (20.04 / 22.04) default configuration; on
+RPi OS/Debian the file was called `📄 02periodic`; more recent versions don't
+have it anymore...
 
 **N.B.** Inspect `📄 20auto-upgrades` to ensure it doesn't conflict with the
-settings applied made in `📄 10periodic`.
+settings applied in `📄 10periodic` (mainly ensure
+`APT::Periodic::Unattended-Upgrade "0"`).
 
 Test with:
 
