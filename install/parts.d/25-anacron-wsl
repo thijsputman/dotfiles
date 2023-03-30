@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ ! -d ~/.anacron ]; then
+
+  mkdir -p ~/.anacron/{etc,spool}
+  cp "${base:?}/.anacron/etc/anacrontab" ~/.anacron/etc/anacrontab
+
+  # shellcheck disable=SC2016
+  echo '@hourly /usr/sbin/anacron -s -t $HOME/.anacron/etc/anacrontab' \
+    '-S $HOME/.anacron/spool' | crontab -
+fi

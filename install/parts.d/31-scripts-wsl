@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+if [ ! -e ~/.rclone ]; then
+
+  if \
+    ! command -v rclone &> /dev/null || \
+    ! rclone listremotes | grep onedrive:
+  then
+    echo ' |-> ⚠️ skipping "~/.rclone" — rsync not properly configured...'
+    return 0
+  fi
+
+  ln -s -r "${base:?}/scripts/.rclone" ~/.rclone
+
+  # Run daily via anacron (if present)
+  if [ -e ~/.anacron/etc/anacrontab ]; then
+    echo "1  0  rclone-backup  $HOME/.rclone" >> ~/.anacron/etc/anacrontab
+  fi
+
+fi
