@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+arch=$(dpkg --print-architecture)
+lsb_id=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
+lsb_codename=$(lsb_release -cs)
+lsb_release=$(lsb_release -rs)
+
 sudo add-apt-repository ppa:git-core/ppa
 sudo add-apt-repository ppa:ondrej/php
 sudo add-apt-repository ppa:yubico/stable
@@ -14,7 +19,7 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
   sudo dd of=/usr/share/keyrings/github-cli.gpg \
 
 echo \
-  deb [arch="$(dpkg --print-architecture)" signed-by=/usr/share/keyrings/github-cli.gpg] \
+  deb [arch="$arch" signed-by=/usr/share/keyrings/github-cli.gpg] \
   https://cli.github.com/packages stable main | \
   sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 
@@ -24,8 +29,8 @@ curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | \
   sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
 
 echo \
-  deb [arch="$(dpkg --print-architecture)" signed-by=/usr/share/keyrings/microsoft.gpg] \
-  https://packages.microsoft.com/ubuntu/22.04/prod "$(lsb_release -cs)" main | \
+  deb [arch="$arch" signed-by=/usr/share/keyrings/microsoft.gpg] \
+  "https://packages.microsoft.com/$lsb_id/$lsb_release/prod" "$lsb_codename" main | \
   sudo tee /etc/apt/sources.list.d/microsoft.list > /dev/null
 
 # Docker
@@ -34,6 +39,6 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
   sudo gpg --dearmor -o /usr/share/keyrings/docker.gpg
 
 echo \
-  deb [arch="$(dpkg --print-architecture)" signed-by=/usr/share/keyrings/docker.gpg] \
-  https://download.docker.com/linux/ubuntu "$(lsb_release -cs)" stable | \
+  deb [arch="$arch" signed-by=/usr/share/keyrings/docker.gpg] \
+  "https://download.docker.com/linux/$lsb_id" "$lsb_codename" stable | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
