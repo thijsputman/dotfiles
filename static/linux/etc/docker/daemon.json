@@ -1,0 +1,6 @@
+{
+  "data-root": "/mnt/docker-data",
+  "features": {
+    "buildkit" : true
+  }
+}

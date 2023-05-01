@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 generate-passphrase(){
-  head /dev/urandom | tr -dc A-Za-z0-9 | head -c "$1" ; echo ''
+  head /dev/urandom | tr -dc A-Za-z0-9 | head -c "${1-16}" ; echo ''
+}
+
+generate-secret-base64(){
+  head -c "${1-32}" /dev/urandom | base64
 }
 
 gs-pdf-compress(){

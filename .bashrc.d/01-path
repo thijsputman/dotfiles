@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Courtesy of https://unix.stackexchange.com/a/4973
+# Courtesy of <https://unix.stackexchange.com/a/4973>
 
 path-add () {
 

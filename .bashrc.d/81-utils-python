@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
 python3-init-venv(){
-
   echo -e "layout python3\n" > .envrc
-  echo -e "layout pyenv 3.10.0" > .envrc
+  direnv allow .
+}
+
+pyenv-init-venv(){
+  echo -e "layout pyenv $(pyenv latest 3)" > .envrc
   direnv allow .
 }
