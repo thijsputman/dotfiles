@@ -1,27 +1,22 @@
 #!/usr/bin/env bash
 
-# If we're not showing the full MOTD, show just the header line
-#
-# Except when:
-#   * The first argument passed to Bash starts with 'ssh '. This is to ensure
-#     the header doesn't show twice (once local, once for the SSH-session) in
-#     case "bash -i -c $0 'ssh ...'" is used to start an SSH-session (which is
-#     a slight hack to make the below work).
-#   * $TERM_PROGRAM is set (which in my current WSL/Windows Terminal setup is a
-#     good way to distinguish a "standalone" terminal from, say, one started by
-#     VS Code).
+# If the first argument passed to Bash starts with 'ssh ', don't do anything.
+# This prevents duplicate output (once local; once remote) in cases where
+# "bash -i -c $0 'ssh ...'" is used to directly start a SSH session.
 
-if [ -z "$MOTD_SHOWN" ] && [[ $0 != 'ssh '* ]] && [ -z "$TERM_PROGRAM" ]; then
-  # shellcheck source=/dev/null
-  . /etc/update-motd.d/00-header
-  printf "\n\n"
+if [[ $0 != 'ssh '* ]] ; then
 
-# If we're *not* starting a "standalone" terminal (but, for example, a VS Code
-# integrated terminal) always show the header line (regardless of MOTD status
-# and with a single additional new-line after it).
+  # If we're not showing the full MOTD, show a header line. If we're *not*
+  # starting a "standalone" terminal (but, eg. a VS Code integrated terminal —
+  # based on $TERM_PROGRAM) show the header line regardless of MOTD status...
+  if
+    [[ -z "$MOTD_SHOWN" && -z "$TERM_PROGRAM" ]] || [ -n "$TERM_PROGRAM" ]
+  then
+    . /etc/update-motd.d/00-header
+  fi
 
-elif [ -n "$TERM_PROGRAM" ]; then
-  # shellcheck source=/dev/null
-  . /etc/update-motd.d/00-header
+  # Unconditional newline to separate MOTD and/or header from the rest of our
+  # output (see 90-updates-available and beyond)
   printf "\n"
+
 fi
