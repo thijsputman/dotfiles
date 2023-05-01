@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# (Temporary) workaround for <https://github.com/microsoft/wslg/issues/1033>
+
+(
+  for _ in {1..3} ; do
+    if test -S "${XDG_RUNTIME_DIR}bus" ; then
+      dbus-update-activation-environment --systemd \
+        DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
+      break
+    fi
+    sleep 3
+  done
+) & disown
