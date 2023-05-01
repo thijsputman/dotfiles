@@ -2,10 +2,18 @@
 
 if [ ! -d ~/.anacron ]; then
 
+  if
+    ! command -v anacron &> /dev/null
+  then
+    echo ' |-> ⚠️ skipping "📂 ~/.anacron" — anacron not present...'
+    return 0
+  fi
+
   mkdir -p ~/.anacron/{etc,spool}
   cp "${base:?}/.anacron/etc/anacrontab" ~/.anacron/etc/anacrontab
 
   # shellcheck disable=SC2016
   echo '@hourly /usr/sbin/anacron -s -t $HOME/.anacron/etc/anacrontab' \
     '-S $HOME/.anacron/spool' | crontab -
+
 fi

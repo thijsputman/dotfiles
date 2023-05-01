@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
-# Despite its name, this file works fine on Debian/RPi OS too...
-
 sudo chmod --silent -x /etc/update-motd.d/10-help-text || true
 sudo chmod --silent -x /etc/update-motd.d/50-landscape-sysinfo || true
 sudo chmod --silent -x /etc/update-motd.d/50-motd-news || true
+
+# Disable "Wi-Fi rfkill"-warning (RPi OS)
+
+sudo mv /etc/profile.d/{wifi-check.sh,.wifi-check.sh} || true
 
 # Empty out the static message of the day — an empty file is intentionally left
 # behind: This ensures there are sufficient newlines between the various other

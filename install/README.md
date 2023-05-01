@@ -45,8 +45,8 @@ dependencies are handled gracefully by the various scripts.
 A handful of scripts in `📂 parts.d` make configuration changes instead of
 symlinking files from this Git-repository:
 
-- 🟢 [`📄 90-ubuntu`](./parts.d/90-ubuntu) — removes some unnecessary clutter
-  from Ubuntu's default MOTD
+- 🟢 [`📄 90-motd`](./parts.d/90-motd) — removes some unnecessary clutter from
+  the default MOTD
 - 🚫 [`📄 90-ubuntu-pro`](./parts.d/90-ubuntu-pro) — removes additional clutter
   from MOTD and `apt` introduced by Ubuntu Pro
 - 🚫 [`📄 91-apt-add-repository`](./parts.d/91-apt-add-repository) — adds a set
@@ -106,12 +106,15 @@ To "uninstall", run these commands in `📂 ~/`:
 ```bash
 find -lname '**/dotfiles/**' -delete
 rm ~/.env
+rm -rf ~/.anacron
+crontab -l | grep -v '^@hourly .* $HOME/.anacron/etc/anacrontab' | crontab -
 cp /etc/skel/.bashrc ~/.bashrc
 ```
 
 This removes all symlinks pointing to `📂 **/dotfiles/**` (assuming that's what
-this Git-repository is called), removes the `📄 ~/.env` created during
-installation, and restores `📄 ~/.bashrc` to its default state.
+this Git-repository is called), removes `📄 ~/.env` and `📂 ~/.anacron` created
+during installation, removes the anacron `crontab`-entry, and restores
+`📄 ~/.bashrc` to its default state.
 
 Omit `-delete` from the first command to get a list of symlinks instead of
 deleting them and manually remove the ones you don't need anymore.
