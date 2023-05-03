@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [ -e /usr/local/bin/usbip ] ; then
+
+  result=$(
+    sudo update-alternatives --install /usr/local/bin/usbip usbip \
+      "$(find /usr/lib/linux-tools/*/usbip | tail -n 1)" 20
+    )
+
+  if [ -n "$result" ] ; then
+    echo " |-> ✅ $(tail -n 1 <<< "$result")"
+  fi
+
+fi
