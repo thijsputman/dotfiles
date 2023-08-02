@@ -44,6 +44,23 @@ In this case no services are started automatically, so several required services
 are started through `📄 /etc/wsl.conf`. Furthermore, a `dbus`-session (required
 for X11/GUI-applications) is launched.
 
+#### systemd - Caveats
+
+Although generally speaking, systemd works fine, there's a handful of caveats to
+be aware of:
+
+- It is recommended to change the default target to "multi-user.target":
+  - `sudo systemctl set-default multi-user.target`
+  - See <https://github.com/arkane-systems/bottle-imp#requirements>
+- To prevent `systemd-remount-fs` from failing (resulting in a
+  "degraded"-state), remove the `LABEL=cloudimg-rootfs`-line from `/etc/fstab`
+  - Ubuntu-specific – apart from this, fstab should be empty; as the entry
+    didn't do anything to begin with (no filesystem labelled `cloudimg-rootfs`
+    present) it seems safe to remove...
+  - See <https://randombytes.substack.com/i/74583493/systemd-remount-fsservice>
+- See [`📂 /usr/lib/binfmt.d`](static/linux/usr/lib/binfmt.d/README.md) if
+  you're running into issues with **WSL-interop**
+
 ## Extras
 
 See [`📂 extras`](./extras/README.md).
