@@ -5,6 +5,7 @@
 path-add /mnt/c/WINDOWS/system32
 path-add /mnt/c/WINDOWS
 path-add /mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft\ VS\ Code/bin
+path-add /mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft\ VS\ Code\ Insiders/bin
 path-add /mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps
 
 export PATH
