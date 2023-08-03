@@ -10,8 +10,6 @@ path-add /mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps
 
 export PATH
 
-newline=false
-
 # Ensure WSL-interop is working
 #
 # This has now bitten me too many times: A non-functional interop subtly breaks
@@ -19,22 +17,28 @@ newline=false
 # issue... Note this relies (intentionally) on PATH being properly setup with
 # (at least) Windows' "system32"-directory – see above.
 
+newline=false
 WINDOWS_VERSION="$(cmd.exe /c ver 2> /dev/null | tail -n 1)"
 
 if [[ ! $WINDOWS_VERSION =~ "Microsoft Windows" ]] ; then
-  echo -en "\033[0;33mWARNING:\033[0m " >&2
-  echo "WSL-interop appears to be non-functional..." >&2
-  newline=true
+
+  # Show warning only as part of an already present header
+  if [ -n "$HEADER_SHOWN" ] ; then
+    echo -en "\033[0;33mWARNING:\033[0m " >&2
+    echo "WSL-interop appears to be non-functional..." >&2
+    newline=true
+  fi
+
   unset WINDOWS_VERSION
-else
-  export WINDOWS_VERSION
-fi
+
+else export WINDOWS_VERSION ; fi
 
 # For good measure, also keep an eye on systemd (if in-use at all) – this seems
 # to be another potential source of difficult to diagnose issues...
 
 if
-  [ -d /run/systemd/system ] && ! systemctl is-system-running &> /dev/null
+  [ -n "$HEADER_SHOWN" ] && [ -d /run/systemd/system ] \
+    && ! systemctl is-system-running &> /dev/null
 then
   echo -en "\033[0;33mWARNING:\033[0m " >&2
   echo "Systemd reports its state as \"$(systemctl is-system-running)\"" >&2

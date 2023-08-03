@@ -6,6 +6,8 @@
 
 if [[ $0 != 'ssh '* ]] ; then
 
+  HEADER_SHOWN=motd
+
   # If we're not showing the full MOTD, show a header line. If we're *not*
   # starting a "standalone" terminal (but, eg. a VS Code integrated terminal —
   # based on $TERM_PROGRAM) show the header line regardless of MOTD status...
@@ -13,7 +15,13 @@ if [[ $0 != 'ssh '* ]] ; then
     [[ -z "$MOTD_SHOWN" && -z "$TERM_PROGRAM" ]] || [ -n "$TERM_PROGRAM" ]
   then
     . /etc/update-motd.d/00-header
+    HEADER_SHOWN=short
   fi
+
+  # Don't produce any further (header) output for "standalone" terminals
+  if [ -n "$TERM_PROGRAM" ] ; then unset HEADER_SHOWN ; fi
+
+  export HEADER_SHOWN
 
   # Unconditional newline to separate MOTD and/or header from the rest of our
   # output (see 90-updates-available and beyond)

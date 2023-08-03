@@ -7,10 +7,8 @@
 
 if ! [ -f /etc/update-motd.d/90-updates-available ] && [ -s ~/.apt-check ]; then
 
-  # Only show as part of MOTD; don't show when directly starting a SSH session
-  # (see 00-header)
-
-  if [ -n "$MOTD_SHOWN" ] && [[ $0 != 'ssh '* ]] ; then
+  # Only show as part of pre-existing MOTD
+  if [ "$HEADER_SHOWN" == motd ] ; then
 
     updates_available=$(head -n 1 ~/.apt-check)
 

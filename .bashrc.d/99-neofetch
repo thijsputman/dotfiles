@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-# Don't show when directly starting a SSH session (see 00-header) or for
-# non-"standalone" terminals
-if [[ $0 != 'ssh '* ]] && [ -z "$TERM_PROGRAM" ]; then
+# Display neofetch only as part of an already shown header
+if [ -n "$HEADER_SHOWN" ] ; then
 
   # Prevent neofetch from outputting one line at a time
   printf "\n%s\n" "$(neofetch)"
