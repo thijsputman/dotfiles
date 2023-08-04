@@ -7,8 +7,8 @@
 
 if ! [ -f /etc/update-motd.d/90-updates-available ] && [ -s ~/.apt-check ]; then
 
-  # Only show as part of pre-existing MOTD
-  if [ "$HEADER_SHOWN" == motd ] ; then
+  # Only show as part of pre-existing (full) MOTD
+  if [[ "$HEADER_SHOWN" == motd* ]] ; then
 
     updates_available=$(head -n 1 ~/.apt-check)
 
