@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Keep an eye on systemd (if in-use) – mainly intended as an early warning
+# system for "upcoming" (systemd-related) WSL2 problems, but generally speaking
+# probably useful to know...
+
+if
+  [ -n "$HEADER_SHOWN" ] && [ -d /run/systemd/system ] \
+    && ! systemctl is-system-running &> /dev/null
+then
+  printf "\033[0;33mWARNING:\033[0m " >&2
+  printf 'Systemd reports its state as "%s" ' \
+    "$(systemctl is-system-running)" >&2
+  printf "(see: systemctl --failed)\n" >&2
+  printf "\n" >&2
+fi

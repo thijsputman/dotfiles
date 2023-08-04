@@ -13,8 +13,8 @@ if ! [ -f /etc/update-motd.d/90-updates-available ] && [ -s ~/.apt-check ]; then
     updates_available=$(head -n 1 ~/.apt-check)
 
     if [ "$updates_available" -gt 0 ] ; then
-      echo "$updates_available update(s) can be applied immediately."
-      echo "To see these additional updates run: apt list --upgradable"
+      printf "%d update(s) can be applied immediately.\n" "$updates_available"
+      printf "To see these additional updates run: apt list --upgradable\n"
       printf "\n"
     fi
 

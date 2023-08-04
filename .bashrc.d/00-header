@@ -23,8 +23,7 @@ if [[ $0 != 'ssh '* ]] ; then
 
   export HEADER_SHOWN
 
-  # Unconditional newline to separate MOTD and/or header from the rest of our
-  # output (see 90-updates-available and beyond)
+  # Separate MOTD/header from the rest of the output
   printf "\n"
 
 fi
