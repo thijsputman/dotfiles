@@ -3,8 +3,10 @@
 sudo chmod --silent -x /etc/update-motd.d/10-help-text || true
 sudo chmod --silent -x /etc/update-motd.d/50-landscape-sysinfo || true
 
-sudo systemctl mask motd-news.service || true
-sudo systemctl mask motd-news.timer || true
+if systemctl list-unit-files motd-news.service &> /dev/null ; then
+  sudo systemctl mask motd-news.service || true
+  sudo systemctl mask motd-news.timer || true
+fi
 
 # Disable "Wi-Fi rfkill"-warning (RPi OS)
 
