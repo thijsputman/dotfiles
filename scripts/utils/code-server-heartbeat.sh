@@ -12,8 +12,8 @@
 # but consuming minimal resources).
 
 if [ $(($(date +%s) - 600)) -gt \
-    "$(date +%s --reference ~/code-server/config/.local/share/code-server/heartbeat)" ] \
-  && pgrep -o -f "node.*yarn/global/node_modules/code-server" ; then
+  "$(date +%s --reference ~/code-server/config/.local/share/code-server/heartbeat)" ] &&
+  pgrep -o -f "node.*yarn/global/node_modules/code-server"; then
 
   pkill -o -f "node /usr/local/bin/code-server"
 fi

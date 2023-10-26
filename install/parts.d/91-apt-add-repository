@@ -15,30 +15,30 @@ sudo mkdir -m 0755 -p /usr/share/keyrings/
 
 # GitHub CLI
 
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
-  sudo dd of=/usr/share/keyrings/github-cli.gpg \
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg |
+  sudo dd of=/usr/share/keyrings/github-cli.gpg
 
 echo \
   deb [arch="$arch" signed-by=/usr/share/keyrings/github-cli.gpg] \
-  https://cli.github.com/packages stable main | \
+  https://cli.github.com/packages stable main |
   sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 
 # Microsoft packages
 
-curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | \
+curl -fsSL https://packages.microsoft.com/keys/microsoft.asc |
   sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
 
 echo \
   deb [arch="$arch" signed-by=/usr/share/keyrings/microsoft.gpg] \
-  "https://packages.microsoft.com/$lsb_id/$lsb_release/prod" "$lsb_codename" main | \
+  "https://packages.microsoft.com/$lsb_id/$lsb_release/prod" "$lsb_codename" main |
   sudo tee /etc/apt/sources.list.d/microsoft.list > /dev/null
 
 # Docker
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg |
   sudo gpg --dearmor -o /usr/share/keyrings/docker.gpg
 
 echo \
   deb [arch="$arch" signed-by=/usr/share/keyrings/docker.gpg] \
-  "https://download.docker.com/linux/$lsb_id" "$lsb_codename" stable | \
+  "https://download.docker.com/linux/$lsb_id" "$lsb_codename" stable |
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null

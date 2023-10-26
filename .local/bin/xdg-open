@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ $1 =~ ^https?:// ]] ; then
+if [[ $1 =~ ^https?:// ]]; then
   (cd /mnt/c && cmd.exe /c start "$1")
 else
   explorer.exe "$(wslpath -w "$1")"

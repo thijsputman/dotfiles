@@ -2,20 +2,20 @@
 
 # Courtesy of <https://unix.stackexchange.com/a/4973>
 
-path-add () {
+path-add() {
 
   for directory; do
 
     # Canonicalise symbolic links
-    directory=$({ cd -- "$directory" && { pwd -P || pwd; } } 2> /dev/null)
+    directory=$({ cd -- "$directory" && { pwd -P || pwd; }; } 2> /dev/null)
 
     if [ -z "$directory" ]; then
       continue
     fi
 
     case ":$PATH:" in
-      *":$directory:"*) :;;
-      *) PATH=$PATH:$directory;;
+    *":$directory:"*) : ;;
+    *) PATH=$PATH:$directory ;;
     esac
 
   done

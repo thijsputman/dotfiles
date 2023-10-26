@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
-generate-passphrase(){
-  head /dev/urandom | tr -dc A-Za-z0-9 | head -c "${1-16}" ; echo ''
+generate-passphrase() {
+  head /dev/urandom | tr -dc A-Za-z0-9 | head -c "${1-16}"
+  echo ''
 }
 
-generate-secret-base64(){
+generate-secret-base64() {
   head -c "${1-32}" /dev/urandom | base64
 }
 
-gs-pdf-compress(){
+gs-pdf-compress() {
   gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE \
     -dQUIET -dBATCH -sOutputFile="${1%.*}-compressed.pdf" "$1"
 }

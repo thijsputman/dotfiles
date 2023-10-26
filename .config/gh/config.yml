@@ -3,4 +3,4 @@ editor: code --reuse-window --wait
 prompt: enabled
 pager:
 aliases:
-    co: pr checkout
+  co: pr checkout

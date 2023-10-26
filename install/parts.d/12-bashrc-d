@@ -6,17 +6,17 @@ fi
 
 if ! grep -q '^# Source parts from ~/\.bashrc\.d$' "${bashrc:?}"; then
 
-cat << 'EOF' >> "${bashrc:?}"
+  cat <<- 'EOF' >> "${bashrc:?}"
+		# Source parts from ~/.bashrc.d
 
-# Source parts from ~/.bashrc.d
+		for file in "$HOME"/.bashrc.d/**; do
 
-for file in "$HOME"/.bashrc.d/**; do
+			if [[ -x "$file" ]]; then
+				source "$file"
+			fi
 
-  if [[ -x "$file" ]]; then
-    source "$file"
-  fi
-
-done
-EOF
+		done
+	EOF
+  # N.B., mind the tab-indentation inside the heredoc!
 
 fi

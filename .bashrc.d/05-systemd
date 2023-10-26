@@ -5,8 +5,8 @@
 # probably useful to know...
 
 if
-  [ -n "$HEADER_SHOWN" ] && [ -d /run/systemd/system ] \
-    && ! systemctl is-system-running &> /dev/null
+  [ -n "$HEADER_SHOWN" ] && [ -d /run/systemd/system ] &&
+    ! systemctl is-system-running &> /dev/null
 then
   printf "\033[0;33mWARNING:\033[0m " >&2
   printf 'Systemd reports its state as "%s" ' \

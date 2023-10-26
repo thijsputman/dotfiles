@@ -4,21 +4,18 @@
 GPG_TTY=$(tty)
 export GPG_TTY
 
-gpg-tty(){
+gpg-tty() {
   gpg-connect-agent updatestartuptty /bye &> /dev/null
 }
 
-yubikey-attach(){
+yubikey-attach() {
   # Yubikey is not attached
-  if [[
-    -n "$USBIP_HOST" && -n "$USBIP_BUSID" &&
-    ! "$(sudo usbip port)" =~ usbip://"$USBIP_HOST":3240/"$USBIP_BUSID"
-  ]] ; then
+  if [[ -n "$USBIP_HOST" && -n "$USBIP_BUSID" &&
+    ! "$(sudo usbip port)" =~ usbip://"$USBIP_HOST":3240/"$USBIP_BUSID" ]] \
+    ; then
     # Yubikey is not not plugged into the host-machine
-    if [[
-      ! "$(usbip list -r "$USBIP_HOST" 2> /dev/null)" =~ \
-        "$USBIP_BUSID":\ Yubico\.com
-    ]] ; then
+    if [[ ! "$(usbip list -r "$USBIP_HOST" 2> /dev/null)" =~ "$USBIP_BUSID":\ Yubico\.com ]] \
+      ; then
       read -n 1 -s -r -p "Insert Yubikey and press any key to continue..."
       printf "\n"
       yubikey-attach
@@ -38,17 +35,17 @@ yubikey-attach(){
           grep -oP 'Serial number \.\.\.\.: \K\d+')" != \
         "$(gpg --card-status 2> /dev/null |
           grep -m 1 -oP 'card-no: 0006 \K\d+')" \
-      ] ; then
+        ]; then
         gpg-connect-agent "scd serialno" "learn --force" /bye > /dev/null
       fi
     fi
   fi
 }
 
-yubikey-detach(){
+yubikey-detach() {
   # Yubikey is attached
-  if [[ -n "$USBIP_HOST" && -n "$USBIP_BUSID" && \
-    "$(sudo usbip port)" =~ usbip://"$USBIP_HOST":3240/"$USBIP_BUSID" ]] ; then
+  if [[ -n "$USBIP_HOST" && -n "$USBIP_BUSID" &&
+    "$(sudo usbip port)" =~ usbip://"$USBIP_HOST":3240/"$USBIP_BUSID" ]]; then
     # This naively assumes the Yubikey is attached to port 00 — should at some
     # point make this smarter...
     sudo usbip detach -p 00 2> /dev/null
@@ -68,7 +65,7 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
 
 fi
 
-git(){
+git() {
   if [[ ${1,,} == clone ]]; then
 
     repoName=${2##*/}
@@ -93,7 +90,7 @@ git(){
   fi
 }
 
-ssh(){
+ssh() {
   yubikey-attach
   gpg-tty
 

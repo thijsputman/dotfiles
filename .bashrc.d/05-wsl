@@ -19,10 +19,10 @@ export PATH
 
 WINDOWS_VERSION="$(cmd.exe /c ver 2> /dev/null | tail -n 1)"
 
-if [[ ! $WINDOWS_VERSION =~ "Microsoft Windows" ]] ; then
+if [[ ! $WINDOWS_VERSION =~ "Microsoft Windows" ]]; then
 
   # Show warning only as part of an already present header
-  if [ -n "$HEADER_SHOWN" ] ; then
+  if [ -n "$HEADER_SHOWN" ]; then
     printf "\033[0;33mWARNING:\033[0m " >&2
     printf "WSL-interop appears to be non-functional...\n" >&2
     printf "\n" >&2
