@@ -1,3 +1,13 @@
 #!/usr/bin/env bash
 
 alias ll='ls -alhF' # Include human-readable sizes in standard "ll"
+
+# If "docker-compose" is available, map it to "docker compose"
+docker() {
+  if [[ ${1,,} == compose ]] && command -v docker-compose &> /dev/null; then
+    shift
+    command docker-compose "$@"
+  else
+    command docker "$@"
+  fi
+}
