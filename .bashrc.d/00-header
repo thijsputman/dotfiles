@@ -8,18 +8,20 @@ if [[ $0 != 'ssh '* ]]; then
 
   HEADER_SHOWN=motd
 
-  # If no MOTD was shown _or_ we're running inside VS Code's integrated
-  # terminal, we'll show a short/single-line header instead
-  if
+  # Assume an SSH-session always sees a full MOTD(-like) header (unless it's
+  # running inside VS Code). Ubuntu up to 22.04 would set MOTD_SHOWN=pam, but
+  # since 23.04 there doesn't appear to be a better way to determine whether the
+  # MOTD was shown..
+  if [[ (-n "$SSH_CLIENT" || -n "$SSH_TTY") &&
+    "$TERM_PROGRAM" != "vscode" ]]; then
+    HEADER_SHOWN=motd-ssh
+  # Otherwise, if no MOTD was shown (or we're running inside VS Code's
+  # integrated terminal), we'll show a short/single-line header
+  elif
     [ -z "$MOTD_SHOWN" ] || [ "$TERM_PROGRAM" == "vscode" ]
   then
     . /etc/update-motd.d/00-header
     HEADER_SHOWN=short
-  # Assume an SSH-session always sees a full MOTD(-like) header. Ubuntu up to
-  # 22.04 would set MOTD_SHOWN=pam, but since 23.04 there doesn't appear to be
-  # a better way to determine whether the MOTD was shown..
-  elif [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-    HEADER_SHOWN=motd-ssh
   fi
 
   # In case of VS Code's intergrated terminal, we don't want to see any further
