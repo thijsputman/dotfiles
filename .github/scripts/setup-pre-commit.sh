@@ -20,13 +20,13 @@ $pip_cmd install 'pre-commit==3.3.3'
 $pip_cmd install 'yamllint==1.32.0'
 
 if [ ! -x ~/.local/bin/shellcheck ]; then
-  version=v2.12.0 "{$GITHUB_WORKSPACE}/install/wget.d/shellcheck"
+  version=v0.9.0 "${GITHUB_WORKSPACE}/install/wget.d/shellcheck"
 fi
 
 if [ ! -x ~/.local/bin/hadolint ]; then
-  version=v2.12.0 "{$GITHUB_WORKSPACE}/install/wget.d/hadolint"
+  version=v2.12.0 "${GITHUB_WORKSPACE}/install/wget.d/hadolint"
 fi
 
 if [ ! -x ~/.local/bin/shfmt ]; then
-  version=v2.12.0 "{$GITHUB_WORKSPACE}/install/wget.d/shfmt"
+  version=v3.7.0 "${GITHUB_WORKSPACE}/install/wget.d/shfmt"
 fi
