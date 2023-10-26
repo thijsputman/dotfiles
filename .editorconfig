@@ -1,0 +1,11 @@
+root=true
+
+[*.sh]
+indent_style = space
+indent_size = 2
+space_redirects = true
+
+[{.bashrc.d,install/parts.d,install/wget.d}/**]
+indent_style = space
+indent_size = 2
+space_redirects = true

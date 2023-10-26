@@ -5,6 +5,8 @@ Personalising an **Ubuntu 22.04** installation.
 - [Bash-scripts](#bash-scripts)
 - [Static modifications](#static-modifications)
   - [WSL2](#wsl2)
+- [Development](#development)
+  - [Linter / pre-commit](#linter--pre-commit)
 - [Extras](#extras)
 - [TODO](#todo)
 
@@ -60,6 +62,33 @@ be aware of:
   - See <https://randombytes.substack.com/i/74583493/systemd-remount-fsservice>
 - See [`📂 /usr/lib/binfmt.d`](static/linux/usr/lib/binfmt.d/README.md) if
   you're running into issues with **WSL-interop**
+
+## Development
+
+### Linter / pre-commit
+
+A combination of [Prettier](https://prettier.io/),
+[`markdownlint`](https://github.com/igorshubovych/markdownlint-cli),
+[`yamllint`](https://github.com/adrienverge/yamllint),
+[ShellCheck](https://www.shellcheck.net/),
+[`shfmt`](https://github.com/mvdan/sh), and
+[`hadolint`](https://github.com/hadolint/hadolint) is used via
+[pre-commit](https://pre-commit.com/) to ensure consistent formatting and –
+where possible – more elaborate sanity-checking.
+
+Pre-commit is used as a convenient way of generalising linter execution; its
+package management features are barely used – most of the linters in-use need to
+be installed locally anyway for their respective VS Code extensions...
+
+To set up pre-commit, follow the below instructions. This assumes a system
+running Debian/Ubuntu with Node/`npm`, and Python3/`pip` already installed.
+
+```shell
+./.github/scripts/setup-pre-commit.sh
+pre-commit install
+```
+
+pre-commit use used to enforce a set of formatters and linters.
 
 ## Extras
 
