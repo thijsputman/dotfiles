@@ -1,22 +1,24 @@
 #!/usr/bin/env bash
 
+# Backup via rclone
+
 if [ ! -e ~/.rclone ]; then
 
   if
     ! command -v rclone &> /dev/null ||
-    ! rclone listremotes | grep onedrive:
+      ! rclone listremotes | grep onedrive:
   then
-    echo ' |-> ⚠️ skipping "📄 ~/.rclone" — rclone not properly configured...'
+    printf ' |-> ⚠️ skipping "📄 scripts/rclone.sh" — '
+    printf 'rclone not properly configured...\n'
     return 0
   fi
+
+  ln -s -r "${base:?}/scripts/rclone.sh" ~/.rclone
 
   # Run daily via anacron
 
   if [ -e ~/.anacron/etc/anacrontab ]; then
-
-    ln -s -r "${base:?}/scripts/.rclone" ~/.rclone
     echo "1  0  rclone-backup  $HOME/.rclone" >> ~/.anacron/etc/anacrontab
-
   fi
 
 fi
