@@ -58,8 +58,8 @@ version=v1.24 ./powerline-go
 
 ### Configuration changes
 
-A handful of scripts in `📂 parts.d` make configuration changes instead of
-symlinking files from this Git-repository:
+A handful of scripts in [`📂 parts.d`](./parts.d/) make configuration changes
+instead of symlinking files from this Git-repository:
 
 - 🟢 [`📄 90-motd`](./parts.d/90-motd) — removes some unnecessary clutter from
   the default MOTD
@@ -67,6 +67,9 @@ symlinking files from this Git-repository:
   from MOTD and `apt` introduced by Ubuntu Pro
 - 🚫 [`📄 91-apt-add-repository`](./parts.d/91-apt-add-repository) — adds a set
   of third-party `apt`-repositories (Node.js, Microsoft, etc.)
+- 🚫 [`📄 92-apt-install`](./parts.d/92-apt-install) — installs several
+  apt-packages that require additional configuration (apart from simply running
+  `apt install ...`)
 
 Scripts marked with 🚫 are not executable by default.
 
