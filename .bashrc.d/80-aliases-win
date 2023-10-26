@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Windows/cmd.exe muscle memory
+# Windows' cmd.exe muscle memory
 alias cls='clear'
 alias cd..='cd ..'
 alias tracert='traceroute'

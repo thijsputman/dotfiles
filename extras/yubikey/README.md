@@ -397,7 +397,7 @@ From the host machine:
 
 ```bash
 docker ps
-docker cp ______:/root/.gnupg.tar ~/
+docker cp ~/.gnupg.tar ______:/root/.gnupg.tar
 ```
 
 In the container:
