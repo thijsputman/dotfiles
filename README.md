@@ -24,9 +24,9 @@ Apart from the Bash-scripts, there's a set of static/manual modifications in
 
 ### WSL2
 
-To setup a WSL2 instance, _copy_ [`📄 wsl.conf`](./static/linux/etc/wsl.conf)
-and [`📄 resolv.conf`](./static/linux/etc/resolv.conf) to `📂 /etc` — on the
-Windows-side, copy [`📄 .wslconfig`](./static/windows/.wslconfig) and
+To setup a WSL2 instance, _copy_ [`📄 wsl.conf`](./static/linux/etc/wsl.conf) to
+`📂 /etc` — on the Windows-side, copy
+[`📄 .wslconfig`](./static/windows/.wslconfig) and
 [`📄 .wslgconfig`](./static/windows/.wslgconfig) to `📂 %USERPROFILE%`.
 
 Several of the Bash-scripts rely on the modifications made in these
@@ -35,16 +35,9 @@ configuration files to function properly.
 #### systemd
 
 In their default state, the Bash-scripts and configuration files assume the WSL2
-instance is running **`systemd`**.
-
-When using Microsoft's `/init` system, copy
-[`📄 wsl.init.conf`](./static/linux/etc/wsl.init.conf) to `📂 /etc` instead (and
-rename it to `📄 wsl.conf`) and `chmod +x`
-[`📄 .bashrc.d/30-x11-wsl`](./.bashrc.d/30-x11-wsl).
-
-In this case no services are started automatically, so several required services
-are started through `📄 /etc/wsl.conf`. Furthermore, a `dbus`-session (required
-for X11/GUI-applications) is launched.
+instance is running **`systemd`**. See
+[`📂 static/linux/etc`](./static/linux/etc/README.md) for instructions on how to
+use Microsoft's `/init` instead.
 
 #### systemd - Caveats
 
