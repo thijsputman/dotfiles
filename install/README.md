@@ -33,12 +33,28 @@ function properly.
 - **neofetch** — `sudo apt install neofetch`
 - **direnv** — `sudo apt install direnv`
 - **pyenv** — `curl https://pyenv.run | bash`
-- **powerline-go** — retrieve the latest binary from
-  <https://github.com/justjanne/powerline-go> and store as
-  `📄 ~/.local/bin/powerline-go`.
+- **powerline-go** — [`📄 ./wget.d/powerline-go`](./wget.d/powerline-go)
 
 Note that none of these dependencies pose a hard requirement; missing
 dependencies are handled gracefully by the various scripts.
+
+#### [`📂 wget.d`](./wget.d/)
+
+A handful of convenience scripts are provided that pull tools directly from
+GitHub in lieu of a "proper" install procedure.
+
+Simply run any of the scripts in [`📂 wget.d`](./wget.d/) to pull the predefined
+version of the tool into `📂 .local/bin` (overwriting any pre-existing version
+of the tool). The scripts attempt to automatically determine the correct
+processor architecture; in general they should thus work for both `amd64` and
+`arm64` systems.
+
+To pull down a non-predefined version of the tool, do:
+
+```shell
+version=v1.24 ./powerline-go
+
+```
 
 ### Configuration changes
 
