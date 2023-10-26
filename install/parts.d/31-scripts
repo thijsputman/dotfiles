@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Run pyenv update check weekly via anacron
+
+if
+  [ -e ~/.anacron/etc/anacrontab ] &&
+    [ ! -e ~/.anacron/scripts/pyenv-update-check.sh ]
+then
+
+  if [ -z "$PYENV_ROOT" ]; then
+    printf ' |-> ⚠️ skipping "📄 scripts/pyenv-update-check.sh" — '
+    printf 'pyenv not properly configured...\n'
+    return 0
+  fi
+
+  mkdir -p ~/.anacron/scripts
+  ln -s -r "${base:?}/scripts/pyenv-update-check.sh" \
+    ~/.anacron/scripts/pyenv-update-check.sh
+
+  echo "7  0  pyenv-update-check  $HOME/.anacron/scripts/pyenv-update-check.sh" \
+    >> ~/.anacron/etc/anacrontab
+
+fi

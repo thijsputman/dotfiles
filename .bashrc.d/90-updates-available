@@ -8,14 +8,34 @@
 if ! [ -f /etc/update-motd.d/90-updates-available ] && [ -s ~/.apt-check ]; then
 
   # Only show as part of pre-existing (full) MOTD
-  if [[ "$HEADER_SHOWN" == motd* ]] ; then
+  if [[ "$HEADER_SHOWN" == motd* ]]; then
 
     updates_available=$(head -n 1 ~/.apt-check)
 
-    if [ "$updates_available" -gt 0 ] ; then
+    if [ "$updates_available" -gt 0 ]; then
       printf "%d update(s) can be applied immediately.\n" "$updates_available"
       printf "To see these additional updates run: apt list --upgradable\n"
       printf "\n"
+    fi
+
+  fi
+
+fi
+
+# Notify when pyenv updates are available
+
+if [ -n "$PYENV_ROOT" ] && [ -s ~/.pyenv-update ]; then
+
+  if [[ "$HEADER_SHOWN" == motd* ]]; then
+
+    # Quickly validate an update is actually available – the scheduled task is
+    # responsible for properly getting rid off ~/.pyenv-update...
+
+    if (
+      cd "$PYENV_ROOT" &&
+        [[ $(git rev-parse HEAD) != $(git rev-parse '@{u}') ]]
+    ); then
+      printf '%s\n\n' "$(< ~/.pyenv-update)"
     fi
 
   fi

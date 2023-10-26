@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-if [ -d "$HOME/.pyenv/bin" ] ; then
+if [ -d "$HOME/.pyenv" ]; then
 
-  path-add "$HOME/.pyenv/bin"
-  eval "$(pyenv init --path)"
-  eval "$(pyenv virtualenv-init -)"
-  # shellcheck disable=SC1091
-  source "$(pyenv root)"/completions/pyenv.bash
+  PYENV_ROOT="$HOME/.pyenv"
+  path-add "$PYENV_ROOT/bin"
+
+  export PYENV_ROOT
+
+  eval "$(pyenv init -)"
 
 fi

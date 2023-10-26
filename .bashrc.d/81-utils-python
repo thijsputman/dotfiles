@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
-python3-init-venv(){
-  echo -e "layout python3\n" > .envrc
+python3-init-venv() {
+  printf "Creating venv – consider running "
+  printf "\"pip install --upgrade pip wheel\" when it's done...\n"
+  printf "layout python3\n" > .envrc
   direnv allow .
-}
 
-pyenv-init-venv(){
-  echo -e "layout pyenv $(pyenv latest 3)" > .envrc
+}
+alias python-init-venv='python3-init-venv'
+
+pyenv-init-venv() {
+  printf "Creating venv – consider running "
+  printf "\"pip install --upgrade pip wheel\" when it's done...\n"
+  printf "layout pyenv %s\n" "$(pyenv latest 3)" > .envrc
   direnv allow .
 }
