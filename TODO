@@ -2,6 +2,4 @@
 
 # ToDo
 
-- [ ] List all active `screen` sessions on Bash logon
-- [ ] Schedule `pyenv update` to run once in a while (or provide some kind of
-      reminder to do so manually)
+- [x] 🎉
