@@ -81,8 +81,6 @@ running Debian/Ubuntu with Node/`npm`, and Python3/`pip` already installed.
 pre-commit install
 ```
 
-pre-commit use used to enforce a set of formatters and linters.
-
 ## Extras
 
 See [`📂 extras`](./extras/README.md).
