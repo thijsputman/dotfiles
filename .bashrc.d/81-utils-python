@@ -10,8 +10,18 @@ python3-init-venv() {
 alias python-init-venv='python3-init-venv'
 
 pyenv-init-venv() {
+
+  # Default to the latest version of Python 3 available in pyenv – if an
+  # argument is provided, assume it represents a (partial) version; abort if no
+  # matching version is found.
+
+  if ! version=$(pyenv latest "${1:-3}"); then
+    return
+  fi
+
   printf "Creating venv – consider running "
   printf "\"pip install --upgrade pip wheel\" when it's done...\n"
-  printf "layout pyenv %s\n" "$(pyenv latest 3)" > .envrc
+  printf "layout pyenv %s\n" "$version" > .envrc
   direnv allow .
+
 }
