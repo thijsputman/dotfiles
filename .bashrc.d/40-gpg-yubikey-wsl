@@ -76,7 +76,7 @@ git() {
 
     command git clone "$2" "$repoName"
     # Change into the just cloned repository
-    cd "$repoName" || exit 1
+    cd "$repoName" || return
 
   elif [[ ${1,,} =~ ^(pull|push|commit)$ ]]; then
 
