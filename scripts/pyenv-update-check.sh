@@ -4,7 +4,7 @@ set -euo pipefail
 
 if [ -n "$PYENV_ROOT" ]; then
 
-  : > ~/.pyenv-update
+  rm ~/.pyenv-update
 
   cd "$PYENV_ROOT" || exit
   git remote update

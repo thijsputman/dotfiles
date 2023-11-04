@@ -28,14 +28,16 @@ if [ -n "$PYENV_ROOT" ] && [ -s ~/.pyenv-update ]; then
 
   if [[ "$HEADER_SHOWN" == motd* ]]; then
 
-    # Quickly validate an update is actually available – the scheduled task is
-    # responsible for properly getting rid off ~/.pyenv-update...
+    # Validate an update is actually available – if not, get rid off the stale
+    # update notification file
 
     if (
       cd "$PYENV_ROOT" &&
         [[ $(git rev-parse HEAD) != $(git rev-parse '@{u}') ]]
     ); then
       printf '%s\n\n' "$(< ~/.pyenv-update)"
+    else
+      rm ~/.pyenv-update
     fi
 
   fi
