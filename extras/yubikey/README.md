@@ -263,6 +263,12 @@ gpg --edit-key ______
 I personally only have it imported on my daily driver; using SSH agent
 forwarding to forward both the SSH and GPG agents to (trusted) remote machines.
 
+#### XXX
+
+After updating expiry, I needed to import the key on Pi4??? Wasn't necessary the
+first time? Haven't done it on Sandbox yet, so lets see if a reboot resolves
+this... XXX: Don't forget to update key on GitHub
+
 _Optional:_ Save public key (from Yubikey) for identity file configuration.
 Mainly useful to explicitly configure a connection to use the Yubikey (via
 [`📄 ~/.ssh/config`](../../static/linux/home/.ssh/config)).
@@ -342,6 +348,24 @@ provided through
 [`📄 ~/.bashrc.d/41-ssh-remote-rpi`](../../.bashrc.d/41-ssh-remote-rpi).
 
 #### Fixed IP address / Firewall
+
+❗**N.B.** As of
+[WSL **2.0.0**](https://github.com/microsoft/WSL/releases/tag/2.0.0) (in
+_combination_ with **Windows 11 23H2**), the below is not required anymore as
+long as `networkingMode` is set to `mirrored` (see
+[`📄 .wslconfig`](/static/windows/README.md) for more details).
+
+Using the `mirrored` networking-mode, the `usbipd`-service on the Windows-side
+can be reached reliably (and securely) via `127.0.0.1` from _within_ WSL –
+there's no more need for firewall exceptions and such...
+
+Should you still wish to use the below approach, take note of the fact that
+(most likely) WSL's vEthernet-adapter is called
+`vEthernet (WSL (Hyper-V firewall))` instead of `vEthernet (WSL)`. Apart from
+that, the procedure below still works just fine (although using mirrored
+networking-mode offers a far superior solution).
+
+---
 
 To allow for a fixed firewall exception (not relying on either the local network
 or the network dynamically created by Hyper-V), a special-purpose fixed IP

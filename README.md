@@ -29,6 +29,9 @@ To setup a WSL2 instance, _copy_ [`📄 wsl.conf`](./static/linux/etc/wsl.conf) 
 [`📄 .wslconfig`](./static/windows/.wslconfig) and
 [`📄 .wslgconfig`](./static/windows/.wslgconfig) to `📂 %USERPROFILE%`.
 
+See [`📂 static/linux/etc`](./static/linux/etc/README.md) and
+[`📂 static/windows`](./static/windows/README.md) for further details.
+
 Several of the Bash-scripts rely on the modifications made in these
 configuration files to function properly.
 

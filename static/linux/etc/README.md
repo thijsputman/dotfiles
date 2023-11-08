@@ -1,4 +1,4 @@
-# Linux `📂 /etc`
+# Linux' `📂 /etc`
 
 - [WSL2 - `wsl.conf`](#wsl2---wslconf)
   - [Using Microsoft's `/init`](#using-microsofts-init)
@@ -33,7 +33,7 @@ command=service rsyslog start && service dbus start && service cron start && ser
 
 Also note that in this scenario,
 [`📄 ~/.bashrc.d/30-x11-wsl`](../../../.bashrc.d/30-x11-wsl) should be enabled
-(`chmod +x`).
+(ie, `chmod +x`).
 
 ### `generateResolvConf`
 
@@ -41,7 +41,16 @@ I've recently tweaked my firewall settings so that Windows' DNS properly works
 in WSL2 (as I needed mDNS inside WSL2). The allows for a much more robust DNS
 setup and as such there's no more need for a custom `📄 /etc/resolv.conf`.
 
+Additionally, as of
+[WSL **2.0.0**](https://github.com/microsoft/WSL/releases/tag/2.0.0) _with_
+`dnsTunneling` enabled, it doesn't make sense to mess with DNS settings at all
+anymore: With this option enabled, DNS isn't proxied over the network so
+firewall settings don't even impact its functionality anymore. See
+[`📄 .wslconfig`](/static/windows/README.md) for more details.
+
 The below is kept for future reference:
+
+---
 
 **`📄 /etc/resolv.conf`**
 
