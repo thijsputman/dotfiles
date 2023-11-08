@@ -30,7 +30,8 @@ Create an ephemeral Docker container (with all required prerequisites installed
 — see [`📄 Dockerfile`](./Dockerfile)) and start it without network access:
 
 ```bash
-docker run --network none --privileged -v /dev/bus/usb:/dev/bus/usb --rm -it $(docker build --no-cache -q .)
+docker run --network none --privileged -v /dev/bus/usb:/dev/bus/usb \
+  --rm -it $(docker build --no-cache -q .)
 ```
 
 **N.B.** Stop `pcscd` (and/or anything else that might have an exclusive lock on
@@ -263,11 +264,11 @@ gpg --edit-key ______
 I personally only have it imported on my daily driver; using SSH agent
 forwarding to forward both the SSH and GPG agents to (trusted) remote machines.
 
-#### XXX
-
-After updating expiry, I needed to import the key on Pi4??? Wasn't necessary the
-first time? Haven't done it on Sandbox yet, so lets see if a reboot resolves
-this... XXX: Don't forget to update key on GitHub
+❗ **N.B.** After [renewing my subkeys](#renew-subkeys), I had to import the
+(updated) public key on a handful of additional machines for them to pick up on
+the updated expiry dates. Haven't had the time to properly figure this out yet;
+in case I never do: The simplest solution is to import the updated public key on
+the offending machine...
 
 _Optional:_ Save public key (from Yubikey) for identity file configuration.
 Mainly useful to explicitly configure a connection to use the Yubikey (via
@@ -308,7 +309,8 @@ On the WSL2-side:
 
 ```shell
 sudo apt install linux-tools-virtual hwdata
-sudo update-alternatives --install /usr/local/bin/usbip usbip `ls /usr/lib/linux-tools/*/usbip | tail -n1` 20
+sudo update-alternatives --install /usr/local/bin/usbip usbip \
+  "$(ls /usr/lib/linux-tools/*/usbip | tail -n1)" 20
 ```
 
 **N.B.** If `linux-tools-virtual` gets updated, it might be necessary to reapply
