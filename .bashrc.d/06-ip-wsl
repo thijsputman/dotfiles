@@ -1,13 +1,32 @@
 #!/usr/bin/env bash
 
-WSL_IP=
-pattern="IP Address:\s+\K[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"
+if [[ $(wslinfo -n --networking-mode) == nat ]]; then
 
-for interface in "Ethernet (ThinkPad)" "WiFi"; do
-  if WSL_IP=$(cmd.exe /c "netsh interface ip show addresses \"$interface\"" \
-    2> /dev/null | grep -oP "$pattern"); then
-    break
+  WSL_IP=
+  pattern="IP Address:\s+\K[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"
+
+  for interface in "Ethernet (ThinkPad)" "WiFi"; do
+    if WSL_IP=$(netsh.exe interface ip show addresses "$interface" \
+      2> /dev/null | grep -oP "$pattern"); then
+      export WSL_IP
+      break
+    fi
+  done
+
+  # Gateway IP (ie, Windows host's address in the Hyper-V virtual network) –
+  # could use the same netsh.exe-trick as above, but a "native" approach (it's
+  # the default gateway on the Linux-side) seems preferred.
+  # Whereas $WSL_IP represents the host's "external" IP (mostly its LAN IP
+  # though), this one is guaranteed to be a private IP address managed by
+  # Hyper-V (which makes it better suited for firewall exceptions).
+
+  WSL_GATEWAY=
+
+  if
+    read -r _ _ WSL_GATEWAY _ < <(ip -4 route show default 2> /dev/null) &&
+      [ -n "$WSL_GATEWAY" ]
+  then
+    export WSL_GATEWAY
   fi
-done
 
-export WSL_IP
+fi

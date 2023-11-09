@@ -4,17 +4,24 @@
 GPG_TTY=$(tty)
 export GPG_TTY
 
+# Fallback to the WSL gateway IP (ie, Windows host's address in the Hyper-V
+# virtual network) – without an explicit host, this provides the best chance of
+# things working in a (as) safe (as possible) way.
+if [[ -z $USBIP_HOST && -n $WSL_GATEWAY ]]; then
+  USBIP_HOST="$WSL_GATEWAY"
+fi
+
 gpg-tty() {
   gpg-connect-agent updatestartuptty /bye &> /dev/null
 }
 
 yubikey-attach() {
   # Yubikey is not attached
-  if [[ -n "$USBIP_HOST" && -n "$USBIP_BUSID" &&
-    ! "$(sudo usbip port)" =~ usbip://"$USBIP_HOST":3240/"$USBIP_BUSID" ]] \
+  if [[ -n $USBIP_HOST && -n $USBIP_BUSID &&
+    ! $(sudo usbip port) =~ usbip://$USBIP_HOST:3240/$USBIP_BUSID ]] \
     ; then
     # Yubikey is not not plugged into the host-machine
-    if [[ ! "$(usbip list -r "$USBIP_HOST" 2> /dev/null)" =~ "$USBIP_BUSID":\ Yubico\.com ]] \
+    if [[ ! $(usbip list -r "$USBIP_HOST" 2> /dev/null) =~ $USBIP_BUSID:\ Yubico\.com ]] \
       ; then
       read -n 1 -s -r -p "Insert Yubikey and press any key to continue..."
       printf "\n"
@@ -44,8 +51,8 @@ yubikey-attach() {
 
 yubikey-detach() {
   # Yubikey is attached
-  if [[ -n "$USBIP_HOST" && -n "$USBIP_BUSID" &&
-    "$(sudo usbip port)" =~ usbip://"$USBIP_HOST":3240/"$USBIP_BUSID" ]]; then
+  if [[ -n $USBIP_HOST && -n $USBIP_BUSID &&
+    $(sudo usbip port) =~ usbip://$USBIP_HOST:3240/$USBIP_BUSID ]]; then
     # This naively assumes the Yubikey is attached to port 00 — should at some
     # point make this smarter...
     sudo usbip detach -p 00 2> /dev/null
