@@ -5,3 +5,7 @@ mkdir -p ~/.local/bin
 if [ ! -e ~/.local/bin/xdg-open ]; then
   ln -s -r "${base:?}/.local/bin/xdg-open" ~/.local/bin/xdg-open
 fi
+
+if [ ! -e ~/.local/bin/xclip ]; then
+  ln -s -r "${base:?}/.local/bin/xclip" ~/.local/bin/xclip
+fi

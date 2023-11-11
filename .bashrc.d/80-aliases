@@ -2,6 +2,8 @@
 
 alias ll='ls -alhF' # Include human-readable sizes in standard "ll"
 
+alias '??'='gh copilot suggest -t shell'
+
 # If "docker-compose" is available, map it to "docker compose"
 docker() {
   if [[ ${1,,} == compose ]] && command -v docker-compose &> /dev/null; then
