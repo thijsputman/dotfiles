@@ -8,8 +8,10 @@ base=$(dirname "$(realpath "$(dirname "${BASH_SOURCE[0]}")")")
 
 for file in "$base"/install/parts.d/**; do
 
-  if [[ -x "$file" ]]; then
-    echo Installing 📄 "$(basename "$file")"...
+  file_basename="$(basename "$file")"
+
+  if [[ -x $file && (! -v 1 || $1 == "$file_basename") ]]; then
+    echo Installing 📄 "$file_basename"...
     source "$file"
   fi
 

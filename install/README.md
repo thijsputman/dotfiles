@@ -13,12 +13,17 @@ Run `📄 install.sh` to setup [`📂 .bashrc.d`](../.bashrc.d/), create various
 configuration file symlinks, and make some further
 [configuration changes](#configuration-changes).
 
-`📄 install.sh` Runs all executable files in [`📂 install/parts.d`](./parts.d/).
-To enable/disable parts of the installation, simply `chmod +x/-x` the scripts in
+`📄 install.sh` Runs all executable files in [`📂 parts.d`](./parts.d/). To
+enable/disable parts of the installation, simply `chmod +x/-x` the scripts in
 question prior to running the installer.
 
-The scripts in `📂 install/parts.d` are idempotent. They can be run multiple
-times on an already "installed" system without nasty side-effects.
+It is possible to run a _single_ part by using `install.sh <part>` (e.g.
+`install.sh 20-home` would execute [`📄 parts.d/20-home`](./parts.d/20-home)).
+This is the preferred way of running single parts on-demand – most of them
+depend on variables set by `install.sh` and thus cannot be run directly.
+
+The scripts in `📂 parts.d` are idempotent. They can be run multiple times on an
+already "installed" system without nasty side-effects.
 
 During installation, `📄 ~/.env` is created from
 [a defaults file](./../.env.default) which lists all possible environment
@@ -53,7 +58,6 @@ To pull down a non-predefined version of the tool, do:
 
 ```shell
 version=v1.24 ./powerline-go
-
 ```
 
 ### Configuration changes
