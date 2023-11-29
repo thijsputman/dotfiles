@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Mask all GPG agent related units – the RPi-devices use a socket forwarded from
+# the local machine. Unintentionally starting gpg-agent messes with this setup;
+# there's a script in "📂 .bashrc.d" which aims to prevent regular gpg
+# invocations from starting an agent too.
+
+systemctl --user mask \
+  gpg-agent.service \
+  gpg-agent.socket \
+  gpg-agent-ssh.socket \
+  gpg-agent-extra.socket \
+  gpg-agent-browser.socket
