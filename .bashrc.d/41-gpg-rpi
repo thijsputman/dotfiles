@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-# Don't autostart the GPG agent on RPi-devices – the agent is forwarded from the
-# local machine
-
-gpg() {
-  command gpg --no-autostart "$@"
-}

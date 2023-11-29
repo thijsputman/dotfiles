@@ -103,3 +103,10 @@ ssh() {
 
   command ssh "$@"
 }
+
+gpg() {
+  yubikey-attach
+  gpg-tty
+
+  command gpg "$@"
+}

@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-# Mask all GPG agent related units – the RPi-devices use a socket forwarded from
-# the local machine. Unintentionally starting gpg-agent messes with this setup;
-# there's a script in "📂 .bashrc.d" which aims to prevent regular gpg
-# invocations from starting an agent too.
+# Mask all GPG agent related units – the RPis use a socket forwarded from the
+# local machine instead. Unintentionally starting gpg-agent messes with this
+# setup.
+# Note that the "no-autostart" in "📄 gpg.conf" makes most of the difference.
+# The RPIs generally don't start gpg-agent via systemd (ie, have it running
+# with "--supervised"), instead a "--daemon" is started by the gpg binary
+# itself. The below is thus mainly for good measure...
 
 systemctl --user mask \
   gpg-agent.service \
