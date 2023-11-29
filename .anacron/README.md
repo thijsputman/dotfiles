@@ -29,5 +29,5 @@ allowed in the `anacrontab`...
 journalctl -b -u cron
 ```
 
-Note the usage of the **`cron`** unit and _not_ the `anacron` unit (as it is `cron`
-that actually executes — and captures the output of — `anacron`).
+Note the usage of the **`cron`** unit and _not_ the `anacron` unit (as it is
+`cron` that actually executes — and captures the output of — `anacron`).

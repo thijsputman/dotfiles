@@ -26,9 +26,11 @@ jobs:
             ~/.npm
             ~/.local/bin
           # yamllint disable rule:line-length
-          # yamllint disable-line rule:quoted-strings
+          # yamllint disable rule:quoted-strings
+          # prettier-ignore
           key: "pre-commit-cache-\
             ${{ hashFiles('.pre-commit-config.yaml', '.github/scripts/setup-pre-commit.sh') }}"
+          # yamllint enable rule:quoted-strings
           # yamllint enable rule:line-length
       - name: Install dependencies
         env:
