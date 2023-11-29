@@ -24,7 +24,7 @@ fi
 
 # Notify when pyenv updates are available
 
-if [ -n "$PYENV_ROOT" ] && [ -s ~/.pyenv-update ]; then
+if [ -d "$PYENV_ROOT" ] && [ -s ~/.pyenv-update ]; then
 
   if [[ "$HEADER_SHOWN" == motd* ]]; then
 
