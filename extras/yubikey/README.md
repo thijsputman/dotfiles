@@ -141,7 +141,14 @@ From the host machine:
 
 ```bash
 docker ps
+# Public key
 docker cp ______:/root/gpg-0x______.asc ~/
+# Private keys & revocation certificate
+docker cp ______:/root/backup/mastersub.key ~/
+docker cp ______:/root/backup/master-paperkey.txt ~/
+docker cp ______:/root/backup/sub.key ~/
+docker cp ______:/root/backup/revoke.asc ~/
+# GnuPG home-directory
 docker cp ______:/root/backup/.gnupg.tar ~/
 ```
 

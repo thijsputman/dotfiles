@@ -23,6 +23,12 @@ echo \
   https://cli.github.com/packages stable main |
   sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 
+# Git LFS
+
+curl -s \
+  https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh |
+  sudo bash
+
 # Microsoft packages
 
 curl -fsSL https://packages.microsoft.com/keys/microsoft.asc |
