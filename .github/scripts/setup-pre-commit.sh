@@ -22,14 +22,14 @@ fi
 $pip_cmd install 'pre-commit==3.3.3'
 $pip_cmd install 'yamllint==1.32.0'
 
-if [ ! -x ~/.local/bin/shellcheck ]; then
-  version=v0.9.0 "${GITHUB_WORKSPACE}/install/wget.d/shellcheck"
+if ! command -v shellcheck; then
+  version=v0.9.0 "${GITHUB_WORKSPACE}/install/bins.d/shellcheck"
 fi
 
-if [ ! -x ~/.local/bin/hadolint ]; then
-  version=v2.12.0 "${GITHUB_WORKSPACE}/install/wget.d/hadolint"
+if ! command -v hadolint; then
+  version=v2.12.0 "${GITHUB_WORKSPACE}/install/bins.d/hadolint"
 fi
 
-if [ ! -x ~/.local/bin/shfmt ]; then
-  version=v3.7.0 "${GITHUB_WORKSPACE}/install/wget.d/shfmt"
+if ! command -v shfmt; then
+  go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
 fi
