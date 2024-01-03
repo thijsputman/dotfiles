@@ -5,6 +5,6 @@ function _powerline_ps1() {
   PS1+="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]"
 }
 
-if [ "$TERM" != "linux" ] && [ -f "$HOME/.local/bin/powerline-go" ]; then
-  PROMPT_COMMAND="_powerline_ps1${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+if [ "$TERM" != "linux" ] && command -v powerline-go &> /dev/null; then
+  PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}_powerline_ps1"
 fi
