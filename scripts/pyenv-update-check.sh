@@ -9,9 +9,10 @@ if [ -d "$HOME/.pyenv" ]; then
   rm -f ~/.pyenv-update
 
   cd "$HOME/.pyenv" || exit
-  git remote update
+  git remote update > /dev/null 2>&1
 
-  if [[ $(git rev-parse HEAD) != $(git rev-parse '@{u}') ]]; then
+  if [[ $(git rev-parse HEAD) != $(git rev-parse '@{u}') ]] &&
+    true; then
 
     status=$(git status | head -n 2 | tail -n 1)
 

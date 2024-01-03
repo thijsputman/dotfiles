@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
 if [ -d "$HOME/.config/composer/vendor/bin" ]; then
-
   path-add "$HOME/.config/composer/vendor/bin"
-
 fi

@@ -1,3 +1,4 @@
+version: "1"
 git_protocol: ssh
 editor: code --reuse-window --wait
 prompt: enabled
