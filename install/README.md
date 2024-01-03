@@ -9,7 +9,7 @@
 
 ## Install
 
-Run `📄 install.sh` to setup [`📂 .bashrc.d`](../.bashrc.d/), create various
+Run `📄 install.sh` to setup [`📂 ~/.bashrc.d`](../.bashrc.d/), create various
 configuration file symlinks, and make some further
 [configuration changes](#configuration-changes).
 
@@ -32,32 +32,35 @@ relevant environment variables before continuing.
 
 ### Prerequisites
 
-The below software should be installed for the scripts in `📂 .bashrc.d` to
-function properly.
+The below packages are required for the scripts in `📂 ~/.bashrc.d` to function
+properly. See the `9*install`-scripts listed under
+[configuration changes](#configuration-changes) for installation instructions.
 
-- **neofetch** — `sudo apt install neofetch`
-- **direnv** — `sudo apt install direnv`
-- **pyenv** — `curl https://pyenv.run | bash`
-- **powerline-go** — [`📄 ./wget.d/powerline-go`](./wget.d/powerline-go)
+- `neofetch`
+- `direnv`
+- `pyenv`
+- `powerline-go`
 
-Note that none of these dependencies pose a hard requirement; missing
-dependencies are handled gracefully by the various scripts.
+Note that none of these pose a hard requirement; missing dependencies are
+handled gracefully by the various scripts in `📂 ~/.bashrc.d`.
 
-#### [`📂 wget.d`](./wget.d/)
+#### [`📂 bins.d`](./bins.d)
 
-A handful of convenience scripts are provided that pull tools directly from
-GitHub in lieu of a "proper" install procedure.
+A handful of convenience scripts are provided that either pull binaries directly
+from GitHub, or have fully customised installation procedures.
 
-Simply run any of the scripts in [`📂 wget.d`](./wget.d/) to pull the predefined
-version of the tool into `📂 .local/bin` (overwriting any pre-existing version
-of the tool). The scripts attempt to automatically determine the correct
+Simply run any of the scripts in [`📂 bins.d`](./bins.d) to pull the predefined
+version of the tool into `📂 ~/.local/bin` – or `📂 ~/.go/bin` for tools
+compiled from Go, overwriting any pre-existing version of the tool.
+
+The scripts pulling in binaries attempt to automatically determine the correct
 processor architecture; in general they should thus work for both `amd64` and
 `arm64` systems.
 
-To pull down a non-predefined version of the tool, do:
+To install a non-predefined version of a tool, do:
 
 ```shell
-version=v1.24 ./powerline-go
+version=v2.12.0 ./hadolint
 ```
 
 ### Configuration changes
@@ -72,8 +75,13 @@ instead of symlinking files from this Git-repository:
 - 🚫 [`📄 91-apt-add-repository`](./parts.d/91-apt-add-repository) — adds a set
   of third-party `apt`-repositories (Node.js, Microsoft, etc.)
 - 🚫 [`📄 92-apt-install`](./parts.d/92-apt-install) — installs several
-  apt-packages that require additional configuration (apart from simply running
-  `apt install ...`)
+  apt-packages
+- 🚫 [`📄 92-snap-install`](./parts.d/92-snap-install) — installs several snaps
+- 🚫 [`📄 93-go-install`](./parts.d/93-go-install) — compiles binaries for
+  several tools written in Go
+- 🚫 [`📄 93-install`](./parts.d/93-install) — installs several packages that
+  don't come via `apt`, `snap`, or `go`
+  - This steps also executes all scripts in [`📂 bins.d`](./bins.d)
 
 Scripts marked with 🚫 are not executable by default.
 

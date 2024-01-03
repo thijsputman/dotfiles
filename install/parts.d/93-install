@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+curl https://pyenv.run | bash
+
+# Run all custom installers in the bins.d folder
+
+for file in "${base:?}"/install/bins.d/**; do
+
+  file_basename="$(basename "$file")"
+
+  if [[ -x $file ]]; then
+    echo " |-> Installing 🔧 $file_basename..."
+    source "$file"
+  fi
+
+done

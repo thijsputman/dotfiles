@@ -10,7 +10,7 @@ for file in "$base"/install/parts.d/**; do
 
   file_basename="$(basename "$file")"
 
-  if [[ -x $file && (! -v 1 || $1 == "$file_basename") ]]; then
+  if [[ (-x $file && ! -v 1) || (-v 1 && $1 == "$file_basename") ]]; then
     echo Installing 📄 "$file_basename"...
     source "$file"
   fi
