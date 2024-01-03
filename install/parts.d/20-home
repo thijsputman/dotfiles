@@ -7,3 +7,7 @@ fi
 if [ ! -e ~/.nanorc ]; then
   ln -s -r "${base:?}/.nanorc" ~/.nanorc
 fi
+
+if [ ! -e ~/.actrc ]; then
+  ln -s -r "${base:?}/.actrc" ~/.actrc
+fi
