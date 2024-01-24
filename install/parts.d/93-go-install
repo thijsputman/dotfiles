@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-go install github.com/justjanne/powerline-go@v1.24
+: "${GOPATH:="$HOME/.local/go"}"
+export GOPATH
+
+go install github.com/justjanne/powerline-go@df3475d # v1.24
 go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
