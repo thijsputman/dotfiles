@@ -3,6 +3,8 @@
 set -euo pipefail
 
 : "${version:=v0.0.2}"
+: "${GOPATH:="$HOME/.local/go"}"
+export GOPATH
 
 temp_dir=$(mktemp -d)
 pushd "$temp_dir" > /dev/null || exit 1
@@ -12,7 +14,7 @@ cd tdg || exit 1
 
 git checkout "tags/$version" > /dev/null 2>&1
 
-# Add "XXX" as one of the comment prefixes
+# Add "triple-X" as one of the comment prefixes
 git apply --ignore-space-change --ignore-whitespace - \
   <<- EOF || : # "or true" to prevent "set -e" from exiting the script
 diff --git a/pkg/tdglib/todogenerator.go b/pkg/tdglib/todogenerator.go
@@ -31,7 +33,7 @@ index faca56a..7e3951a 100644
 EOF
 
 export GOFLAGS="-mod=vendor"
-go build -o ~/.go/bin/tdg cmd/tdg/*
+go build -o "$GOPATH/bin/tdg" cmd/tdg/*
 
 echo "$(command -v tdg)@$version" && tdg -root "$temp_dir/tdg/cmd/tdg"
 

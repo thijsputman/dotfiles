@@ -1,24 +1,31 @@
 name: Lint codebase
 
-# For more details, see original the original version in this repo:
-#   <https://github.com/thijsputman/home-assistant-config/>
 "on":
   push:
-    branches: ["**"]
+    branches: [main, development]
     tags-ignore: ["**"]
   pull_request:
-    branches: [main]
 jobs:
   lint:
     name: Run pre-commit
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
     steps:
-      - name: Checkout code
-        with:
-          persist-credentials: false
+      - name: Checkout code (PR)
+        if: ${{ github.event_name == 'pull_request' }}
         uses: actions/checkout@v3
-      - name: Cache dependencies
-        uses: actions/cache@v3
+        with:
+          # Infite depth (without retrieving unrelated branches) – search
+          # <https://git-scm.com/docs/shallow> for this magic number...
+          fetch-depth: 2147483647
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Checkout code
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/checkout@v3
+      - name: Restore cached dependencies
+        id: cache-restore
+        uses: actions/cache/restore@v3
         with:
           path: |
             ~/.cache/pre-commit
@@ -27,6 +34,7 @@ jobs:
             ~/.local/bin
             ~/.cache/go-build
             ~/go/pkg/mod
+            ~/go/bin
           # yamllint disable rule:line-length
           # yamllint disable rule:quoted-strings
           # prettier-ignore
@@ -34,7 +42,7 @@ jobs:
             ${{ hashFiles('.pre-commit-config.yaml', '.github/scripts/setup-pre-commit.sh') }}"
           # yamllint enable rule:quoted-strings
           # yamllint enable rule:line-length
-      - name: Add "~/.local/bin" to PATH
+      - name: Setup PATH
         run: |
           mkdir -p "$HOME/.local/bin"
           echo "$HOME/.local/bin" >> $GITHUB_PATH
@@ -47,14 +55,37 @@ jobs:
         with:
           go-version: "1.21"
           cache: false
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - name: Install dependencies
         env:
           USE_PIPX: "false"
         run: .github/scripts/setup-pre-commit.sh
-        shell: bash
+      - name: Run pre-commit (PR)
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          pre-commit run --color=always \
+            --from-ref ${{ github.event.pull_request.base.sha }} \
+            --to-ref HEAD
+        env:
+          GH_ACTION_OUTPUT: true
       - name: Run pre-commit
+        if: ${{ github.event_name == 'push' }}
         run: pre-commit run --color=always --all-files
-        shell: bash
+        env:
+          GH_ACTION_OUTPUT: true
+      - name: Cache dependencies
+        uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: |
+            ~/.cache/pre-commit
+            ~/.cache/pip
+            ~/.npm
+            ~/.local/bin
+            ~/.cache/go-build
+            ~/go/pkg/mod
+            ~/go/bin
+          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
