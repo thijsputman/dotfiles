@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC1090
 
-curl https://pyenv.run | bash
+# pyenv
+
+if ! [ -d "$HOME/.pyenv" ]; then
+  curl https://pyenv.run | bash
+fi
 
 # Run all custom installers in the bins.d folder
 
@@ -10,8 +14,16 @@ for file in "${base:?}"/install/bins.d/**; do
   file_basename="$(basename "$file")"
 
   if [[ -x $file ]]; then
+
     echo " |-> Installing 🔧 $file_basename..."
-    source "$file"
+
+    # Running in a subshell serves two purposes: Firstly to hide the installer
+    # output (only shown in case of error), and secondly to avoid leaking the
+    # "version"-variable between installers...
+    if ! output="$(source "$file" 2>&1)"; then
+      echo "$output"
+    fi
+
   fi
 
 done
