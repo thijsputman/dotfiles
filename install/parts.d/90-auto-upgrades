@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+if [ ! -f /etc/apt/apt.conf.d/10periodic ]; then
+  printf '  ⛔ "📂 /etc/apt/apt.conf.d/10periodic" not found – ' >&3
+  printf 'ensure unattended-upgrades is configured properly...\n' >&3
+  return 0
+fi
+
+sudo cp "${base:?}/static/linux/etc/apt/apt.conf.d/10periodic" \
+  /etc/apt/apt.conf.d/10periodic
+
+# Ensure 20auto-upgrades doesn't conflict with 10periodic
+
+if [ -f /etc/apt/apt.conf.d/20auto-upgrades ]; then
+
+  unattended_upgrade='APT::Periodic::Unattended-Upgrade'
+  sed -i \
+    "s/^$unattended_upgrade \+\"\?1\"\?;\?/$unattended_upgrade \"0\";/g" \
+    /etc/apt/apt.conf.d/20auto-upgrades
+
+fi
