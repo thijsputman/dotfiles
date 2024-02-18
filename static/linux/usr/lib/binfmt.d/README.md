@@ -1,5 +1,8 @@
 # `binfmt` / WSL-interop
 
+❗ **N.B.** As of December 2023, this appears to be
+[(sort of) solved](https://github.com/microsoft/WSL/issues/8843#issuecomment-1837264576).
+
 After running with `systemd` enabled for quite some time, out of nowhere
 WSL-interop stopped working 😕 Appears to be a known issue:
 [microsoft/WSL#8843](https://github.com/microsoft/WSL/issues/8843#issuecomment-1255546484)

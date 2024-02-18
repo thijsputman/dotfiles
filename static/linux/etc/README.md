@@ -1,10 +1,10 @@
 # Linux' `📂 /etc`
 
-- [WSL2 - `wsl.conf`](#wsl2---wslconf)
+- [WSL2 - `wsl.conf` \& `fstab`](#wsl2---wslconf--fstab)
   - [Using Microsoft's `/init`](#using-microsofts-init)
   - [`generateResolvConf`](#generateresolvconf)
 
-## WSL2 - `wsl.conf`
+## WSL2 - `wsl.conf` & `fstab`
 
 ❗ **N.B.** Copy to `📂 /etc`; do _**not**_ symlink...
 
@@ -15,7 +15,17 @@
   automatically
   - Instead this is done manually via
     [`📄 ~/.bashrc.d/05-wsl`](../../../.bashrc.d/05-wsl)
-- A default username is set
+- Automatic mounting of Windows filesystems is _disabled_ – instead, the `C`-
+  and `D`-drive are manually mounted via [`📄 /etc/fstab`](fstab)
+  - This is done so the `D`-drive (`/mnt/d`) can be mounted with `fmask 111`
+    (disabling the execute-bit for all users) – execute can be enabled on a
+    per-file basis; the `metadata` option ensures Linux-metadata persists in
+    NTFS
+  - This cannot be done via a regular `[automount]`-section as it's impossible
+    to differentiate between drives there – mounting the `C`-drive
+    with`fmask 111` (for all intents and purposes)
+    [breaks interop](https://github.com/microsoft/WSL/issues/7933).
+- A default username (`thijs`) is set
 
 ### Using Microsoft's `/init`
 
@@ -31,10 +41,6 @@ systemd=false
 command=service rsyslog start && service dbus start && service cron start && service anacron start
 ```
 
-Also note that in this scenario,
-[`📄 ~/.bashrc.d/30-x11-wsl`](../../../.bashrc.d/30-x11-wsl) should be enabled
-(ie, `chmod +x`).
-
 ### `generateResolvConf`
 
 I've recently tweaked my firewall settings so that Windows' DNS properly works
@@ -45,10 +51,9 @@ Additionally, as of
 [WSL **2.0.0**](https://github.com/microsoft/WSL/releases/tag/2.0.0) _with_
 `dnsTunneling` enabled, it doesn't make sense to mess with DNS settings at all
 anymore: With this option enabled, DNS isn't proxied over the network so
-firewall settings don't even impact its functionality anymore. See
-[`📄 .wslconfig`](/static/windows/README.md) for more details.
+firewall settings don't even impact its functionality anymore.
 
-The below is kept for future reference:
+The below is kept for reference:
 
 ---
 

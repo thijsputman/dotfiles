@@ -1,0 +1,2 @@
+C:  /mnt/c  drvfs  defaults,uid=1000,gid=1000,metadata,umask=022,fmask=011  0  0
+D:  /mnt/d  drvfs  defaults,uid=1000,gid=1000,metadata,umask=022,fmask=111  0  0
