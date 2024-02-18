@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# Display fastfetch only as part of an already shown header
-if [ -n "$HEADER_SHOWN" ]; then
+# Display fastfetch only as part of an already shown (MOTD) header
+
+if [ -n "$HEADER_SHOWN" ] && command -v fastfetch &> /dev/null; then
 
   printf "\n"
   fastfetch --size-ndigits 1
