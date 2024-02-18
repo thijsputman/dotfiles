@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+alias l='ls -lhF --group-directories-first'
 alias ll='ls -alhF --group-directories-first'
 
 alias '??'='gh copilot suggest -t shell'

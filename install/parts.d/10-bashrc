@@ -2,7 +2,7 @@
 
 # Increase history (file) size
 
-histsize=2000
+histsize=5000
 histfilesize=20000
 
 sed -i "s/^HISTSIZE=[0-9]\+/HISTSIZE=$histsize/g" "${bashrc:?}"

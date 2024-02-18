@@ -8,7 +8,7 @@ if [ ! -e "$(readlink -f /usr/local/bin/usbip)" ]; then
   )
 
   if [ -n "$result" ]; then
-    echo " |-> ✅ $(tail -n 1 <<< "$result")"
+    echo "  ✅ $(tail -n 1 <<< "$result")" >&3
   fi
 
 fi

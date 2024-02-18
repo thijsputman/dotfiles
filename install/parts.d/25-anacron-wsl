@@ -2,10 +2,8 @@
 
 if [ ! -d ~/.anacron ]; then
 
-  if
-    ! command -v anacron &> /dev/null
-  then
-    echo ' |-> ⚠️ skipping "📂 ~/.anacron" — anacron not present...'
+  if ! command -v anacron; then
+    echo '  ⛔ Skipping "📂 ~/.anacron" — anacron not present...' >&3
     return 0
   fi
 

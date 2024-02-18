@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-if [[ $(wslinfo -n --networking-mode) == nat ]]; then
+if
+  command -v wslinfo > /dev/null &&
+    [[ $(wslinfo -n --networking-mode) == nat ]]
+then
 
   WSL_IP=
   pattern="IP Address:\s+\K[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"
