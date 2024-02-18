@@ -10,7 +10,15 @@ if ! commad -v snap; then
 
 fi
 
-sudo DEBIAN_FRONTEND=noninteractive \
-  apt-get install -y \
-  xdg-desktop-portal \
-  xdg-desktop-portal-gtk
+# Install XDG Desktop Portal only when running a local display server (ie, when
+# _not_ forwarding X11 over SSH) – for remote devices this would mostly be
+# overkill...
+
+if [[ ! $DISPLAY =~ localhost ]]; then
+
+  sudo DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y \
+    xdg-desktop-portal \
+    xdg-desktop-portal-gtk
+
+fi
