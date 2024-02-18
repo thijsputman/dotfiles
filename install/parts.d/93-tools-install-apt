@@ -4,10 +4,5 @@ sudo apt-get update
 
 sudo DEBIAN_FRONTEND=noninteractive \
   apt-get install -y \
-  bsd-mailx \
-  btop \
-  jq \
-  net-tools \
-  nullmailer
-
-echo '  📢 "nullmailer" requires manual configuration... ' >&3
+  anacron \
+  rclone

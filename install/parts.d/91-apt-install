@@ -9,10 +9,15 @@ sudo apt-get update
 
 sudo DEBIAN_FRONTEND=noninteractive \
   apt-get install -y \
-  anacron \
+  bsd-mailx \
+  btop \
   direnv \
-  plocate \
-  rclone
+  jq \
+  net-tools \
+  nullmailer \
+  plocate
+
+echo '  📢 "nullmailer" requires manual configuration... ' >&3
 
 # Unattended upgrades
 
