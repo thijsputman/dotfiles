@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Display fastfetch only as part of an already shown header
+if [ -n "$HEADER_SHOWN" ]; then
+
+  printf "\n"
+  fastfetch --size-ndigits 1
+  printf "\n"
+
+fi

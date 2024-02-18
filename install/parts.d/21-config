@@ -8,8 +8,8 @@ if [ ! -e ~/.config/gh/config.yml ]; then
     ~/.config/gh/config.yml
 fi
 
-if [ ! -e ~/.config/neofetch/config.conf ]; then
-  mkdir -p ~/.config/neofetch
-  ln -s -r "${base:?}/.config/neofetch/config.conf" \
-    ~/.config/neofetch/config.conf
+if [ ! -e ~/.config/fastfetch/config.jsonc ]; then
+  mkdir -p ~/.config/fastfetch
+  ln -s -r "${base:?}/.config/fastfetch/config.jsonc" \
+    ~/.config/fastfetch/config.jsonc
 fi

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+arch=$(uname -m)
+base=https://github.com/fastfetch-cli/fastfetch/releases/download
+: "${version:=2.8.3}"
+
+tmp_dir=$(mktemp -d)
+
+wget -nv -O "$tmp_dir/fastfetch.deb" \
+  "${base}/${version}/fastfetch-linux-${arch}.deb"
+sudo dpkg -i "$tmp_dir/fastfetch.deb"
+
+rm -f "$tmp_dir/fastfetch.deb"
+
+command -v fastfetch && fastfetch --version

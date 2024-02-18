@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# Display neofetch only as part of an already shown header
-if [ -n "$HEADER_SHOWN" ]; then
-
-  # Prevent neofetch from outputting one line at a time
-  printf "\n%s\n" "$(neofetch)"
-
-fi
