@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+sudo snap install --classic node
+
+if ! [[ $PATH =~ (^|:)"$HOME/.local/bin"(:|$) ]]; then
+  echo "  ⚠️ Add \"📂 $HOME/.local/bin\" to PATH... " >&3
+fi
+
+npm config set prefix ~/.local/
+npm install -g npm

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+sudo apt-get update
+
+sudo DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y \
+  python-is-python3 \
+  python3-pip \
+  python3-venv
+
+if ! [[ $PATH =~ (^|:)"$HOME/.local/bin"(:|$) ]]; then
+  echo "  ⚠️ Add \"📂 $HOME/.local/bin\" to PATH... " >&3
+  export PATH="$PATH:$HOME/.local/bin"
+fi
+
+if ! [ -d "$HOME/.pyenv" ]; then
+  curl https://pyenv.run | bash
+fi
+
+(
+  export PIP_REQUIRE_VIRTUALENV=false
+  pip install --upgrade --user pip
+  pip install --upgrade --user setuptools
+)

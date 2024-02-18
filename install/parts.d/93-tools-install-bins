@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+if ! [[ $PATH =~ (^|:)"$HOME/.local/bin"(:|$) ]]; then
+  echo "  ⚠️ Add \"📂 $HOME/.local/bin\" to PATH... " >&3
+  export PATH="$PATH:$HOME/.local/bin"
+fi
+
+for file in "${base:?}"/install/bins.d/**; do
+
+  file_basename="$(basename "$file")"
+
+  if [[ -x $file ]]; then
+
+    echo "  ⚙️ $file_basename" >&3
+
+    # Run in subshell to avoid leaking "version"-variable between installers
+    (source "$file")
+
+  fi
+
+done

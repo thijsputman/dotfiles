@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Used to store GPG-keys for third-party APT-repositories
+sudo mkdir -m 0755 -p /usr/share/keyrings/
+
+sudo apt-get update
+
+# Required for "📂.bashrc.d"-scripts
+
+sudo DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y \
+  anacron \
+  direnv \
+  plocate \
+  rclone
+
+# Unattended upgrades
+
+lsb_id=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
+
+# On Ubuntu, Canonical's "update-notifier-common" should be installed; on other
+# platforms (ie, Debian) the more generic "apt-config-auto-update" is used...
+auto_update=apt-config-auto-update
+if [ "$lsb_id" == 'ubuntu' ]; then
+  auto_update=update-notifier-common
+fi
+
+sudo DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y \
+  unattended-upgrades \
+  "$auto_update" \
+  needrestart

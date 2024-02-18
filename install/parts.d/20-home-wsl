@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+xauth add :0 . "$(mcookie)"
+
+if ! command -v locate; then
+  printf '  ⛔ Skipping "📂 ~/Desktop" and "📂 ~/Downloads" — ' >&3
+  printf 'locate not present...\n' >&3
+  return 0
+fi
+
+locate_desktop="$(locate -l 1 -r '.*/OneDrive/Desktop$')"
+locate_downloads="$(locate -l 1 -r '.*/Thijs/Downloads$')"
+
+if [ ! -e ~/Desktop ] && [ -n "$locate_desktop" ]; then
+  ln -s "$locate_desktop" Desktop
+  echo "  🔗 ~/Desktop → $locate_desktop" >&3
+fi
+if [ ! -e ~/Downloads ] && [ -n "$locate_downloads" ]; then
+  ln -s "$locate_downloads" Downloads
+  echo "  🔗 ~/Downloads → $locate_downloads" >&3
+fi

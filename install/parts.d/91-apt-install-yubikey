@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+sudo add-apt-repository -y ppa:yubico/stable
+sudo apt-get update
+
+sudo DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y \
+  hwdata \
+  linux-tools-generic \
+  pcscd \
+  pinentry-gnome3 \
+  scdaemon \
+  yubikey-manager
+
+if [[ -z $USBIP_HOST || -z $USBIP_BUSID ]]; then
+  printf "  📢 To use \"yubikey-attach\", " >&3
+  printf "ensure \$USBIP_HOST and \$USBIP_BUSID are set... " >&3
+fi

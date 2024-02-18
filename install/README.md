@@ -1,50 +1,142 @@
 # Install `📂 .bashrc.d`
 
-- [Install](#install)
-  - [Prerequisites](#prerequisites)
-  - [Configuration changes](#configuration-changes)
-  - [Git configuration](#git-configuration)
-  - [Raspberry Pi](#raspberry-pi)
+- [Run individual parts](#run-individual-parts)
+- [Raspberry Pi](#raspberry-pi)
+- [Configuration changes](#configuration-changes)
+- [Package installation](#package-installation)
+  - [`bins.d`](#binsd)
+- [Git configuration](#git-configuration)
 - [Uninstall](#uninstall)
 
-## Install
+Run [`📄 install.sh`](./install.sh) to setup [`📂 ~/.bashrc.d`](../.bashrc.d/),
+create various configuration file symlinks, make some further
+[configuration changes](#configuration-changes), and optionally
+[install required packages](#package-installation).
 
-Run `📄 install.sh` to setup [`📂 ~/.bashrc.d`](../.bashrc.d/), create various
-configuration file symlinks, and make some further
-[configuration changes](#configuration-changes).
+❗ **N.B.** After a clean install, it is recommended
+[to install packages](#package-installation) prior to running a "bare"
+`install.sh`.
 
-`📄 install.sh` Runs all executable files in [`📂 parts.d`](./parts.d/). To
+`📄 install.sh` Runs all _executable_ files in [`📂 parts.d`](./parts.d/). To
 enable/disable parts of the installation, simply `chmod +x/-x` the scripts in
 question prior to running the installer.
-
-It is possible to run a _single_ part by using `install.sh <part>` (e.g.
-`install.sh 20-home` would execute [`📄 parts.d/20-home`](./parts.d/20-home)).
-This is the preferred way of running single parts on-demand – most of them
-depend on variables set by `install.sh` and thus cannot be run directly.
 
 The scripts in `📂 parts.d` are idempotent. They can be run multiple times on an
 already "installed" system without nasty side-effects.
 
 During installation, `📄 ~/.env` is created from
-[a defaults file](./../.env.default) which lists all possible environment
-variables (without setting any of their values). Make sure to fill out all
-relevant environment variables before continuing.
+[a defaults file](/.env.default) which lists all possible environment variables
+(without setting any of their values). Make sure to fill out all relevant
+environment variables before continuing.
 
-### Prerequisites
+## Run individual parts
 
-The below packages are required for the scripts in `📂 ~/.bashrc.d` to function
-properly. See the `9*install`-scripts listed under
-[configuration changes](#configuration-changes) for installation instructions.
+It is possible to run only a subset of parts by using `install.sh <pattern>`.
+This is the recommended way of running individual parts as most of them depend
+on variables (and file-descriptors) set by `install.sh` and thus _cannot_ be run
+independently.
 
-- `neofetch`
-- `direnv`
-- `pyenv`
-- `powerline-go`
+The `<pattern>` matches against the parts' filename only. You can use either an
+exact filename match or a regular expression. For example, `install.sh 20-.*`
+executes `📄 parts.d/20-home` and `📄 parts.d/20-home-wsl`.
 
-Note that none of these pose a hard requirement; missing dependencies are
-handled gracefully by the various scripts in `📂 ~/.bashrc.d`.
+If you specify an exact filename match (e.g. `install.sh 20-home`), that script
+is run interactively. In case of a regular expression, all matching scripts are
+executed (with their `stdout` hidden; only shown in case of errors).
 
-#### [`📂 bins.d`](./bins.d)
+Note that when running individual parts, the scripts' execute-bit (`chmod +x`)
+is _ignored_. All matching scripts are run regardless.
+
+## Raspberry Pi
+
+By default, `📄 install.sh` installs the WSL2-setup. To have it install the
+Raspberry Pi-setup instead, do this prior running the installer:
+
+```bash
+chmod +x ./parts.d/*-rpi
+chmod -x ./parts.d/*-wsl
+```
+
+## Configuration changes
+
+The "higher-order" scripts in [`📂 parts.d`](./parts.d/) make configuration
+changes instead of symlinking/copying files from this repo:
+
+- [`❎ 90-auto-upgrades`](./parts.d/90-auto-upgrades) — configure
+  `unattended-upgrades` to check but not automatically install updates
+- [`❎ 90-motd`](./parts.d/90-motd) — removes some unnecessary clutter from the
+  default MOTD
+- [`⬜ 90-ubuntu-pro`](./parts.d/90-ubuntu-pro) — removes additional clutter
+  from MOTD and `apt` introduced by Ubuntu Pro
+
+Scripts marked with ⬜ are not executable by default – run them manually via
+`install.sh` (e.g. `install.sh 90-ubuntu-pro`).
+
+## Package installation
+
+Scripts numbered `91` and above install packages/software from various sources.
+After a clean install it is recommended to run these scripts _before_ running a
+"bare" `install.sh`.
+
+To install _**all**_ packages, run **`install.sh '9[1-3]{1}-.*'`**.
+
+Alternatively, cherry-pick the software you'd like to have installed (e.g., run
+`install.sh '9[1-3]{1}-.*-python'` to install all Python-related packages).
+
+For an optimal terminal-experience, the scripts marked with ❎ should be
+executed:
+
+- [`❎ 91-apt-install`](./parts.d/91-apt-install) — required APT-packages
+- [`⬜ 91-apt-install-docker`](./parts.d/91-apt-install-docker) — Docker
+- [`⬜ 91-apt-install-dotnet`](./parts.d/91-apt-install-dotnet) — .NET SDK
+- [`⬜ 91-apt-install-git`](./parts.d/91-apt-install-git) — Git (and related
+  tools)
+- [`⬜ 91-apt-install-gpu-amd`](./parts.d/91-apt-install-gpu-amd) — AMD GPU
+  support (Vulkan/Mesa drivers)
+- [`⬜ 91-apt-install-php`](./parts.d/91-apt-install-php) — PHP
+- [`⬜ 91-apt-install-python`](./parts.d/91-apt-install-python) — Python, `pip`
+  & [`pyenv`](https://github.com/pyenv/pyenv)
+- [`❎ 91-apt-install-snap`](./parts.d/91-apt-install-snap) — Snap & XDG Desktop
+  Portal
+  - enabled by default on Ubuntu – there the script only installs XDG Desktop
+    Portal
+- [`⬜ 91-apt-install-yubikey`](./parts.d/91-apt-install-yubikey) — Yubikey
+  (including [`usbipd-win`](https://github.com/dorssel/usbipd-win) interop)
+- [`⬜ 92-snap-install-gcloud`](./parts.d/92-snap-install-gcloud) — `gcloud` CLI
+- [`❎ 92-snap-install-go`](./parts.d/92-snap-install-go) — Go
+- [`⬜ 92-snap-install-node`](./parts.d/92-snap-install-node) — Node & `npm`
+- [`⬜ 92-snap-install-powershell`](./parts.d/92-snap-install-powershell) —
+  PowerShell
+- [`⬜ 93-tools-install-apt`](./parts.d/93-tools-install-apt) — additional tools
+  (APT-packages)
+- [`❎ 93-tools-install-bins`](./parts.d/93-tools-install-bins) — install all
+  tools in [`📂 bins.d`](#binsd)
+  - includes [`fastfetch`](https://github.com/fastfetch-cli/fastfetch) (relevant
+    for the terminal-experience)
+- [`⬜ 93-tools-install-gh`](./parts.d/93-tools-install-gh) — tools for the
+  GitHub CLI
+- [`❎ 93-tools-install-go`](./parts.d/93-tools-install-go) — additional tools
+  (written in Go)
+  - includes [`powerline-go`](https://github.com/justjanne/powerline-go)
+    (relevant for the terminal-experience)
+- [`⬜ 93-tools-install-python`](./parts.d/93-tools-install-python) — additional
+  tools (written in Python)
+
+Note that these scripts assume a "full" Ubuntu installation. Coming from a
+minimal installation, the following packages (most likely) need to be installed
+first:
+
+```shell
+apt install \
+  curl \
+  gpg \
+  lsb-release \
+  software-properties-common \
+  sudo \
+  tzdata
+```
+
+### `bins.d`
 
 A handful of convenience scripts are provided that either pull binaries directly
 from GitHub, or have fully customised installation procedures.
@@ -63,34 +155,12 @@ To install a non-predefined version of a tool, do:
 version=v2.12.0 ./hadolint
 ```
 
-### Configuration changes
-
-A handful of scripts in [`📂 parts.d`](./parts.d/) make configuration changes
-instead of symlinking files from this Git-repository:
-
-- 🟢 [`📄 90-motd`](./parts.d/90-motd) — removes some unnecessary clutter from
-  the default MOTD
-- 🚫 [`📄 90-ubuntu-pro`](./parts.d/90-ubuntu-pro) — removes additional clutter
-  from MOTD and `apt` introduced by Ubuntu Pro
-- 🚫 [`📄 91-apt-add-repository`](./parts.d/91-apt-add-repository) — adds a set
-  of third-party `apt`-repositories (Node.js, Microsoft, etc.)
-- 🚫 [`📄 92-apt-install`](./parts.d/92-apt-install) — installs several
-  apt-packages
-- 🚫 [`📄 92-snap-install`](./parts.d/92-snap-install) — installs several snaps
-- 🚫 [`📄 93-go-install`](./parts.d/93-go-install) — compiles binaries for
-  several tools written in Go
-- 🚫 [`📄 93-install`](./parts.d/93-install) — installs several packages that
-  don't come via `apt`, `snap`, or `go`
-  - This steps also executes all scripts in [`📂 bins.d`](./bins.d)
-
-Scripts marked with 🚫 are not executable by default.
-
-### Git configuration
+## Git configuration
 
 The Git user configuration (i.e., name and e-mail address) is split from the
-main configuration in `📄 ~/.gitconfig_personal`. To add additional
-(folder-based; dynamic) user configurations, modify `📄 ~/.gitconfig` along the
-lines of:
+main configuration in [`📄 ~/.gitconfig_personal`](/.gitconfig_personal). To add
+additional (folder-based; dynamic) user configurations, modify
+[`📄 ~/.gitconfig`](/.gitconfig) along the lines of:
 
 ```conf
 [include]
@@ -103,32 +173,8 @@ lines of:
   ...
 ```
 
-To prevent a locally modified version of `📄 ~/.gitconfig` from (accidentally)
-getting committed back into the repository, this "trick" can be applied:
-
-```shell
-git update-index --assume-unchanged .gitconfig
-```
-
-Note that remote updates to the file (i.e., `git pull`) will _nuke_ your local
-changes, so use with caution! This of course works for any — locally modified —
-files you don't want to commit back into the repository...
-
-To undo:
-
-```shell
-git update-index --no-assume-unchanged .gitconfig
-```
-
-### Raspberry Pi
-
-By default, `📄 install.sh` installs the WSL2-setup. To have it install the
-Raspberry Pi-setup instead, do this prior running the installer:
-
-```bash
-chmod +x ./parts.d/*-rpi
-chmod -x ./parts.d/*-wsl
-```
+❗ **N.B.** Both the `📄 .gitconfig` and `📄 .gitconfig_personal` files are
+_copied_ (and not symlinked) from the repo.
 
 ## Uninstall
 
@@ -151,4 +197,5 @@ Omit `-delete` from the first command to get a list of symlinks instead of
 deleting them and manually remove the ones you don't need anymore.
 
 Note that this does _not_ undo any of the
-[configuration changes](#configuration-changes).
+[configuration changes](#configuration-changes) nor the
+[package installations](#package-installation).

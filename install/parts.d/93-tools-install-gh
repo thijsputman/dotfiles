@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# GitHub CLI should be authenticated before installing extensions; pending
+# resolution of <https://github.com/cli/cli/issues/2680>...
+
+if ! gh auth status; then
+  echo '  ⛔ Run "gh auth" before installing GitHub CLI extensions...' >&3
+  return 0
+fi
+
+echo "  😺 gh copilot" >&3
+gh extension install github/gh-copilot
+
+echo "  😺 gh act" >&3
+gh extension install nektos/gh-act

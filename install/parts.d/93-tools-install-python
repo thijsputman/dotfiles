@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if ! [[ $PATH =~ (^|:)"$HOME/.local/bin"(:|$) ]]; then
+  echo "  ⚠️ Add \"📂 $HOME/.local/bin\" to PATH... " >&3
+  export PATH="$PATH:$HOME/.local/bin"
+fi
+
+echo "  🐍 pipx" >&3
+PIP_REQUIRE_VIRTUALENV=false pip install --user pipx
+
+echo "  🐍 pre-commit" >&3
+pipx install pre-commit
+
+echo "  🐍 yamllint" >&3
+pipx install yamllint

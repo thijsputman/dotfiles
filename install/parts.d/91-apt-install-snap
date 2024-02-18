@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+sudo apt-get update
+
+if ! commad -v snap; then
+
+  sudo DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y \
+    snapd
+
+fi
+
+sudo DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y \
+  xdg-desktop-portal \
+  xdg-desktop-portal-gtk

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+arch=$(dpkg --print-architecture)
+lsb_id=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
+lsb_codename=$(lsb_release -cs)
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg |
+  sudo gpg --dearmor --yes -o /usr/share/keyrings/docker.gpg
+
+echo \
+  deb [arch="$arch" signed-by=/usr/share/keyrings/docker.gpg] \
+  "https://download.docker.com/linux/$lsb_id" "$lsb_codename" stable |
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+
+sudo DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y \
+  containerd.io \
+  docker-buildx-plugin \
+  docker-ce \
+  docker-ce-cli \
+  docker-compose-plugin
+
+if [ -v USER ]; then
+  sudo usermod -aG docker "$USER"
+fi
