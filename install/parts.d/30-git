@@ -4,14 +4,17 @@ if [ ! -e ~/.gitattributes_global ]; then
   ln -s -r "${base:?}/.gitattributes_global" ~/.gitattributes_global
 fi
 
+if [ ! -e ~/.gitignore_global ]; then
+  ln -s -r "${base:?}/.gitignore_global" ~/.gitignore_global
+fi
+
+# Copy (instead of symlink) Git configuration – it's often modified locally, so
+# best to separate it from the dotfiles-repository...
+
 if [ ! -e ~/.gitconfig ]; then
-  ln -s -r "${base:?}/.gitconfig" ~/.gitconfig
+  cp "${base:?}/.gitconfig" ~/.gitconfig
 fi
 
 if [ ! -e ~/.gitconfig_personal ]; then
-  ln -s -r "${base:?}/.gitconfig_personal" ~/.gitconfig_personal
-fi
-
-if [ ! -e ~/.gitignore_global ]; then
-  ln -s -r "${base:?}/.gitignore_global" ~/.gitignore_global
+  cp "${base:?}/.gitconfig_personal" ~/.gitconfig_personal
 fi
