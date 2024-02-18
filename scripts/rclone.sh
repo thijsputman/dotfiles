@@ -12,10 +12,14 @@ rclone sync ~/.gnupg/trustedkeys.kbx onedrive:AppData/WSL/.gnupg
 rclone sync ~/.ssh/config onedrive:AppData/WSL/.ssh
 rclone sync ~/.bash_history onedrive:AppData/WSL/
 
+# Backup (personal) Git configuration
+rclone sync ~/ onedrive:AppData/WSL/ --max-depth 1 --skip-links \
+  --include "/.gitconfig*"
+
 # Backup ESPHome configuration
 
-rclone sync ~/esphome --max-depth 1 --exclude secrets.yaml \
-  onedrive:AppData/WSL/esphome/
+rclone sync ~/esphome --max-depth 2 --exclude secrets.yaml \
+  --exclude .gitignore onedrive:AppData/WSL/esphome/
 
 # Remove all WPA-keys prior to uploading secrets.yaml – bit crude: The file is
 # copied unconditionally (there doesn't appear to be an rclone-"native" way to
