@@ -5,8 +5,14 @@ if ! [[ $PATH =~ (^|:)"$HOME/.local/bin"(:|$) ]]; then
   export PATH="$PATH:$HOME/.local/bin"
 fi
 
+# See /usr/share/doc/python3.11/README.venv
+
 echo "  🐍 pipx" >&3
-PIP_REQUIRE_VIRTUALENV=false pip install --user pipx
+(
+  export PIP_REQUIRE_VIRTUALENV=false
+  export PIP_BREAK_SYSTEM_PACKAGES=1
+  pip install --user pipx
+)
 
 echo "  🐍 pre-commit" >&3
 pipx install pre-commit
