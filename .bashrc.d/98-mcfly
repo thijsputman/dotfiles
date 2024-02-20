@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if command -v mcfly &> /dev/null; then
+
+  export MCFLY_FUZZY=2
+  export MCFLY_RESULTS=$(($(tput lines) - 4))
+  export MCFLY_INTERFACE_VIEW=BOTTOM
+
+  eval "$(mcfly init bash)"
+
+fi

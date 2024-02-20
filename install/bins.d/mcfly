@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+arch=$(uname -m)
+base=https://github.com/cantino/mcfly/releases/download
+: "${version:=v0.8.4}"
+
+wget -nv -O- \
+  "${base}/${version}/mcfly-${version}-${arch}-unknown-linux-musl.tar.gz" |
+  tar -xzv
+mv -f mcfly ~/.local/bin
+
+command -v mcfly && mcfly --version
