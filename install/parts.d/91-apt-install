@@ -15,6 +15,7 @@ sudo DEBIAN_FRONTEND=noninteractive \
   jq \
   net-tools \
   nullmailer \
+  software-properties-common \
   plocate
 
 echo '  📢 "nullmailer" requires manual configuration... ' >&3
