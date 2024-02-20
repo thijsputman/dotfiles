@@ -5,6 +5,7 @@
 - [Configuration changes](#configuration-changes)
 - [Package installation](#package-installation)
   - [`bins.d`](#binsd)
+  - [Outdated `glibc`](#outdated-glibc)
 - [Git configuration](#git-configuration)
 - [Uninstall](#uninstall)
 
@@ -64,13 +65,17 @@ changes instead of symlinking/copying files from this repo:
 
 - [`❎ 90-auto-upgrades`](./parts.d/90-auto-upgrades) — configure
   `unattended-upgrades` to check but not automatically install updates
+- [`⬜ 90-gpg-agent-rpi`](./parts.d/90-gpg-agent-rpi) — mask all `gpg-agent`
+  related units
+  - RPi-only; use a forwarded socket for GPG operations instead
 - [`❎ 90-motd`](./parts.d/90-motd) — removes some unnecessary clutter from the
   default MOTD
 - [`⬜ 90-ubuntu-pro`](./parts.d/90-ubuntu-pro) — removes additional clutter
   from MOTD and `apt` introduced by Ubuntu Pro
 
 Scripts marked with ⬜ are not executable by default – run them manually via
-`install.sh` (e.g. `install.sh 90-ubuntu-pro`).
+`install.sh` (e.g. `install.sh 90-ubuntu-pro`) or `chmod +x` them before calling
+`install.sh`.
 
 ## Package installation
 
@@ -131,7 +136,6 @@ apt install \
   curl \
   gpg \
   lsb-release \
-  software-properties-common \
   sudo \
   tzdata
 ```
@@ -154,6 +158,39 @@ To install a non-predefined version of a tool, do:
 ```shell
 version=v2.12.0 ./hadolint
 ```
+
+### Outdated `glibc`
+
+On older distros (e.g. Ubuntu 20.04 and Debian 11 `bullseye`), issues due to an
+outdated version of `glibc` start popping up. If it's not feasible to upgrade
+the distro (the better solution), the below instructions offer a workaround.
+
+The example assumes [`fastfetch`](https://github.com/fastfetch-cli/fastfetch) on
+`arm64`, but it should work for other applications and architectures too –
+mileage may vary...
+
+```shell
+wget -nv https://ftp.gnu.org/gnu/glibc/glibc-2.35.tar.gz
+tar -zxvf glibc-2.35.tar.gz
+cd glibc-2.35
+mkdir glibc-build
+cd glibc-build
+../configure --prefix=/opt/glibc-2.35
+# If "../configure" fails, one of these is probably missing:
+#   gawk bison gcc make wget tar
+make -j"$(nproc)"
+make install
+```
+
+Then patch the executable(s) in question:
+
+```shell
+sudo patchelf \
+  --set-interpreter /opt/glibc-2.35/lib/ld-linux-aarch64.so.1 \
+  --set-rpath /opt/glibc-2.35/lib /usr/bin/fastfetch
+```
+
+Note that `ld-linux-aarch64.so.1` is architecture dependent...
 
 ## Git configuration
 
@@ -182,20 +219,19 @@ To "uninstall", run these commands in `📂 ~/`:
 
 ```bash
 find -lname '**/dotfiles/**' -delete
-rm ~/.env
 rm -rf ~/.anacron
 crontab -l | grep -v '^@hourly .* $HOME/.anacron/etc/anacrontab' | crontab -
 cp /etc/skel/.bashrc ~/.bashrc
 ```
 
 This removes all symlinks pointing to `📂 **/dotfiles/**` (assuming that's what
-this Git-repository is called), removes `📄 ~/.env` and `📂 ~/.anacron` created
-during installation, removes the anacron `crontab`-entry, and restores
-`📄 ~/.bashrc` to its default state.
+this Git-repository is called), the `📂 ~/.anacron` folder and its
+`crontab`-entry, and restores `📄 ~/.bashrc` to its default state.
 
 Omit `-delete` from the first command to get a list of symlinks instead of
 deleting them and manually remove the ones you don't need anymore.
 
-Note that this does _not_ undo any of the
+Note that this leaves behind all files they were copied in (instead of
+symlinked) and that this does _not_ undo any of the
 [configuration changes](#configuration-changes) nor the
 [package installations](#package-installation).
