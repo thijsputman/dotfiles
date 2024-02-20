@@ -5,10 +5,10 @@
 histsize=5000
 histfilesize=20000
 
-sed -i "s/^HISTSIZE=[0-9]\+/HISTSIZE=$histsize/g" "${bashrc:?}"
-sed -i "s/^HISTFILESIZE=[0-9]\+/HISTFILESIZE=$histfilesize/g" "${bashrc:?}"
+sed -i "s/^HISTSIZE=[0-9]\+/HISTSIZE=$histsize/g" ~/.bashrc
+sed -i "s/^HISTFILESIZE=[0-9]\+/HISTFILESIZE=$histfilesize/g" ~/.bashrc
 
 # Force colour prompt
 
-sed -i '/^#force_color_prompt=/s/^#//g' "${bashrc:?}"
-sed -i '/^force_color_prompt=/s/no/yes/g' "${bashrc:?}"
+sed -i '/^#force_color_prompt=/s/^#//g' ~/.bashrc
+sed -i '/^force_color_prompt=/s/no/yes/g' ~/.bashrc

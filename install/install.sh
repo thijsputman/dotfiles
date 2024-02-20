@@ -3,7 +3,6 @@
 
 set -euo pipefail
 
-bashrc=~/.bashrc
 base=$(dirname "$(realpath "$(dirname "${BASH_SOURCE[0]}")")")
 
 sudo -v
