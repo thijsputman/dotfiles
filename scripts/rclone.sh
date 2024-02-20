@@ -16,6 +16,11 @@ rclone sync ~/.bash_history onedrive:AppData/WSL/
 rclone sync ~/ onedrive:AppData/WSL/ --max-depth 1 --skip-links \
   --include "/.gitconfig*"
 
+# Backup some files from ~/.config
+
+rclone sync ~/.config onedrive:AppData/WSL/.config --max-depth 2 --skip-links \
+  --include "/{b,h}top/*"
+
 # Backup ESPHome configuration
 
 rclone sync ~/esphome --max-depth 2 --exclude secrets.yaml \

@@ -14,11 +14,8 @@ if [ ! -e ~/.config/fastfetch/config.jsonc ]; then
     ~/.config/fastfetch/config.jsonc
 fi
 
-# Copy in htop's settings – as its parsing is quite primitive, don't symlink to
-# avoid issues with different versions of htop
-
-if [ ! -e ~/.config/htop/htoprc ]; then
-  mkdir -p ~/.config/htop
-  cp "${base:?}/.config/htop/htoprc" \
-    ~/.config/htop/htoprc
+if [ ! -e ~/.config/powerline-go/config.json ]; then
+  mkdir -p ~/.config/powerline-go
+  ln -s -r "${base:?}/.config/powerline-go/config.json" \
+    ~/.config/powerline-go/config.json
 fi
