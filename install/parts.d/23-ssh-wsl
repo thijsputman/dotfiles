@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if ! command -v locate; then
+  echo '  ⛔ Skipping "🔗 ~/.ssh/config" — locate not present...' >&3
+  return 0
+fi
+
+locate_ssh="$(locate -l 1 -r '/mnt/d/.*/WSL/.ssh/config$')"
+
+if [ ! -e ~/.ssh/config ] && [ -n "$locate_ssh" ]; then
+  chmod 0600 "$locate_ssh"
+  ln -s "$locate_ssh" ~/.ssh/config
+  echo "  🔗  ~/.ssh/config ← $locate_ssh" >&3
+fi
