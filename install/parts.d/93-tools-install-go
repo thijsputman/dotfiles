@@ -5,7 +5,7 @@ export GOPATH
 
 if ! [[ $PATH =~ (^|:)"$GOPATH/bin"(:|$) ]]; then
   echo "  ⚠️ Add \"📂 $GOPATH/bin\" to PATH... " >&3
-  export PATH="$PATH:$GOPATH/bin"
+  PATH="$PATH:$GOPATH/bin"
 fi
 
 echo "  🐹 powerline-go" >&3

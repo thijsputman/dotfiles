@@ -3,7 +3,7 @@
 
 if ! [[ $PATH =~ (^|:)"$HOME/.local/bin"(:|$) ]]; then
   echo "  ⚠️ Add \"📂 $HOME/.local/bin\" to PATH... " >&3
-  export PATH="$PATH:$HOME/.local/bin"
+  PATH="$PATH:$HOME/.local/bin"
 fi
 
 for file in "${base:?}"/install/bins.d/**; do
