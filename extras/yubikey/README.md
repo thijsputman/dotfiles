@@ -261,11 +261,24 @@ revoked and expired keys).
 
 ### Linux (generic)
 
-Import the key on each machine where you want to use it:
+Import the key to each machine where you intend to use it:
 
 ```bash
 gpg --import ~/gpg-0x\*.asc
 gpg --edit-key ______
+> trust
+>> 5
+>> y
+```
+
+Ensure `scdaemon` and `pcscd` are installed – might need to restart `gpg-agent`
+for it to pick things up properly:
+
+```shell
+sudo apt install scdaemon pcscd
+gpgconf --kill gpg-agent
+gpg-connect-agent reloadagent /bye
+gpg --card-status
 ```
 
 I personally only have it imported on my daily driver; using SSH agent
@@ -279,28 +292,46 @@ the offending machine...
 
 _Optional:_ Save public key (from Yubikey) for identity file configuration.
 Mainly useful to explicitly configure a connection to use the Yubikey (via
-[`📄 ~/.ssh/config`](../../static/linux/home/.ssh/config)).
+[`📄 ~/.ssh/config`](/static/linux/home/.ssh/config)).
 
 ```bash
 ssh-add -L | grep "cardno:000______" > ~/.ssh/id_rsa_yubikey.pub
 ```
 
-See [`📄 ~/.ssh/config`](../../static/linux/home/.ssh/config) for more details.
-
 ### Windows
 
 On the windows-side install the following to use the Yubikey for SSH operations:
 
-- [Microsoft OpenSSH](https://github.com/PowerShell/Win32-OpenSSH) (from GitHub)
+- [Microsoft OpenSSH](https://github.com/PowerShell/Win32-OpenSSH) –
+  `winget install Microsoft.OpenSSH.Beta`
 - [GnuPG (win32)](https://www.gnupg.org/ftp/gcrypt/binary/gnupg-w32-2.4.0_20221216.exe)
-  — _don't_ install Gpg4win; the basic binaries distributed directly by GnuPG
-  suffice...
+  – `winget install GnuPG.GnuPG`
+  - _Don't_ install Gpg4win; the basic binaries distributed directly by GnuPG
+    suffice...
   - Use [`run-hidden`](https://github.com/stax76/run-hidden) in combination with
     _Task Scheduler_ to run the agent at logon: `run-hidden gpg-agent --daemon`
-- [wsl-ssh-pageant](https://github.com/benpye/wsl-ssh-pageant)
+- [`wsl-ssh-pageant`](https://github.com/benpye/wsl-ssh-pageant)
   - Use _Task Scheduler_ to run the `wsl-ssh-pageant` at logon:
     `wsl-ssh-pageant-gui.exe --winssh ssh-pageant`
   - Set `SSH_AUTH_SOCK=\\.\pipe\ssh-pageant` in your Windows (user) environment
+- [Yubikey mini-driver](https://www.yubico.com/support/download/smart-card-drivers-tools/)
+  and optionally the
+  [Yubikey Manager](https://www.yubico.com/support/download/yubikey-manager/) –
+  `winget install Yubico.YubikeyManager`
+
+Then, make the following configuration changes:
+
+- Copy
+  [`📄 gpg-agent.conf`](/static/windows/AppData/Roaming/gnupg/gpg-agent.conf) to
+  `📂 %APPDATA%/gnupg`
+- Copy `📄 ~/.ssh/id_rsa_yubikey.pub` from the Linux-side, and symlink the
+  Windows SSH `📄 config` from OneDrive into`📂 %USERPROFILE%/.ssh`
+- Import the Yubikey's public GPG-key in Windows' OpenSSH (see the
+  [Linux-instructions](#linux-generic); use `openssh.exe`)
+
+❗**N.B.** After doing all of the above, logout and log back in to ensure the
+environment changes properly propogated to the tasks started via _Task
+Scheduler_.
 
 This should allow SSH connections to be authenticated via Windows' OpenSSH
 through the Yubikey. A GnuPG window will popup asking for the Yubikey PIN.
@@ -310,9 +341,13 @@ for that.
 ### WSL2
 
 To allow the Yubikey to be used from within WSL2, install
-**[`usbipd-win`](https://github.com/dorssel/usbipd-win)**.
+**[`usbipd-win`](https://github.com/dorssel/usbipd-win)** on the Windows-side:
 
-On the WSL2-side:
+```shell
+winget install usbipd
+```
+
+Then, on the WSL2-side:
 
 ```shell
 sudo apt install linux-tools-virtual hwdata
@@ -320,8 +355,16 @@ sudo update-alternatives --install /usr/local/bin/usbip usbip \
   "$(ls /usr/lib/linux-tools/*/usbip | tail -n1)" 20
 ```
 
-**N.B.** If `linux-tools-virtual` gets updated, it might be necessary to reapply
-the `update-alternatives` for `usbip`.
+This processed is automated by
+[`📄 install/parts.d/40-yubikey-wsl`](/install/parts.d/40-yubikey-wsl) and
+[`📄 install/parts.d/91-apt-install-yubikey`](/install/parts.d/91-apt-install-yubikey).
+
+❗**N.B.** If `linux-tools-virtual` gets updated, it might be necessary to
+reapply the `update-alternatives` for `usbip`
+(rerun`install/install.sh 40-yubikey-wsl`).
+
+Note the difference between `usbipd` (which is _not_ supposed to work on the
+WSL2-side) and `usbip` which _is_ supposed to work...
 
 The Yubikey needs to be bound on the Windows-side once before it can be used.
 From an _elevated_ PowerShell-prompt run:
@@ -338,23 +381,30 @@ yubikey-attach
 yubikey-detach # Alternatively, physically detach and reattach the key...
 ```
 
+Note that for these to work, you'll need to set an appropriate `USBIP_HOST` and
+`USBIP_BUSID` in your `📄 ~/.env`.
+
 The most common commands requiring the Yubikey to be attached (`git` and `ssh`)
 are wrapped with an automatic `yubikey-attach`. For maximum flexibility, ensure
-**WSLg** is properly configured so that a GUI `pinentry` dialogue can be
-shown...
+**WSLg** is properly configured so that a GUI `pinentry` dialogue can be shown:
+
+```shell
+sudo apt install pinentry-gnome3
+sudo update-alternatives --config pinentry # should be "pinentry-gnome3"
+```
 
 The main functionality is provided by
-[`📄 ~/.bashrc.d/40-gpg-yubikey-wsl`](../../.bashrc.d/40-gpg-yubikey-wsl) — see
-that script for more details.
+[`📄 ~/.bashrc.d/40-gpg-yubikey-wsl`](/.bashrc.d/40-gpg-yubikey-wsl) — see that
+script for more details.
 
 To prevent relentless `sudo`-prompts, update your configuration with the
 following:
-[`📄 /etc/sudoers.d/80-yubikey`](../../static/linux/etc/sudoers.d/80-yubikey)
+[`📄 /etc/sudoers.d/80-yubikey`](/static/linux/etc/sudoers.d/80-yubikey)
 (`sudo visudo -f /etc/sudoers.d/80-yubikey`).
 
 Additional convenience for using the Yubikey via SSH on remote machines is
 provided through
-[`📄 ~/.bashrc.d/41-ssh-remote-rpi`](../../.bashrc.d/41-ssh-remote-rpi).
+[`📄 ~/.bashrc.d/41-ssh-remote-rpi`](/.bashrc.d/41-ssh-remote-rpi).
 
 #### Fixed IP address / Firewall
 
