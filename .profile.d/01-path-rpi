@@ -1,7 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-path-add /opt/vc/bin
-export PATH
+path_add /opt/vc/bin
 
 LD_LIBRARY_PATH=/opt/vc/lib
 export LD_LIBRARY_PATH

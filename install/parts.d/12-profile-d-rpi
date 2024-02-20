@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ -d ~/.profile.d ] && [ -L ~/.profile.d ]; then
+
+  chmod +x ~/.profile.d/*-rpi
+  chmod -x ~/.profile.d/*-wsl
+
+fi

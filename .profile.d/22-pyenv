@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+if [ -d "$HOME/.pyenv" ]; then
+
+  PYENV_ROOT="$HOME/.pyenv"
+  path_add "$PYENV_ROOT/bin"
+
+  export PYENV_ROOT
+
+fi

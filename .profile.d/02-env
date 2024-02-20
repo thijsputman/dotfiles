@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export PIP_REQUIRE_VIRTUALENV=true
@@ -7,9 +7,9 @@ dotenv() {
   set -a
   # shellcheck disable=SC1090,SC1091
   if [ -f "$1" ]; then
-    source "$1"
+    . "$1"
   elif [ -f .env ]; then
-    source .env
+    . .env
   fi
   set +a
 }

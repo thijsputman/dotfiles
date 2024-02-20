@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+path_add /mnt/c/WINDOWS/system32
+path_add /mnt/c/WINDOWS
+path_add /mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft\ VS\ Code/bin
+path_add /mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps

@@ -1,14 +1,5 @@
 #!/usr/bin/env bash
 
-# Manually append (relevant) Windows path-entries for WSL-interop
-
-path-add /mnt/c/WINDOWS/system32
-path-add /mnt/c/WINDOWS
-path-add /mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft\ VS\ Code/bin
-path-add /mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps
-
-export PATH
-
 # Ensure WSL-interop is working
 #
 # This has now bitten me too many times: A non-functional interop subtly breaks

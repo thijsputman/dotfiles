@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+if [ ! -e ~/.profile.d ]; then
+  ln -s -r "${base:?}/.profile.d" ~/.profile.d
+fi
+
+if ! grep -q '^# Source parts from ~/\.profile\.d$' ~/.profile; then
+
+  # Ensure ~/.bashrc knows it's being sourced from ~/.profile – if so, it should
+  # _not_ source anything from ~/.bashrc.d; we do that from ~/.profile instead.
+
+  sed -i "s/^\(\s*\)\(\. \"\$HOME\/\.bashrc\"\)/\1profile_sourced=1 \2/g" \
+    ~/.profile
+
+  cat <<- 'EOF' >> ~/.profile
+
+		# Source parts from ~/.profile.d
+		for file in "$HOME"/.profile.d/**; do
+		  if [ -x "$file" ]; then source "$file" ; fi
+		done
+
+		# Source parts from ~/.bashrc.d (interactive Bash-shell)
+		if [ -n "$BASH_VERSION" ]; then
+		  case $- in
+		    *i*) ;;
+		    *) return ;;
+		  esac
+		  for file in "$HOME"/.bashrc.d/**; do
+		    if [ -x "$file" ]; then source "$file" ; fi
+		  done
+		fi
+	EOF
+  # N.B., mind the tab-indentation inside the heredoc! It's intentionally mixed
+  # tabs and spaces, to ensure the end-result is indented correctly...
+
+fi

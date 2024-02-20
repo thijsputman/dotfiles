@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # Courtesy of <https://unix.stackexchange.com/a/4973>
 
-path-add() {
+path_add() {
 
   for directory; do
 

@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 export GOPATH="$HOME/.local/go"
 
 if [ -d "$GOPATH/bin" ]; then
-  path-add "$GOPATH/bin"
+  path_add "$GOPATH/bin"
 fi

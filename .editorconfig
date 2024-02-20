@@ -5,7 +5,7 @@ indent_style = space
 indent_size = 2
 space_redirects = true
 
-[{.bashrc.d,.local/bin,install/parts.d,install/bins.d}/**]
+[{.bashrc.d,.profile.d,.local/bin,install/parts.d,install/bins.d}/**]
 indent_style = space
 indent_size = 2
 space_redirects = true

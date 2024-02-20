@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -d "$HOME/.pyenv" ]; then
-
-  PYENV_ROOT="$HOME/.pyenv"
-  path-add "$PYENV_ROOT/bin"
-
-  export PYENV_ROOT
+if [ -d "$PYENV_ROOT" ]; then
 
   eval "$(pyenv init -)"
 

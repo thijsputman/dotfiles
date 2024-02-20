@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+if [ -d "$HOME/.config/composer/vendor/bin" ]; then
+  path_add "$HOME/.config/composer/vendor/bin"
+fi
