@@ -9,10 +9,10 @@
 - [Git configuration](#git-configuration)
 - [Uninstall](#uninstall)
 
-Run [`📄 install.sh`](./install.sh) to setup [`📂 ~/.bashrc.d`](../.bashrc.d/),
-create various configuration file symlinks, make some further
-[configuration changes](#configuration-changes), and optionally
-[install required packages](#package-installation).
+Run [`📄 install.sh`](./install.sh) to setup [`📂 ~/.bashrc.d`](../.bashrc.d/)
+and [`📂 ~/.profile.d`](../.profile.d/), create various configuration file
+symlinks, make some further [configuration changes](#configuration-changes), and
+optionally [install required packages](#package-installation).
 
 ❗ **N.B.** After a clean install, it is recommended
 [to install packages](#package-installation) prior to running a "bare"
@@ -116,8 +116,9 @@ executed:
   (APT-packages)
 - [`❎ 93-tools-install-bins`](./parts.d/93-tools-install-bins) — install all
   tools in [`📂 bins.d`](#binsd)
-  - includes [`fastfetch`](https://github.com/fastfetch-cli/fastfetch) (relevant
-    for the terminal-experience)
+  - includes [`fastfetch`](https://github.com/fastfetch-cli/fastfetch) and
+    [`mcfly`](https://github.com/cantino/mcfly) (relevant for the
+    terminal-experience)
 - [`⬜ 93-tools-install-gh`](./parts.d/93-tools-install-gh) — tools for the
   GitHub CLI
 - [`❎ 93-tools-install-go`](./parts.d/93-tools-install-go) — additional tools
@@ -221,17 +222,21 @@ To "uninstall", run these commands in `📂 ~/`:
 find -lname '**/dotfiles/**' -delete
 rm -rf ~/.anacron
 crontab -l | grep -v '^@hourly .* $HOME/.anacron/etc/anacrontab' | crontab -
-cp /etc/skel/.bashrc ~/.bashrc
+cp /etc/skel/{.bashrc,.profile} ~/
 ```
 
 This removes all symlinks pointing to `📂 **/dotfiles/**` (assuming that's what
 this Git-repository is called), the `📂 ~/.anacron` folder and its
-`crontab`-entry, and restores `📄 ~/.bashrc` to its default state.
+`crontab`-entry, and restores `📄 ~/.bashrc` and `📄 ~/.profile` to their
+default state.
 
 Omit `-delete` from the first command to get a list of symlinks instead of
 deleting them and manually remove the ones you don't need anymore.
 
-Note that this leaves behind all files they were copied in (instead of
+All files symlinked to locations _outside_ of the Git-repository are explicitly
+mentioned during the installation process; you'll need to manually remove those.
+
+Note that the above leaves behind all files they were _copied_ (instead of
 symlinked) and that this does _not_ undo any of the
 [configuration changes](#configuration-changes) nor the
 [package installations](#package-installation).
