@@ -7,6 +7,9 @@ rclone sync ~/.gnupg/trustedkeys.kbx onedrive:AppData/WSL/.gnupg
 
 rclone sync ~/.bash_history onedrive:AppData/WSL/
 
+rclone sync ~/.local/share/mcfly/history.db \
+  onedrive:AppData/WSL/.local/share/mcfly
+
 # Backup (personal) Git configuration
 rclone sync ~/ onedrive:AppData/WSL/ --max-depth 1 --skip-links \
   --include "/.gitconfig*"
