@@ -1,13 +1,16 @@
-# Install `📂 .bashrc.d`
+# Setup `📂 ~/.bashrc.d` & `📂 ~/.profile.d`
 
-- [Run individual parts](#run-individual-parts)
-- [Raspberry Pi](#raspberry-pi)
+- [Install](#install)
+  - [Run individual parts](#run-individual-parts)
+  - [Raspberry Pi](#raspberry-pi)
 - [Configuration changes](#configuration-changes)
 - [Package installation](#package-installation)
   - [`bins.d`](#binsd)
   - [Outdated `glibc`](#outdated-glibc)
 - [Git configuration](#git-configuration)
 - [Uninstall](#uninstall)
+
+## Install
 
 Run [`📄 install.sh`](./install.sh) to setup [`📂 ~/.bashrc.d`](../.bashrc.d/)
 and [`📂 ~/.profile.d`](../.profile.d/), create various configuration file
@@ -30,7 +33,7 @@ During installation, `📄 ~/.env` is created from
 (without setting any of their values). Make sure to fill out all relevant
 environment variables before continuing.
 
-## Run individual parts
+### Run individual parts
 
 It is possible to run only a subset of parts by using `install.sh <pattern>`.
 This is the recommended way of running individual parts as most of them depend
@@ -48,7 +51,7 @@ executed (with their `stdout` hidden; only shown in case of errors).
 Note that when running individual parts, the scripts' execute-bit (`chmod +x`)
 is _ignored_. All matching scripts are run regardless.
 
-## Raspberry Pi
+### Raspberry Pi
 
 By default, `📄 install.sh` installs the WSL2-setup. To have it install the
 Raspberry Pi-setup instead, do this prior running the installer:
