@@ -2,26 +2,22 @@
 
 xauth add :0 . "$(mcookie)"
 
-if ! command -v locate; then
-  printf '  ⛔ Skipping "🔗 ~/Desktop" and "🔗 ~/Downloads" — ' >&3
-  printf 'locate not present...\n' >&3
-  return 0
+# Symlink ~/Desktop and ~/Downloads
+
+if [ ! -e ~/Desktop ]; then
+  if [ ! -d /mnt/d/Thijs/Desktop ]; then
+    echo '  ⛔ Skipping "🔗 ~/Desktop" — target not found...' >&3
+    return 0
+  fi
+  ln -s /mnt/d/Thijs/Desktop ~/Desktop
+  echo "  🔗 ~/Desktop ← /mnt/d/Thijs/Desktop" >&3
 fi
 
-# ~/Desktop
-
-locate_desktop="$(locate -l 1 -r '/mnt/d/.*/Desktop$')"
-
-if [ ! -e ~/Desktop ] && [ -n "$locate_desktop" ]; then
-  ln -s "$locate_desktop" Desktop
-  echo "  🔗 ~/Desktop ← $locate_desktop" >&3
-fi
-
-# ~/Downloads
-
-locate_downloads="$(locate -l 1 -r '/mnt/d/.*/Downloads$')"
-
-if [ ! -e ~/Downloads ] && [ -n "$locate_downloads" ]; then
-  ln -s "$locate_downloads" Downloads
-  echo "  🔗 ~/Downloads ← $locate_downloads" >&3
+if [ ! -e ~/Downloads ]; then
+  if [ ! -d /mnt/d/Thijs/Desktop ]; then
+    echo '  ⛔ Skipping "🔗 ~/Downloads" — target not found...' >&3
+    return 0
+  fi
+  ln -s /mnt/d/Thijs/Downloads ~/Downloads
+  echo "  🔗 ~/Downloads ← /mnt/d/Thijs/Downloads" >&3
 fi

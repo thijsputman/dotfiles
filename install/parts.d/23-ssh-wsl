@@ -5,10 +5,17 @@ if ! command -v locate; then
   return 0
 fi
 
-locate_ssh="$(locate -l 1 -r '/mnt/d/.*/WSL/.ssh/config$')"
+if [ ! -e ~/.ssh/config ]; then
 
-if [ ! -e ~/.ssh/config ] && [ -n "$locate_ssh" ]; then
+  locate_ssh="$(locate -l 1 -r '/mnt/d/.*/WSL/.ssh/config$')"
+
+  if [ -z "$locate_ssh" ]; then
+    echo '  ⛔ Skipping "🔗 ~/.ssh/config" — target not found...' >&3
+    return 0
+  fi
+
   chmod 0600 "$locate_ssh"
   ln -s "$locate_ssh" ~/.ssh/config
   echo "  🔗  ~/.ssh/config ← $locate_ssh" >&3
+
 fi
