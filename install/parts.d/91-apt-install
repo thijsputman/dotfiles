@@ -5,18 +5,24 @@ sudo mkdir -m 0755 -p /usr/share/keyrings/
 
 sudo apt-get update
 
-# Required for "📂.bashrc.d"-scripts
+# Required for "📂 .bashrc.d"- and/or "📂 install/parts.d"-scripts
+
+sudo DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y \
+  direnv \
+  plocate \
+  software-properties-common
+
+# Common tools
 
 sudo DEBIAN_FRONTEND=noninteractive \
   apt-get install -y \
   bsd-mailx \
   btop \
-  direnv \
   jq \
   net-tools \
   nullmailer \
-  software-properties-common \
-  plocate
+  traceroute
 
 echo '  📢 "nullmailer" requires manual configuration... ' >&3
 
