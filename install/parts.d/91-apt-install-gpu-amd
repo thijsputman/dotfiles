@@ -7,8 +7,10 @@ sudo apt-get update
 sudo DEBIAN_FRONTEND=noninteractive \
   apt-get install -y \
   libvulkan1 \
+  mesa-va-drivers \
   mesa-vulkan-drivers \
   mesa-utils \
+  vainfo \
   vulkan-tools
 
 sudo update-pciids
