@@ -10,6 +10,11 @@ rclone sync ~/.bash_history onedrive:AppData/WSL/
 rclone sync ~/.local/share/mcfly/history.db \
   onedrive:AppData/WSL/.local/share/mcfly
 
+# Backup custom Desktop-entries
+rclone sync ~/.local/share/applications \
+  onedrive:AppData/WSL/.local/share/applications --max-depth 1 \
+  --include "/*.desktop"
+
 # Backup (personal) Git configuration
 rclone sync ~/ onedrive:AppData/WSL/ --max-depth 1 --skip-links \
   --include "/.gitconfig*"

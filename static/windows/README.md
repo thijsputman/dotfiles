@@ -2,6 +2,7 @@
 
 - [`.wslconfig`](#wslconfig)
   - [Caveats](#caveats)
+- [`.wslgconfig`](#wslgconfig)
 - [SSH](#ssh)
   - [ProxyJump](#proxyjump)
 - [Move WSL2's VHDX-files](#move-wsl2s-vhdx-files)
@@ -70,6 +71,24 @@ running inside an container (ie, WSL2). To enable it for WSL2, run
 ConditionVirtualization=
 ConditionVirtualization=wsl
 ```
+
+## `.wslgconfig`
+
+WSLg automatically creates application shortcuts in Windows' Start Menu based
+upon `.desktop`-files. By default, it looks for these files in system-wide
+locations (e.g. `/usr/share/applications`, and
+`/var/lib/snapd/desktop/applications` for snaps).
+
+The updated
+[WSLg configuration](https://github.com/microsoft/wslg/issues/937#issuecomment-1421200151)
+makes it also look in `~/.local/share/applications/`. Files there get priority
+over the system-wide definitions.
+
+To modify to a `.desktop`-entry, copy it into the user-specific location and
+make changes there. To stop WSLg from creating a shortcut, add `NoDisplay=true`
+to the file in question.
+
+Changes (appear) to be picked up almost immediately by WSLg/Windows...
 
 ## SSH
 
