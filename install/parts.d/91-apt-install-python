@@ -13,17 +13,6 @@ if ! [[ $PATH =~ (^|:)"$HOME/.local/bin"(:|$) ]]; then
   PATH="$PATH:$HOME/.local/bin"
 fi
 
-if ! [ -d "$HOME/.pyenv" ]; then
-
-  if ! [[ $PATH =~ (^|:)"$HOME/.pyenv"(:|$) ]]; then
-    echo "  ⚠️ Add \"📂 $HOME/.pyenv\" to PATH... " >&3
-    PATH="$PATH:$HOME/.pyenv"
-  fi
-
-  curl https://pyenv.run | bash
-
-fi
-
 # Ignore the warning in /usr/share/doc/python3.11/README.venv – we want these
 # packages to be user-managed, not system-managed...
 
