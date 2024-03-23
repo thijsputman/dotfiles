@@ -2,6 +2,11 @@
 
 mkdir -p ~/.config
 
+if [ ! -e ~/.config/hadolint.yaml ]; then
+  ln -s -r "${base:?}/.config/hadolint.yaml" \
+    ~/.config/hadolint.yaml
+fi
+
 if [ ! -e ~/.config/gh/config.yml ]; then
   mkdir -p ~/.config/gh
   ln -s -r "${base:?}/.config/gh/config.yml" \
