@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+if [ -x /usr/bin/wslview ]; then
+
+  # Work around Python's "webbrowser-open" issue(s) with wslu – based on:
+  #   <https://stackoverflow.com/a/73506160>.
+
+  export BROWSER=/usr/bin/wslview
+
+fi
