@@ -2,7 +2,7 @@
 
 sudo apt-get update
 
-if ! commad -v snap; then
+if ! command -v snap; then
 
   sudo DEBIAN_FRONTEND=noninteractive \
     apt-get install -y \

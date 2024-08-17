@@ -8,6 +8,7 @@ sudo DEBIAN_FRONTEND=noninteractive \
   apt-get install -y \
   libvulkan1 \
   mesa-va-drivers \
+  mesa-vdpau-drivers \
   mesa-vulkan-drivers \
   mesa-utils \
   vainfo \

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Remove some of the Ubuntu Pro "nudges" — courtesy of
-# https://askubuntu.com/a/1452520
+# <https://askubuntu.com/a/1452520>
 
 sudo systemctl mask apt-news.service
 sudo systemctl mask esm-cache.service

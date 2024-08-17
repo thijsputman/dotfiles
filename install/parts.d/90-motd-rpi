@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Disable "Wi-Fi rfkill"-warning (RPi OS)
+
+if [ -s /etc/profile.d/wifi-check.sh ]; then
+  sudo mv /etc/profile.d/{wifi-check.sh,.wifi-check.sh} || true
+fi

@@ -17,6 +17,7 @@ sudo DEBIAN_FRONTEND=noninteractive \
 
 sudo DEBIAN_FRONTEND=noninteractive \
   apt-get install -y \
+  bc \
   bsd-mailx \
   btop \
   jq \
