@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+mkdir -p ~/.local/share
+
+if [ ! -e ~/.local/share/mcfly/config.toml ]; then
+  mkdir -p ~/.local/share/mcfly
+  ln -s -r "${base:?}/.local/share/mcfly/config.toml" \
+    ~/.local/share/mcfly/config.toml
+fi
