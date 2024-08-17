@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+arch=$(uname -m)
+base=https://github.com/nektos/act/releases/download
+: "${version:=v0.2.64}"
+
+wget -nv -O- \
+  "${base}/${version}/act_Linux_${arch}.tar.gz" |
+  tar -xzv
+mv -f act ~/.local/bin
+
+command -v act && act --version

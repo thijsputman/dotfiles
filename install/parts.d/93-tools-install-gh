@@ -10,6 +10,3 @@ fi
 
 echo "  😺 gh copilot" >&3
 gh extension install github/gh-copilot
-
-echo "  😺 gh act" >&3
-gh extension install nektos/gh-act

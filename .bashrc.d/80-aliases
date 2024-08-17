@@ -14,3 +14,13 @@ docker() {
     command docker "$@"
   fi
 }
+
+gh() {
+  # If "act" is available, map it to "gh act"
+  if [[ ${1,,} == act ]] && command -v act &> /dev/null; then
+    shift
+    command act "$@"
+  else
+    command gh "$@"
+  fi
+}
