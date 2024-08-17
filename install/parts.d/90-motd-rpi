@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# Surpress "less than 5A current"-warning for RPi5
+
+if [[ -e /proc/device-tree/model ]] &&
+  grep -q --text "Raspberry Pi 5" /proc/device-tree/model; then
+
+  sudo mkdir -p /etc/xdg/pemmican
+  sudo touch /etc/xdg/pemmican/max_current.inhibit
+
+fi
+
 # Disable "Wi-Fi rfkill"-warning (RPi OS)
 
 if [ -s /etc/profile.d/wifi-check.sh ]; then
