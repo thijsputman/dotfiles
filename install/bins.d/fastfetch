@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-arch=$(uname -m)
+arch=$(dpkg --print-architecture)
 base=https://github.com/fastfetch-cli/fastfetch/releases/download
-: "${version:=2.8.3}"
+: "${version:=2.21.3}"
 
 tmp_dir=$(mktemp -d)
 
