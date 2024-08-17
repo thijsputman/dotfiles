@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+litra() {
+  { (
+
+    case "$1" in
+    "cozy-daylight")
+      litra.exe temperature -v 5600
+      litra.exe brightness -p 28
+      ;;
+    "mild-afternoon")
+      litra.exe temperature -v 5000
+      litra.exe brightness -p 16
+      ;;
+    "sunset")
+      litra.exe temperature -v 4500
+      litra.exe brightness -p 16
+      ;;
+    "cozy-candlelight")
+      litra.exe temperature -v 3400
+      litra.exe brightness -p 28
+      ;;
+    *)
+      echo "Invalid option"
+      ;;
+    esac
+
+    litra.exe on
+
+  ) & } 2> /dev/null
+
+  disown $!
+}

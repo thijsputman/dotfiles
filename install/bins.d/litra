@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+base=https://github.com/timrogers/litra-rs/releases/download
+: "${version:=v1.2.0}"
+
+wget -nv -O ~/.local/bin/litra.exe \
+  "${base}/${version}/litra_${version}_windows-amd64.exe"
+chmod +x ~/.local/bin/litra.exe
+
+command -v litra.exe && litra.exe --version
