@@ -8,19 +8,17 @@ if command -v mcfly &> /dev/null; then
 
   eval "$(mcfly init bash)"
 
-  # Fix/workaround for <https://github.com/cantino/mcfly/issues/240>
+  # Workaround for <https://github.com/cantino/mcfly/issues/240>
 
-  if [[ $- =~ .*i.* &&
-    ${BASH_VERSINFO[0]} -eq 5 && ${BASH_VERSINFO[1]} -lt 2 ]]; then
+  if [[ ${BASH_VERSINFO[0]} -eq 5 && ${BASH_VERSINFO[1]} -lt 2 ]]; then
 
-    mcfly_search() {
-      echo "#mcfly: ${READLINE_LINE[*]}" >> "$MCFLY_HISTORY"
-      READLINE_LINE=
-      mcfly search
-      stty sane
+    function _mcfly_workaround() {
+      rc=$?
+      stty echo icrnl icanon
+      return $rc
     }
 
-    bind -x '"\C-r": mcfly_search'
+    PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}_mcfly_workaround"
 
   fi
 
