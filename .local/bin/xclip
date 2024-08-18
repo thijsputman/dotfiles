@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-clip.exe <&0
+/usr/bin/wslclip "${@: -1}"
