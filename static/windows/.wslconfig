@@ -8,3 +8,4 @@ networkingMode=mirrored
 [experimental]
 autoMemoryReclaim=gradual
 sparseVhd=true
+hostAddressLoopback=true

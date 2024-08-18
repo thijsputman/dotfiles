@@ -23,5 +23,4 @@ pyenv-init-venv() {
   printf "\"pip install --upgrade pip wheel\" when it's done...\n"
   printf "layout pyenv %s\n" "$version" > .envrc
   direnv allow .
-
 }

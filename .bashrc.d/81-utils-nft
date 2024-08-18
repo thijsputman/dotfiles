@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+nft-allow-local() {
+
+  delete_rules=1
+  interface=""
+  local_range=""
+
+  if [[ "$1" == "-n" || "$1" == "--no-delete" ]]; then
+    delete_rules=0
+    shift
+    interface="${1:?"Missing interface name!"}"
+  else
+    interface="$1"
+  fi
+
+  # Ensure we're dealing with a valid _private_ IPv4-range
+
+  if [[ -n "$interface" ]]; then
+
+    local_range=$(
+      ip -4 -brief address show |
+        gawk -v interface="$interface" '$1 == interface {print $3}'
+    )
+
+    if [[ -z "$local_range" ]]; then
+      echo "$interface is not a valid interface-name!"
+      return 1
+    fi
+
+    if
+      ! grep -qE '^(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.)' \
+        <<< "$local_range"
+    then
+      echo "$local_range is not a private IPv4-range!"
+      return 1
+    fi
+  fi
+
+  # Delete all previously set "nft-allow-local"-rules
+
+  if [[ $delete_rules -eq 1 ]]; then
+
+    old=$(sudo nft list chain ip filter input | grep nft-allow-local)
+    handles=$(
+      sudo nft -a list chain ip filter input |
+        sed -En "s/^.*comment \"nft-allow-local\" # handle ([0-9]+)$/\\1/p"
+    )
+    for handle in $handles; do
+      echo "delete rule ip filter input handle $handle"
+    done | sudo nft -f -
+
+    if [[ -n "$handles" ]]; then
+      echo "🛑 nft-rule(s) deleted:"
+      comm -23 <(echo "$old") <(
+        sudo nft list chain ip filter input | grep nft-allow-local
+      ) | sed 's/^[[:blank:]]*/   ↳ /'
+    fi
+
+  fi
+
+  # Add the new rule
+
+  if [[ -n "$local_range" ]]; then
+
+    old=$(sudo nft list chain ip filter input | grep nft-allow-local)
+    sudo nft add rule ip filter input \
+      ip saddr "$local_range" ct state new counter accept \
+      comment nft-allow-local
+
+    echo "🌐 nft-rule added:"
+    comm -13 <(echo "$old") <(
+      sudo nft list chain ip filter input | grep nft-allow-local
+    ) | sed 's/^[[:blank:]]*/   ↳ /'
+
+  fi
+}
