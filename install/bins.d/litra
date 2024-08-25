@@ -4,9 +4,16 @@ set -euo pipefail
 
 base=https://github.com/timrogers/litra-rs/releases/download
 : "${version:=v1.2.0}"
+litra_exe="litra_${version}_windows-amd64.exe"
 
-wget -nv -O ~/.local/bin/litra.exe \
-  "${base}/${version}/litra_${version}_windows-amd64.exe"
-chmod +x ~/.local/bin/litra.exe
+[[ -n $WSL_LOCAL_APPDATA ]] || exit 1
+mkdir -p "${WSL_LOCAL_APPDATA}/Programs" || exit 1
+
+wget -nv -O "${WSL_LOCAL_APPDATA}/Programs/${litra_exe}" \
+  "${base}/${version}/${litra_exe}"
+chmod +x "${WSL_LOCAL_APPDATA}/Programs/${litra_exe}"
+
+ln -sf "${WSL_LOCAL_APPDATA}/Programs/${litra_exe}" \
+  ~/.local/bin/litra.exe
 
 command -v litra.exe && litra.exe --version

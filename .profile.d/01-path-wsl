@@ -1,6 +1,17 @@
 #!/usr/bin/env sh
 
-path_add /mnt/c/WINDOWS/system32
 path_add /mnt/c/WINDOWS
-path_add /mnt/c/Users/Thijs/AppData/Local/Programs/Microsoft\ VS\ Code/bin
-path_add /mnt/c/Users/Thijs/AppData/Local/Microsoft/WindowsApps
+path_add /mnt/c/WINDOWS/system32
+
+if command -v wslvar > /dev/null 2>&1; then
+
+  local_appdata="$(wslpath "$(wslvar LOCALAPPDATA)")"
+
+  if [ -n "$local_appdata" ]; then
+
+    path_add "${local_appdata}/Microsoft/WindowsApps"
+    path_add "${local_appdata}/Programs/Microsoft VS Code/bin"
+
+  fi
+
+fi
