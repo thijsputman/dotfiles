@@ -11,4 +11,5 @@ wget -nv -O- \
   tar -xzv
 mv -f act ~/.local/bin
 
-command -v act && act --version
+command -v act &&
+  echo "  ⚙️ Installed $(act --version)" >&3

@@ -11,4 +11,5 @@ wget -nv -O- \
   tar -xzv
 mv -f mcfly ~/.local/bin
 
-command -v mcfly && mcfly --version
+command -v mcfly &&
+  echo "  ⚙️ Installed $(mcfly --version)" >&3

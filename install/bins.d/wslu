@@ -18,10 +18,11 @@ sudo make install
 cd ~/ || exit 1
 rm -rf "$build_dir"
 
-command -v wslsys && wslsys -v
-
 # Register "wslview" as web-browser
 sudo update-alternatives \
   --install /usr/bin/www-browser www-browser /usr/bin/wslview 50
 sudo update-alternatives \
   --install /usr/bin/x-www-browser x-www-browser /usr/bin/wslview 50
+
+command -v wslsys &&
+  echo "  ⚙️ Installed $(wslsys -v)" >&3

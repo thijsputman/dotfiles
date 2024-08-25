@@ -16,4 +16,5 @@ chmod +x "${WSL_LOCAL_APPDATA}/Programs/${litra_exe}"
 ln -sf "${WSL_LOCAL_APPDATA}/Programs/${litra_exe}" \
   ~/.local/bin/litra.exe
 
-command -v litra.exe && litra.exe --version
+command -v litra.exe &&
+  echo "  ⚙️ Installed $(litra.exe --version)" >&3

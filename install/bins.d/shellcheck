@@ -12,4 +12,5 @@ wget -nv -O- \
 mv -f "shellcheck-${version}/shellcheck" ~/.local/bin
 rm -rf "shellcheck-${version}"
 
-command -v shellcheck && shellcheck --version
+command -v shellcheck &&
+  echo "  ⚙️ Installed $(shellcheck --version | head -n 1)" >&3

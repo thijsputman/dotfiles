@@ -14,4 +14,5 @@ sudo dpkg -i "$tmp_dir/fastfetch.deb"
 
 rm -f "$tmp_dir/fastfetch.deb"
 
-command -v fastfetch && fastfetch --version
+command -v fastfetch &&
+  echo "  ⚙️ Installed $(fastfetch --version)" >&3
