@@ -52,8 +52,8 @@ nft-allow-local() {
 
     if [[ -n "$handles" ]]; then
       echo "🛑 nft-rule(s) deleted:"
-      comm -23 <(echo "$old") <(
-        sudo nft list chain ip filter input | grep nft-allow-local
+      comm -23 <(echo "$old" | sort -i) <(
+        sudo nft list chain ip filter input | grep nft-allow-local | sort -i
       ) | sed 's/^[[:blank:]]*/   ↳ /'
     fi
 
@@ -64,13 +64,26 @@ nft-allow-local() {
   if [[ -n "$local_range" ]]; then
 
     old=$(sudo nft list chain ip filter input | grep nft-allow-local)
-    sudo nft add rule ip filter input \
+
+    # Attempt to insert the new rule _before_ the final "counter"-line. This is
+    # not totally fool-proof as there's no guarantee the counter's "handle - 1"
+    # is a valid handle... Works well enough for now though.
+    nft_position=()
+    counter_handle=$(
+      sudo nft -a list chain ip filter input |
+        sed -En "s/^\s+counter .* # handle ([0-9]+)$/\\1/p"
+    )
+    if [[ $counter_handle -gt 0 ]]; then
+      nft_position=(position $((counter_handle - 1)))
+    fi
+
+    sudo nft add rule ip filter input "${nft_position[@]}" \
       ip saddr "$local_range" ct state new counter accept \
       comment nft-allow-local
 
     echo "🌐 nft-rule added:"
-    comm -13 <(echo "$old") <(
-      sudo nft list chain ip filter input | grep nft-allow-local
+    comm -13 <(echo "$old" | sort -i) <(
+      sudo nft list chain ip filter input | grep nft-allow-local | sort -i
     ) | sed 's/^[[:blank:]]*/   ↳ /'
 
   fi
