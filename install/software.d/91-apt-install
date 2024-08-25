@@ -43,3 +43,7 @@ sudo DEBIAN_FRONTEND=noninteractive \
   unattended-upgrades \
   "$auto_update" \
   needrestart
+
+# XXX
+#/etc/needrestart/needrestart.conf
+# #$nrconf{restart} = 'i';

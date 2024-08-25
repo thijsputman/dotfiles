@@ -1,0 +1,4 @@
+[{base.d,bins.d,config.d,software.d}/**]
+indent_style = space
+indent_size = 2
+space_redirects = true
