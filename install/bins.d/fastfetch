@@ -4,7 +4,7 @@ set -euo pipefail
 
 arch=$(dpkg --print-architecture)
 base=https://github.com/fastfetch-cli/fastfetch/releases/download
-: "${version:=2.21.3}"
+: "${version:=2.22.0}"
 
 tmp_dir=$(mktemp -d)
 
