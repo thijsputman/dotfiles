@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if ! command -v locate; then
-  echo '  ⛔ Skipping "🔗 ~/.ssh/config" — locate not present...' >&3
+  echo '⛔ Skipping "🔗 ~/.ssh/config" — locate not present...' >&3
   return 0
 fi
 
@@ -10,7 +10,7 @@ if [ ! -e ~/.ssh/config ]; then
   locate_ssh="$(locate -l 1 -r '/mnt/d/.*/WSL/.ssh/config$')"
 
   if [ -z "$locate_ssh" ]; then
-    echo '  ⛔ Skipping "🔗 ~/.ssh/config" — target not found...' >&3
+    echo '⛔ Skipping "🔗 ~/.ssh/config" — target not found...' >&3
     return 0
   fi
 

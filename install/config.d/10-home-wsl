@@ -6,7 +6,7 @@ xauth add :0 . "$(mcookie)"
 
 if [ ! -e ~/Desktop ]; then
   if [ ! -d /mnt/d/Thijs/Desktop ]; then
-    echo '  ⛔ Skipping "🔗 ~/Desktop" — target not found...' >&3
+    echo '⛔ Skipping "🔗 ~/Desktop" — target not found...' >&3
     return 0
   fi
   ln -s /mnt/d/Thijs/Desktop ~/Desktop
@@ -15,9 +15,9 @@ fi
 
 if [ ! -e ~/Downloads ]; then
   if [ ! -d /mnt/d/Thijs/Desktop ]; then
-    echo '  ⛔ Skipping "🔗 ~/Downloads" — target not found...' >&3
+    echo '⛔ Skipping "🔗 ~/Downloads" — target not found...' >&3
     return 0
   fi
   ln -s /mnt/d/Thijs/Downloads ~/Downloads
-  echo "  🔗 ~/Downloads ← /mnt/d/Thijs/Downloads" >&3
+  echo "🔗 ~/Downloads ← /mnt/d/Thijs/Downloads" >&3
 fi

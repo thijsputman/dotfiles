@@ -13,6 +13,6 @@ sudo DEBIAN_FRONTEND=noninteractive \
   yubikey-manager
 
 if [[ -z $USBIP_HOST || -z $USBIP_BUSID ]]; then
-  printf "  📢 To use \"yubikey-attach\", " >&3
+  printf "📢 To use \"yubikey-attach\", " >&3
   printf "ensure \$USBIP_HOST and \$USBIP_BUSID are set... " >&3
 fi

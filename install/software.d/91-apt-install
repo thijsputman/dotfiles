@@ -25,7 +25,7 @@ sudo DEBIAN_FRONTEND=noninteractive \
   nullmailer \
   traceroute
 
-echo '  📢 "nullmailer" requires manual configuration... ' >&3
+echo '📢 "nullmailer" requires manual configuration... ' >&3
 
 # Unattended upgrades
 

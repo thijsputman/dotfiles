@@ -4,9 +4,9 @@
 # resolution of <https://github.com/cli/cli/issues/2680>...
 
 if ! gh auth status; then
-  echo '  ⛔ Run "gh auth" before installing GitHub CLI extensions...' >&3
+  echo '⛔ Run "gh auth" before installing GitHub CLI extensions...' >&3
   return 0
 fi
 
-echo "  😺 gh copilot" >&3
+echo "😺 gh copilot" >&3
 gh extension install github/gh-copilot

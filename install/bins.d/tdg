@@ -36,7 +36,7 @@ export GOFLAGS="-mod=vendor"
 go build -o "$GOPATH/bin/tdg" cmd/tdg/*
 
 command -v tdg && tdg -root "$temp_dir/tdg/cmd/tdg" &&
-  echo "  ⚙️ Installed tdg $version" >&3
+  echo "⚙️ Installed tdg $version" >&3
 
 popd > /dev/null || exit 1
 rm -rf "$temp_dir"

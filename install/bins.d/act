@@ -12,4 +12,4 @@ wget -nv -O- \
 mv -f act ~/.local/bin
 
 command -v act &&
-  echo "  ⚙️ Installed $(act --version)" >&3
+  echo "⚙️ Installed $(act --version)" >&3

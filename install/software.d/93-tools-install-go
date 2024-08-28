@@ -4,12 +4,12 @@
 export GOPATH
 
 if ! [[ $PATH =~ (^|:)"$GOPATH/bin"(:|$) ]]; then
-  echo "  ⚠️ Add \"📂 $GOPATH/bin\" to PATH... " >&3
+  echo "⚠️ Add \"📂 $GOPATH/bin\" to PATH... " >&3
   PATH="$PATH:$GOPATH/bin"
 fi
 
-echo "  🐹 powerline-go" >&3
+echo "🐹 powerline-go" >&3
 go install github.com/justjanne/powerline-go@df3475d # v1.24
 
-echo "  🐹 shfmt" >&3
+echo "🐹 shfmt" >&3
 go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0

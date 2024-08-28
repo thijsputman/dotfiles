@@ -17,4 +17,4 @@ ln -sf "${WSL_LOCAL_APPDATA}/Programs/${litra_exe}" \
   ~/.local/bin/litra.exe
 
 command -v litra.exe &&
-  echo "  ⚙️ Installed $(litra.exe --version)" >&3
+  echo "⚙️ Installed $(litra.exe --version)" >&3

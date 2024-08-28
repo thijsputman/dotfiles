@@ -12,4 +12,4 @@ wget -nv -O- \
 mv -f mcfly ~/.local/bin
 
 command -v mcfly &&
-  echo "  ⚙️ Installed $(mcfly --version)" >&3
+  echo "⚙️ Installed $(mcfly --version)" >&3

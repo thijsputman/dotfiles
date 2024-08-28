@@ -9,7 +9,7 @@ sudo DEBIAN_FRONTEND=noninteractive \
   python3-venv
 
 if ! [[ $PATH =~ (^|:)"$HOME/.local/bin"(:|$) ]]; then
-  echo "  ⚠️ Add \"📂 $HOME/.local/bin\" to PATH... " >&3
+  echo "⚠️ Add \"📂 $HOME/.local/bin\" to PATH... " >&3
   PATH="$PATH:$HOME/.local/bin"
 fi
 

@@ -25,4 +25,4 @@ sudo update-alternatives \
   --install /usr/bin/x-www-browser x-www-browser /usr/bin/wslview 50
 
 command -v wslsys &&
-  echo "  ⚙️ Installed $(wslsys -v)" >&3
+  echo "⚙️ Installed $(wslsys -v)" >&3

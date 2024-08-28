@@ -11,4 +11,4 @@ wget -nv -O ~/.local/bin/hadolint \
 chmod +x ~/.local/bin/hadolint
 
 command -v hadolint &&
-  echo "  ⚙️ Installed $(hadolint --version)" >&3
+  echo "⚙️ Installed $(hadolint --version)" >&3
