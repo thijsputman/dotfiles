@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-mkdir -p ~/.local/bin
-
-if [ ! -e ~/.local/bin/xclip ]; then
-  ln -s -r "${base:?}/.local/bin/xclip" ~/.local/bin/xclip
+if ! command -v wslsys > /dev/null 2>&1; then
+  echo '⛔ Skipping "🔗 ~/.local/bin/xclip" — wslu not installed...' >&3
+else
+  if [ ! -e ~/.local/bin/xclip ]; then
+    ln -s -r "${base:?}/.local/bin/xclip" ~/.local/bin/xclip
+  fi
 fi
