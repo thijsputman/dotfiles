@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ ! -e ~/.dotfiles-install ]; then
+
+  ln -s -r "${base:?}/install.sh" ~/.dotfiles-install
+
+fi
+
 # Run pyenv update check weekly via anacron
 
 if

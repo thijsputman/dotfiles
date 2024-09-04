@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-base=$(dirname "$(realpath "$(dirname "${BASH_SOURCE[0]}")")")
+base="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
 
 # shellcheck disable=SC2317
 goodbye() {
