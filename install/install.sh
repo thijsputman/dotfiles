@@ -5,10 +5,32 @@ set -euo pipefail
 
 base=$(dirname "$(realpath "$(dirname "${BASH_SOURCE[0]}")")")
 
-# Sort out which "parts"-directory to use
+# shellcheck disable=SC2317
+goodbye() {
+
+  rc="$?"
+
+  # Reset EXIT-trap to prevent getting stuck in "goodbye" (due to "set -e")
+  trap - EXIT
+
+  # Exit from – and remove – the "bins.d" temporary directory
+  if [[ $(dirs +0) == *install_bins-d_* ]]; then
+    temp_dir="$(dirs +0)"
+    popd > /dev/null || exit 1
+    rm -rf "$temp_dir"
+  fi
+
+  exit "$rc"
+}
+
+trap goodbye INT TERM EXIT 0
+
+# If no (valid) parts-directory is specified, default to "config.d"
 
 if [[ ! -v 1 ]]; then
   set -- config.d
+elif [[ $1 != *.d ]]; then
+  set -- config.d "$1"
 fi
 
 if [[ ! -d "$base"/install/"${1##*/}" ]]; then
@@ -32,9 +54,9 @@ if [[ $folder == bins.d ]]; then
     PATH="$PATH:$HOME/.local/bin"
   fi
 
-  # Switch to temporary directory to prevent both unwanted interactions and
+  # Switch to temporary directory to prevent unwanted interactions and/or
   # leaving stray files behind...
-  pushd "$(mktemp -d -t install_bins-d_XXXXXX)" > /dev/null
+  pushd "$(mktemp -d -t install_bins-d_XXXXXX)" > /dev/null || exit 1
 
 fi
 
@@ -43,6 +65,7 @@ if [[ $folder == software.d ]]; then
   sudo -v
 fi
 
+exit_code=0
 for file in "$base"/install/"$folder"/**; do
 
   file_basename="$(basename "$file")"
@@ -61,11 +84,10 @@ for file in "$base"/install/"$folder"/**; do
     output=$(
       if ! { errors=$(source "$file" 2>&1); } 3>&1; then
         echo "$errors"
-        printf '\n'
-        echo "⛔ Part failed – see preceding output for details..." >&2
-        exit 1
+        echo "⛔ Part failed – see preceding output for details..."
+        false
       fi
-    )
+    ) || exit_code=1
 
     readarray -t lines <<< "$output"
     for line in "${lines[@]}"; do
@@ -76,6 +98,4 @@ for file in "$base"/install/"$folder"/**; do
 
 done
 
-if [[ $(dirs +0) == *install_bins-d_* ]]; then
-  popd > /dev/null
-fi
+exit "$exit_code"
