@@ -6,13 +6,10 @@ set -euo pipefail
 : "${GOPATH:="$HOME/.local/go"}"
 export GOPATH
 
-temp_dir=$(mktemp -d)
-pushd "$temp_dir" > /dev/null || exit 1
-
-git clone https://gitlab.com/ribtoks/tdg.git > /dev/null 2>&1
+git clone https://gitlab.com/ribtoks/tdg.git
 cd tdg || exit 1
 
-git checkout "tags/$version" > /dev/null 2>&1
+git checkout "tags/$version"
 
 # Add "triple-X" as one of the comment prefixes
 git apply --ignore-space-change --ignore-whitespace - \
@@ -35,8 +32,5 @@ EOF
 export GOFLAGS="-mod=vendor"
 go build -o "$GOPATH/bin/tdg" cmd/tdg/*
 
-command -v tdg && tdg -root "$temp_dir/tdg/cmd/tdg" &&
+command -v tdg && tdg -root cmd/tdg &&
   echo "⚙️ Installed tdg $version" >&3
-
-popd > /dev/null || exit 1
-rm -rf "$temp_dir"
