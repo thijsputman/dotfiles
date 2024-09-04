@@ -14,7 +14,7 @@ if [ ! -e ~/Desktop ]; then
 fi
 
 if [ ! -e ~/Downloads ]; then
-  if [ ! -d /mnt/d/Thijs/Desktop ]; then
+  if [ ! -d /mnt/d/Thijs/Downloads ]; then
     echo '⛔ Skipping "🔗 ~/Downloads" — target not found...' >&3
     return 0
   fi
