@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+arch=$(dpkg --print-architecture)
+base=https://github.com/rclone/rclone/releases/download
+: "${version:=v1.67.0}"
+
+wget -nv "${base}/${version}/rclone-${version}-linux-${arch}.deb"
+sudo dpkg -i "rclone-${version}-linux-${arch}.deb"
+
+rm -f "rclone-${version}-linux-${arch}.deb"
+
+command -v rclone &&
+  echo "⚙️ Installed $(rclone --version | head -n 1)" >&3
