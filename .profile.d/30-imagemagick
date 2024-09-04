@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+MAGICK_CONFIGURE_PATH=~/.config/ImageMagick/:/etc/ImageMagick-6/
+
+export MAGICK_CONFIGURE_PATH

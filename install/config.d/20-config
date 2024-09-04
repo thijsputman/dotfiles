@@ -19,6 +19,12 @@ if [ ! -e ~/.config/fastfetch/config.jsonc ]; then
     ~/.config/fastfetch/config.jsonc
 fi
 
+if [ ! -e ~/.config/ImageMagick/policy.xml ]; then
+  mkdir -p ~/.config/ImageMagick
+  ln -s -r "${base:?}/.config/ImageMagick/policy.xml" \
+    ~/.config/ImageMagick/policy.xml
+fi
+
 if [ ! -e ~/.config/powerline-go/config.json ]; then
   mkdir -p ~/.config/powerline-go
   ln -s -r "${base:?}/.config/powerline-go/config.json" \
