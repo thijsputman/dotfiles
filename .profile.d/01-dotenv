@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+dotenv() {
+  set -a
+  # shellcheck disable=SC1090,SC1091
+  if [ -f "$1" ]; then
+    . "$1"
+  elif [ -f .env ]; then
+    . .env
+  fi
+  set +a
+}
+
+# Export all environment variables defined in ~/.env
+dotenv ~/.env

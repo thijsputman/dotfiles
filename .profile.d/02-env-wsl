@@ -2,11 +2,21 @@
 
 export LIBVA_DRIVER_NAME=d3d12
 
-if command -v wslvar > /dev/null 2>&1; then
+# Add variables from Windows environment
 
-  WSL_LOCAL_APPDATA="$(wslpath "$(wslvar LOCALAPPDATA)")"
-  if [ -n "$WSL_LOCAL_APPDATA" ]; then
+if [ -z "$WSL_LOCAL_APPDATA" ] && command -v wslvar > /dev/null 2>&1; then
+
+  WSL_LOCAL_APPDATA="$(wslpath "$(wslvar LOCALAPPDATA)" 2> /dev/null)"
+
+  if [ -n "$WSL_LOCAL_APPDATA" ] && [ -d "$WSL_LOCAL_APPDATA" ]; then
     export WSL_LOCAL_APPDATA
+    # The look-up is rather slow – as this value in principle never changes,
+    # write it to ~/.env...
+    echo "WSL_LOCAL_APPDATA=$WSL_LOCAL_APPDATA" >> ~/.env
   fi
 
+# Remove invalid entry from ~/.env
+elif [ ! -d "$WSL_LOCAL_APPDATA" ]; then
+  sed -i '/^WSL_LOCAL_APPDATA=/d' ~/.env
+  unset WSL_LOCAL_APPDATA
 fi

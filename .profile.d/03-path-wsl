@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+path_add /mnt/c/WINDOWS
+path_add /mnt/c/WINDOWS/system32
+
+if [ -n "$WSL_LOCAL_APPDATA" ]; then
+  path_add "${WSL_LOCAL_APPDATA}/Microsoft/WindowsApps"
+  path_add "${WSL_LOCAL_APPDATA}/Programs/Microsoft VS Code/bin"
+fi
