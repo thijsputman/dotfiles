@@ -4,7 +4,7 @@ set -euo pipefail
 
 arch=$(dpkg --print-architecture)
 base=https://github.com/fastfetch-cli/fastfetch/releases/download
-: "${version:=2.22.0}"
+: "${version:=2.27.1}"
 
 wget -nv "${base}/${version}/fastfetch-linux-${arch}.deb"
 sudo dpkg -i "fastfetch-linux-${arch}.deb"
