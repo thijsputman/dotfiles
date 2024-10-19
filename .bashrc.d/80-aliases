@@ -24,3 +24,28 @@ gh() {
     command gh "$@"
   fi
 }
+
+git() {
+
+  if [[ $(type -t _yubikey-git) == "function" ]]; then
+    _yubikey-git "$@"
+  else
+    command git "$@"
+  fi
+
+  git_result=$?
+
+  # When doing a "simple" clone; attempt to change into the directory that was
+  # just cloned...
+
+  if [[ ${1,,} == clone && ${2: -4} == ".git" ]]; then
+
+    repoName=${2##*/}
+    repoName=${repoName%.git}
+
+    if [[ $git_result -eq 0 && -d $repoName ]]; then
+      cd "$repoName" || return
+    fi
+
+  fi
+}
