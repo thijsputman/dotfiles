@@ -34,15 +34,15 @@ $pip_cmd install 'pre-commit==3.3.3'
 $pip_cmd install 'yamllint==1.32.0'
 
 if ! command -v shellcheck; then
-  version=v0.9.0 "${GITHUB_WORKSPACE}/install/bins.d/shellcheck"
+  version=v0.9.0 "${GITHUB_WORKSPACE}/install/bins.d/shellcheck" 3>&1
 fi
 
 if ! command -v hadolint; then
-  version=v2.12.0 "${GITHUB_WORKSPACE}/install/bins.d/hadolint"
+  version=v2.12.0 "${GITHUB_WORKSPACE}/install/bins.d/hadolint" 3>&1
 fi
 
 if ! command -v tdg; then
-  version=v0.0.2 "${GITHUB_WORKSPACE}/install/bins.d/tdg"
+  version=v0.0.2 "${GITHUB_WORKSPACE}/install/bins.d/tdg" 3>&1
 fi
 
 if ! command -v shfmt; then
