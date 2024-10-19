@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+function _custom_ps1() {
+  last_exit=$?
+  PS1=""
+
+  if command -v powerline-go &> /dev/null; then
+    PS1="$(powerline-go -error $last_exit -jobs "$(jobs -p | wc -l)")"
+  fi
+
+  PS1+="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]"
+
+  # VS Code and Windows Terminal shell-integration
+  #
+  # Not using the "full" VS Code shell-integration as that has some substantial
+  # (performance) issues when there's a lot of output on the terminal, and it
+  # adds little value over just the command "hinting" provided by the below...
+  # For more details, see:
+  #   <https://learn.microsoft.com/en-us/windows/terminal/tutorials/shell-integration#bash>
+  PS1="\[\033]133;D;$last_exit\007\]\[\033]133;A;\007\]$PS1\[\033]133;B;\007\]"
+}
+
+if [ "$TERM" != "linux" ]; then
+  PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;}_custom_ps1"
+fi
