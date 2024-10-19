@@ -55,7 +55,10 @@
       "type": "disk",
       "folders": "/mnt/c:/mnt/d"
     },
-    "battery",
+    {
+      "type": "battery",
+      "key": "Battery"
+    },
     "publicip",
     {
       "type": "localip",

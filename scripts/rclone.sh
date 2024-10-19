@@ -5,7 +5,9 @@ set -euo pipefail
 rclone sync ~/.gnupg/pubring.kbx onedrive:AppData/WSL/.gnupg
 rclone sync ~/.gnupg/trustedkeys.kbx onedrive:AppData/WSL/.gnupg
 
-rclone sync ~/.bash_history onedrive:AppData/WSL/
+rclone sync ~/.bash_history onedrive:AppData/WSL
+
+rclone sync ~/.config/codespell-custom.dict onedrive:AppData/WSL/.config
 
 rclone sync ~/.local/share/mcfly/history.db \
   onedrive:AppData/WSL/.local/share/mcfly
@@ -16,7 +18,7 @@ rclone sync ~/.local/share/applications \
   --include "/*.desktop"
 
 # Backup (personal) Git configuration
-rclone sync ~/ onedrive:AppData/WSL/ --max-depth 1 --skip-links \
+rclone sync ~/ onedrive:AppData/WSL --max-depth 1 --skip-links \
   --include "/.gitconfig*"
 
 # Backup htop- and btop-configuration
@@ -26,7 +28,7 @@ rclone sync ~/.config onedrive:AppData/WSL/.config --max-depth 2 --skip-links \
 # Backup ESPHome configuration
 
 rclone sync ~/esphome --max-depth 2 --exclude secrets.yaml \
-  --exclude .gitignore onedrive:AppData/WSL/esphome/
+  --exclude .gitignore onedrive:AppData/WSL/esphome
 
 # Remove all WPA-keys prior to uploading secrets.yaml – bit crude: The file is
 # copied unconditionally (there doesn't appear to be an rclone-"native" way to
