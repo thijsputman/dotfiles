@@ -1,4 +1,3 @@
 thijs ALL = NOPASSWD: /usr/local/bin/usbip port
 thijs ALL = NOPASSWD: /usr/local/bin/usbip attach *
 thijs ALL = NOPASSWD: /usr/local/bin/usbip detach *
-thijs ALL = NOPASSWD: /usr/sbin/service pcscd restart

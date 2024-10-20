@@ -29,10 +29,6 @@ yubikey-attach() {
     # Attach Yubikey
     else
       sudo usbip attach -r "$USBIP_HOST" -b "$USBIP_BUSID"
-      # Upon attaching the Yubikey, the pcscd service needs to be restarted —
-      # wait a second for the Yubikey to properly attach before doing so...
-      sleep 1
-      sudo service pcscd restart > /dev/null
       # Check if the serial number of the GPG key stubs matches the serial
       # number of the Yubikey — if not, update the GPG key stubs with the serial
       # number of the attached Yubikey. This allows multiple physical Yubikeys
