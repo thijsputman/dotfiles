@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+sudo apt-get update
+
+sudo DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y \
+  binfmt-support \
+  crossbuild-essential-amd64 \
+  qemu-user-static
+
+sudo dpkg --add-architecture amd64
+
+codename=$(lsb_release -cs) || exit 1
+
+sudo tee /etc/apt/sources.list.d/ubuntu-amd64.sources > /dev/null << EOF
+  Types: deb
+  URIs: http://archive.ubuntu.com/ubuntu
+  Suites: $codename $codename-updates $codename-security $codename-backports
+  Components: main restricted universe multiverse
+  Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+  Architectures: amd64
+EOF
+
+sudo apt update
+
+sudo DEBIAN_FRONTEND=noninteractive \
+  apt-get install -y \
+  libstdc++6:amd64

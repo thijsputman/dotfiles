@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+if ! systemctl status NetworkManager; then
+  echo '⛔ Manually "apt install network-manager" before continuing...' >&3
+  exit 0
+fi
+
+sudo rm -f /etc/netplan/*
+sudo tee /etc/netplan/00-network-manager.yaml > /dev/null << 'EOF'
+network:
+  version: 2
+  renderer: NetworkManager
+EOF
+sudo chmod 600 /etc/netplan/*
+
+sudo systemctl enable NetworkManager --now
+
+sudo netplan generate
+sudo netplan apply
+
+sudo systemctl disable systemd-networkd.service
+sudo systemctl mask systemd-networkd.service
+
+echo '📢 Reboot to fully enable NetworkManager...' >&3
