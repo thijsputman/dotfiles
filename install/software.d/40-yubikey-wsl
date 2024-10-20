@@ -7,12 +7,21 @@ sudo DEBIAN_FRONTEND=noninteractive \
   apt-get install -y \
   hwdata \
   linux-tools-generic \
-  pcscd \
   pinentry-gnome3 \
   scdaemon \
   yubikey-manager
 
+# Disable PC/SC-daemon – we don't want it running (but most likely it got
+# installed as a dependency of yubikey-manager)...
+if systemctl status pcscd; then
+  sudo systemctl mask pcscd
+  sudo systemctl stop pcscd
+fi
+
+printf '📢 Manual installation of "/etc/udev/rules.d/70-yubikey.rules"' >&3
+printf 'required; see ".gnupg/README.md" for more details...\n' >&3
+
 if [[ -z $USBIP_HOST || -z $USBIP_BUSID ]]; then
   printf "📢 To use \"yubikey-attach\", " >&3
-  printf "ensure \$USBIP_HOST and \$USBIP_BUSID are set... " >&3
+  printf "ensure \$USBIP_HOST and \$USBIP_BUSID are set...\n" >&3
 fi

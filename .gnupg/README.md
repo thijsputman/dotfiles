@@ -29,12 +29,21 @@ adding this udev-rule to your system:
 
 [`📄 /etc/udev/rules.d/70-yubikey.rules`](/static/linux/etc/udev/rules.d/70-yubikey.rules)
 
-Subsequently run the following to disable `pcscd` and apply the `udev`-rule:
+Subsequently, run the following to disable `pcscd` – it interferes with the
+direct access required by GnuPG:
 
 ```shell
-# Fully disable and stop the PC/SC-daemon
 sudo systemctl mask pcscd
 sudo systemctl stop pcscd
+```
+
+The preceding steps are also handled by
+[`📄 install/software.d/40-yubikey-wsl`](/install/software.d/40-yubikey-wsl).
+
+Once the above is done, manually activate the `udev`-rule (_or_ reboot the
+system):
+
+```shell
 # Apply the new udev-rule
 sudo udevadm control --reload
 sudo udevadm trigger

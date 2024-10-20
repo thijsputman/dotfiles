@@ -3,21 +3,18 @@
 Based upon <https://github.com/drduh/YubiKey-Guide>
 
 - [Setup Docker](#setup-docker)
-  - [Check the Yubikey](#check-the-yubikey)
-  - [Setup GnuPG home](#setup-gnupg-home)
-- [Generate GPG keys](#generate-gpg-keys)
-  - [Lint GPG keys](#lint-gpg-keys)
+- [Prepare the Yubikey](#prepare-the-yubikey)
+- [Generate GPG-keys](#generate-gpg-keys)
+  - [Lint GPG-keys](#lint-gpg-keys)
   - [Create backup](#create-backup)
-  - [Exfiltrate keys](#exfiltrate-keys)
-- [Setup the Yubikey](#setup-the-yubikey)
-  - [Prepare the Yubikey](#prepare-the-yubikey)
-  - [Move GPG keys to the Yubikey](#move-gpg-keys-to-the-yubikey)
+  - [Exfiltrate (private) keys](#exfiltrate-private-keys)
+- [Move GPG-keys to Yubikey](#move-gpg-keys-to-yubikey)
 - [Clean-up](#clean-up)
   - [Delete backup](#delete-backup)
   - [Delete secret key](#delete-secret-key)
-  - [Delete GnuPG home](#delete-gnupg-home)
+  - [Delete GnuPG-home](#delete-gnupg-home)
 - [Usage](#usage)
-  - [Linux (generic)](#linux-generic)
+  - [Linux / generic](#linux--generic)
   - [Windows](#windows)
   - [WSL2](#wsl2)
 - [Restore from Backup](#restore-from-backup)
@@ -34,25 +31,91 @@ docker run --network none --privileged -v /dev/bus/usb:/dev/bus/usb \
   --rm -it $(docker build --no-cache -q .)
 ```
 
-**N.B.** Stop `pcscd` (and/or anything else that might have an exclusive lock on
-the Yubikey) on the host machine before attempting to start `pcscd` in the
+Unless explicitly mentioned otherwise, all the below instructions assumes you
+are running commands from _withint_ the container.
+
+❗**N.B.** Stop `pcscd` (and/or anything else that might have a lock on the
+Yubikey) on the host machine before attempting to start `pcscd` in the
 container...
+
+❗**N.B.** As of Ubuntu 24.04 (more specifically, GnuPG 2.4), GnuPG doesn't use
+`pcscd` to access the Yubikey anymore – so it's possible you don't have `pcscd`
+on your host machine at all. See [`📂 ~/.gnupg`](/.gnupg/README.md) for more
+details on what this change means for _using_ the Yubikey on Ubuntu 24.04; it
+shouldn't have any impact on the below instructions though...
 
 The Docker container is used purely out of convenience (an easy way to tool up a
 clean/prepared environment). From a security perspective there is little benefit
 in doing things this way. Also, I'm moving an unencrypted backup of the master
 key (protected with its passphrase though) around on my daily-use machine. If
 you're truly concerned about security, best to not follow the below set of
-instructions...
+instructions at all... 😇
 
-### Check the Yubikey
+## Prepare the Yubikey
+
+Firstly, ensure `pcscd` is running inside the container and that you can
+communicate with the Yubikey:
 
 ```bash
 pcscd
 ykman info
 ```
 
-### Setup GnuPG home
+Then, reset the Yubikey and prepare it for use:
+
+```bash
+ykman openpgp reset
+gpg --gen-random --armor 0 32
+# Take note of the Yubikey OpenPGP Admin PIN; store it in KeePass
+
+gpg --card-edit
+> admin
+> kdf-setup
+> passwd
+>> 3
+>> 1
+>> q
+> name
+>> ...
+> salutation
+>> ...
+> login
+>> ...
+> lang
+>> en
+> quit
+```
+
+```bash
+ykman openpgp access set-retries 3 3 5
+```
+
+Due to the complexity of the **Admin PIN**, 5 retries seems prudent.
+
+❗**N.B.** The **Reset PIN** isn't necessary for personal use. It's only
+function is to reset the regular PIN (which is also possible with the **Admin
+PIN**) — mainly intended for enterprise scenarios.
+
+Finally, enforce "touch" for all key operations:
+
+```bash
+ykman openpgp keys set-touch aut cached-fixed
+ykman openpgp keys set-touch sig cached-fixed
+ykman openpgp keys set-touch enc cached-fixed
+```
+
+The `cached-fixed`-option does the following:
+
+> Touch required, cached for 15s after use, cannot be disabled without deleting
+> the private key.
+
+See
+[Yubikey Touch Policies](https://docs.yubico.com/software/yubikey/tools/ykman/OpenPGP_Commands.html#touch-policies)
+for alternative policies.
+
+## Generate GPG-keys
+
+Firstly, set up a temporary GnuPG home-directory:
 
 ```bash
 export GNUPGHOME=$(mktemp -d -t gnupg_$(date +%Y%m%d%H%M)_XXX)
@@ -64,7 +127,7 @@ sed -i '/^Name-Real:/s/:/: ______/g' $GNUPGHOME/gen-params-ed25519.conf
 sed -i '/^Name-Email:/s/:/: ______/g' $GNUPGHOME/gen-params-ed25519.conf
 ```
 
-## Generate GPG keys
+Then generate a new set of GPG-keys:
 
 ```bash
 gpg --gen-random --armor 0 32
@@ -98,7 +161,7 @@ gpg --expert --edit-key $KEYID
 A dot (`.`) behind the UID indicates it's the primary UID; an asterisk (`*`)
 indicates the UID is active/selected.
 
-### Lint GPG keys
+### Lint GPG-keys
 
 ```bash
 gpg --export $KEYID | hokey lint
@@ -124,10 +187,10 @@ gpg --output ~/backup/revoke.asc --gen-revoke $KEYID
 tar -cf - -C $GNUPGHOME . > ~/backup/.gnupg.tar
 ```
 
-**N.B.** When printing the paperkey, note down the master key's passphrase on
+❗**N.B.** When printing the paperkey, note down the master key's passphrase on
 the piece of paper too.
 
-#### Export Public key
+#### Export public key
 
 ```bash
 gpg --armor --export $KEYID > ~/gpg-$KEYID-$(date +%F).asc
@@ -135,7 +198,7 @@ echo "/root/gpg-$KEYID-$(date +%F).asc"
 # Take note of the public key filename
 ```
 
-### Exfiltrate keys
+### Exfiltrate (private) keys
 
 From the host machine:
 
@@ -155,48 +218,7 @@ docker cp ______:/root/backup/.gnupg.tar ~/
 Once exfiltrated, store `📄 .gnupg.tar` in KeePass and remove it from the host
 machine.
 
-## Setup the Yubikey
-
-### Prepare the Yubikey
-
-**N.B.** Check `ykman --version`. It should be **version 4** for the below
-commands to work as intended (and for a _non-numeric_ **Admin PIN** to be
-allowed for OpenPGP).
-
-```bash
-ykman openpgp reset
-gpg --gen-random --armor 0 32
-# Take note of the Yubikey OpenPGP Admin PIN; store it in KeePass
-
-gpg --card-edit
-> admin
-> kdf-setup
-> passwd
->> 3
->> 1
->> q
-> name
->> ...
-> salutation
->> ...
-> login
->> ...
-> lang
->> en
-> quit
-```
-
-```bash
-ykman openpgp access set-retries 3 3 5
-```
-
-Due to the complexity of the **Admin PIN**, 5 retries seems prudent.
-
-**N.B.** The **Reset PIN** isn't necessary for personal use. It's only function
-is to reset the regular PIN (which is also possible with the **Admin PIN**) —
-mainly intended for enterprise scenarios.
-
-### Move GPG keys to the Yubikey
+## Move GPG-keys to Yubikey
 
 ```bash
 gpg --edit-key $KEYID
@@ -217,15 +239,6 @@ gpg --card-status
 
 The `>` (in `ssb>`) indicates they key has been moved to card...
 
-Finally, enforce "touch" for all the keys (configuration is reset when keys are
-changed):
-
-```bash
-ykman openpgp keys set-touch aut fixed
-ykman openpgp keys set-touch sig fixed
-ykman openpgp keys set-touch enc fixed
-```
-
 ## Clean-up
 
 ### Delete backup
@@ -243,7 +256,7 @@ gpg --card-status
 
 The `#` (in `sec#`) Indicates master key is not available anymore...
 
-### Delete GnuPG home
+### Delete GnuPG-home
 
 ```bash
 rm -rf $GNUPGHOME
@@ -254,12 +267,12 @@ gpg --card-status
 # General key info..: [none]
 ```
 
-**N.B.** `gpg -k` and `gpg -K` provide different outputs (the former also shows
-revoked and expired keys).
+❗**N.B.** `gpg -k` and `gpg -K` provide different outputs (the former also
+shows revoked and expired keys).
 
 ## Usage
 
-### Linux (generic)
+### Linux / generic
 
 Import the key to each machine where you intend to use it:
 
@@ -284,7 +297,7 @@ gpg --card-status
 I personally only have it imported on my daily driver; using SSH agent
 forwarding to forward both the SSH and GPG agents to (trusted) remote machines.
 
-❗ **N.B.** After [renewing my subkeys](#renew-subkeys), I had to import the
+❗**N.B.** After [renewing my subkeys](#renew-subkeys), I had to import the
 (updated) public key on a handful of additional machines for them to pick up on
 the updated expiry dates. Haven't had the time to properly figure this out yet;
 in case I never do: The simplest solution is to import the updated public key on
@@ -327,7 +340,7 @@ Then, make the following configuration changes:
 - Copy `📄 ~/.ssh/id_rsa_yubikey.pub` from the Linux-side, and symlink the
   Windows SSH `📄 config` from OneDrive into`📂 %USERPROFILE%/.ssh`
 - Import the Yubikey's public GPG-key in Windows' OpenSSH (see the
-  [Linux-instructions](#linux-generic); use `openssh.exe`)
+  [Linux-instructions](#linux--generic); use `openssh.exe`)
 
 ❗**N.B.** After doing all of the above, logout and log back in to ensure the
 environment changes properly propagated to the tasks started via _Task
@@ -356,12 +369,12 @@ sudo update-alternatives --install /usr/local/bin/usbip usbip \
 ```
 
 This processed is automated by
-[`📄 install/parts.d/40-yubikey-wsl`](/install/parts.d/40-yubikey-wsl) and
-[`📄 install/parts.d/91-apt-install-yubikey`](/install/parts.d/91-apt-install-yubikey).
+[`📄 install/software.d/40-yubikey-wsl`](/install/software.d/40-yubikey-wsl) and
+[`📄 install/config.d/40-yubikey-wsl`](/install/config.d/40-yubikey-wsl).
 
 ❗**N.B.** If `linux-tools-virtual` gets updated, it might be necessary to
-reapply the `update-alternatives` for `usbip`
-(rerun`install/install.sh 40-yubikey-wsl`).
+reapply the `update-alternatives` for `usbip` (rerun
+`install/install.sh 40-yubikey-wsl`).
 
 Note the difference between `usbipd` (which is _not_ supposed to work on the
 WSL2-side) and `usbip` which _is_ supposed to work...
@@ -511,8 +524,9 @@ gpg --edit-key $KEYID
 ```
 
 Export the (updated) public key and (re)import it in all places where it's used
-(similar to the initial procedure — see [Exfiltrate keys](#exfiltrate-keys) and
-[Usage](#usage) for instructions).
+(similar to the initial procedure — see
+[Exfiltrate (private) keys](#exfiltrate-private-keys) and [Usage](#usage) for
+instructions).
 
 [Update the backup](#create-backup). Note that the private keys and the
 revocation certificate don't change, so creating up an updated copy of
