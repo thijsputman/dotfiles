@@ -3,3 +3,6 @@
 if [ ! -e ~/.env ]; then
   cp "${base:?}/.env.default" ~/.env
 fi
+
+printf '📢 Inspect "~/.env" and ensure the values defined ' >&3
+printf 'are appropriate for your system...' >&3
