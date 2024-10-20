@@ -25,13 +25,18 @@ npm install -g markdownlint-cli@0.37.0
 npm install -g prettier@3.0.2
 
 pip_cmd=pip3
-if [ "$USE_PIPX" == true ]; then
-  pip3 install --user pipx
+if [[ $USE_PIPX == true ]]; then
+  (
+    export PIP_REQUIRE_VIRTUALENV=false
+    export PIP_BREAK_SYSTEM_PACKAGES=1
+    pip3 install --user pipx
+  )
   pip_cmd=pipx
 fi
 
 $pip_cmd install 'pre-commit==3.3.3'
 $pip_cmd install 'yamllint==1.32.0'
+$pip_cmd install 'codespell==2.3.0'
 
 if ! command -v shellcheck; then
   version=v0.9.0 "${GITHUB_WORKSPACE}/install/install.sh" bins.d shellcheck

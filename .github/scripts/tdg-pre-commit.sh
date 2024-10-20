@@ -3,7 +3,7 @@
 : "${GH_ACTION_OUTPUT:=false}"
 
 if ! command -v tdg &> /dev/null; then
-  echo "tdg not found on PATH; skipping..." >&2
+  echo "tdg not found on PATH; aborting..." >&2
   exit 0
 fi
 
