@@ -1,6 +1,6 @@
 # Collection of Personal `.files`
 
-Personalising an **Ubuntu 22.04** installation.
+Personalising an **Ubuntu 22/24.04** installation.
 
 - [Bash-scripts](#bash-scripts)
 - [Static modifications](#static-modifications)
