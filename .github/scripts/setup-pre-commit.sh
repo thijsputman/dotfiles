@@ -33,21 +33,17 @@ fi
 $pip_cmd install 'pre-commit==3.3.3'
 $pip_cmd install 'yamllint==1.32.0'
 
-pushd "$(mktemp -d -t install_bins-d_XXXXXX)" > /dev/null || exit 1
-
 if ! command -v shellcheck; then
-  version=v0.9.0 "${GITHUB_WORKSPACE}/install/bins.d/shellcheck" 3>&1
+  version=v0.9.0 "${GITHUB_WORKSPACE}/install/install.sh" bins.d shellcheck
 fi
 
 if ! command -v hadolint; then
-  version=v2.12.0 "${GITHUB_WORKSPACE}/install/bins.d/hadolint" 3>&1
+  version=v2.12.0 "${GITHUB_WORKSPACE}/install/install.sh" bins.d hadolint
 fi
 
 if ! command -v tdg; then
-  version=v0.0.2 "${GITHUB_WORKSPACE}/install/bins.d/tdg" 3>&1
+  version=v0.0.2 "${GITHUB_WORKSPACE}/install/install.sh" bins.d tdg
 fi
-
-popd > /dev/null || exit 1
 
 if ! command -v shfmt; then
   go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
