@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Surpress "less than 5A current"-warning for RPi5
+# Suppress "less than 5A current"-warning for RPi5
 
 if [[ -e /proc/device-tree/model ]] &&
   grep -q --text "Raspberry Pi 5" /proc/device-tree/model; then

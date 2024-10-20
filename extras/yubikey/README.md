@@ -330,7 +330,7 @@ Then, make the following configuration changes:
   [Linux-instructions](#linux-generic); use `openssh.exe`)
 
 ❗**N.B.** After doing all of the above, logout and log back in to ensure the
-environment changes properly propogated to the tasks started via _Task
+environment changes properly propagated to the tasks started via _Task
 Scheduler_.
 
 This should allow SSH connections to be authenticated via Windows' OpenSSH

@@ -1,0 +1,3 @@
+[codespell]
+skip = package*.json
+ignore-words-list = iif

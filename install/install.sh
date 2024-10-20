@@ -60,7 +60,7 @@ if [[ $folder == bins.d ]]; then
 
 fi
 
-# Pre-empt sudo for software installation (almost always required)
+# Preempt sudo for software installation (almost always required)
 if [[ $folder == software.d ]]; then
   sudo -v
 fi
