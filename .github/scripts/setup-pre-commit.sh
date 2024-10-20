@@ -3,6 +3,7 @@
 set -euo pipefail
 
 : "${USE_PIPX:=true}"
+: "${FORCE_INSTALL:=false}"
 
 # Provide a proper $GITHUB_WORKSPACE for local invocations (ie, two levels up
 # from the folder this script is in)
@@ -25,7 +26,7 @@ npm install -g markdownlint-cli@0.37.0
 npm install -g prettier@3.0.2
 
 pip_cmd=pip3
-if [[ $USE_PIPX == true ]]; then
+if [[ ${USE_PIPX,,} == 'true' ]]; then
   (
     export PIP_REQUIRE_VIRTUALENV=false
     export PIP_BREAK_SYSTEM_PACKAGES=1
@@ -38,18 +39,18 @@ $pip_cmd install 'pre-commit==3.3.3'
 $pip_cmd install 'yamllint==1.32.0'
 $pip_cmd install 'codespell==2.3.0'
 
-if ! command -v shellcheck; then
+if ! command -v shellcheck || [[ ${FORCE_INSTALL,,} == 'true' ]]; then
   version=v0.9.0 "${GITHUB_WORKSPACE}/install/install.sh" bins.d shellcheck
 fi
 
-if ! command -v hadolint; then
+if ! command -v hadolint || [[ ${FORCE_INSTALL,,} == 'true' ]]; then
   version=v2.12.0 "${GITHUB_WORKSPACE}/install/install.sh" bins.d hadolint
 fi
 
-if ! command -v tdg; then
+if ! command -v tdg || [[ ${FORCE_INSTALL,,} == 'true' ]]; then
   version=v0.0.2 "${GITHUB_WORKSPACE}/install/install.sh" bins.d tdg
 fi
 
-if ! command -v shfmt; then
+if ! command -v shfmt || [[ ${FORCE_INSTALL,,} == 'true' ]]; then
   go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
 fi
