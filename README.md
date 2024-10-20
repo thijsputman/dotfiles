@@ -63,21 +63,15 @@ be aware of:
 
 ### Linter / pre-commit
 
-A combination of [Prettier](https://prettier.io/),
-[`markdownlint`](https://github.com/igorshubovych/markdownlint-cli),
-[`yamllint`](https://github.com/adrienverge/yamllint),
-[ShellCheck](https://www.shellcheck.net/),
-[`shfmt`](https://github.com/mvdan/sh), and
-[`hadolint`](https://github.com/hadolint/hadolint) is used via
-[pre-commit](https://pre-commit.com/) to ensure consistent formatting and –
-where possible – more elaborate sanity-checking.
+A large array of linters and formatters is used to ensure consistent formatting
+and – where possible – more elaborate sanity-checking.
 
 Pre-commit is used as a convenient way of generalising linter execution; its
 package management features are barely used – most of the linters in-use need to
 be installed locally anyway for their respective VS Code extensions...
 
 To set up pre-commit, follow the below instructions. This assumes a system
-running Debian/Ubuntu with Node/`npm`, and Python3/`pip` already installed.
+running Debian/Ubuntu with Node/`npm`, Python3/`pip`, and Go already installed.
 
 ```shell
 ./.github/scripts/setup-pre-commit.sh
