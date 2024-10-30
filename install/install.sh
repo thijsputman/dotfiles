@@ -34,7 +34,7 @@ elif [[ $1 != *.d ]]; then
 fi
 
 if [[ ! -d "$base"/install/"${1##*/}" ]]; then
-  echo "⛔ Invalid parts-directory \"${1##*/}\" specified..." >&2
+  echo "⛔ Invalid parts-directory \"${1##*/}\" specified!" >&2
   exit 1
 fi
 
@@ -66,6 +66,7 @@ if [[ $folder == software.d ]]; then
 fi
 
 exit_code=0
+match_count=0
 for file in "$base"/install/"$folder"/**; do
 
   file_basename="$(basename "$file")"
@@ -73,29 +74,44 @@ for file in "$base"/install/"$folder"/**; do
   # On _exact_ filename match (ie, a single file was specified), source and
   # run the single file; otherwise run all (executable) files
 
-  if [[ (-x $file && ! -v 1) || (-v 1 && "$file_basename" =~ ^$1$) ]]; then
+  if [[ (-x $file && ! -v 1) || (-v 1 && $file_basename =~ ^$1$) ]]; then
 
-    echo "📄 $folder/$file_basename"
+    match_count=$((match_count + 1))
 
-    # Capture stdout and stderr – only display them if the script fails. fd 3
-    # Is used to relay (non-fatal) warnings/notices and is thus passed through
-    # to the terminal regardless.
+    if [[ (-v 1 && $file_basename == "$1") ]]; then
+      source "$file" 3>&1
+    else
 
-    output=$(
-      if ! { errors=$(source "$file" 2>&1); } 3>&1; then
-        echo "$errors"
-        echo "⛔ Part failed – see preceding output for details..."
-        false
-      fi
-    ) || exit_code=1
+      echo "📄 $folder/$file_basename"
 
-    readarray -t lines <<< "$output"
-    for line in "${lines[@]}"; do
-      echo "  $line"
-    done
+      # Capture stdout and stderr – only display them if the script fails. fd 3
+      # Is used to relay (non-fatal) warnings/notices and is thus passed through
+      # to the terminal regardless.
+
+      output=$(
+        if ! { errors=$(source "$file" 2>&1); } 3>&1; then
+          echo "$errors"
+          echo "⛔ Part failed – see preceding output for details..."
+          false
+        fi
+      ) || exit_code=1
+
+      readarray -t lines <<< "$output"
+      for line in "${lines[@]}"; do
+        if [[ -n $line ]]; then
+          echo "  $line"
+        fi
+      done
+
+    fi
 
   fi
 
 done
+
+if [[ $match_count -eq 0 ]]; then
+  [[ -v 1 ]] && echo "⛔ No part(s) matching '$1' found in $folder!" >&2
+  exit_code=1
+fi
 
 exit "$exit_code"
