@@ -48,7 +48,7 @@ if ! command -v hadolint || [[ ${FORCE_INSTALL,,} == 'true' ]]; then
 fi
 
 if ! command -v tdg || [[ ${FORCE_INSTALL,,} == 'true' ]]; then
-  version=v0.0.2 "${GITHUB_WORKSPACE}/install/install.sh" bins.d tdg
+  version=v0.0.7-1 "${GITHUB_WORKSPACE}/install/install.sh" bins.d tdg
 fi
 
 if ! command -v shfmt || [[ ${FORCE_INSTALL,,} == 'true' ]]; then
