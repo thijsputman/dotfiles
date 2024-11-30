@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-: "${version:=v0.0.2}"
+: "${version:=v0.0.7-1}"
 : "${GOPATH:="$HOME/.local/go"}"
 export GOPATH
 
@@ -18,15 +18,15 @@ diff --git a/pkg/tdglib/todogenerator.go b/pkg/tdglib/todogenerator.go
 index faca56a..7e3951a 100644
 --- a/pkg/tdglib/todogenerator.go
 +++ b/pkg/tdglib/todogenerator.go
-@@ -24,7 +24,7 @@ const (
+@@ -27,7 +27,7 @@ const (
  )
 
  var (
 -       commentPrefixes        = [...]string{"TODO", "FIXME", "BUG", "HACK"}
 +       commentPrefixes        = [...]string{"TODO", "FIXME", "BUG", "HACK", "XXX"}
+        sourceControlSystems   = [...]string{".git", ".hg", ".svn", ".tf", ".bzr"}
         emptyRunes             = [...]rune{}
         categoryIniKey         = "category"
-        issueIniKey            = "issue"
 EOF
 
 export GOFLAGS="-mod=vendor"
