@@ -56,3 +56,8 @@ repos:
         entry: .github/scripts/tdg-pre-commit.sh
         language: system
         types: [text]
+      - id: actionlint
+        name: actionlint
+        entry: actionlint
+        language: system
+        files: .github/workflows/.*\.ya?ml

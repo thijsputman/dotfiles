@@ -54,3 +54,7 @@ fi
 if ! command -v shfmt || [[ ${FORCE_INSTALL,,} == 'true' ]]; then
   go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
 fi
+
+if ! command -v actionlint || [[ ${FORCE_INSTALL,,} == 'true' ]]; then
+  go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.3
+fi
