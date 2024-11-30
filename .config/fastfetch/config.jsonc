@@ -4,12 +4,12 @@
     "separator": "",
     "key": { "width": 16 },
     "percent": {
-      "type": 3,
+      "type": ["bar", "bar-monochrome", "num"],
       "ndigits": 0,
       "color": {
-        "green": "bright_white",
-        "yellow": "bright_white",
-        "red": "bright_white"
+        "green": "bright_",
+        "red": "bright_",
+        "yellow": "bright_"
       }
     },
     "size": {
