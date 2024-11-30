@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Checkout code
-        if: "!${{ github.event_name == 'pull_request' }}"
+        if: ${{ github.event_name != 'pull_request' }}
         uses: actions/checkout@v4
       - name: Restore cached dependencies
         id: cache-restore
@@ -37,7 +37,7 @@ jobs:
       - name: Setup PATH
         run: |
           mkdir -p "$HOME/.local/bin"
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -65,7 +65,7 @@ jobs:
         env:
           GH_ACTION_OUTPUT: true
       - name: Run pre-commit
-        if: "!${{ github.event_name == 'pull_request' }}"
+        if: ${{ github.event_name != 'pull_request' }}
         run: pre-commit run --color=always --all-files
         env:
           GH_ACTION_OUTPUT: true
