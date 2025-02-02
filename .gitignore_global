@@ -3,7 +3,7 @@
 .direnv
 .envrc
 .env
-.secrets?
+.secret?
 **/~$*
 __pycache__/
 NOTES*
