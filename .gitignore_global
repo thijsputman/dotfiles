@@ -4,6 +4,7 @@
 .envrc
 .env
 .secret?
+.npmrc
 **/~$*
 __pycache__/
 NOTES*

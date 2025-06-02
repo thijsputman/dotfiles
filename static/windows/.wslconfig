@@ -1,11 +1,13 @@
 [wsl2]
 processors=16
-memory=16GB
+memory=32GB
 dnsTunneling=true
 firewall=true
 networkingMode=mirrored
+swap=0
 
 [experimental]
 autoMemoryReclaim=gradual
 sparseVhd=true
 hostAddressLoopback=true
+bestEffortDnsParsing=true
