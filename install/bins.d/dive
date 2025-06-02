@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+arch=$(dpkg --print-architecture)
+# <https://xkcd.com/927/>
+if [[ $arch == 'arm64' ]]; then arch=aarch64; fi
+
+base=https://github.com/wagoodman/dive/releases/download
+: "${version:=0.13.1}"
+
+wget -nv "${base}/v${version}/dive_${version}_linux_${arch}.deb"
+sudo dpkg -i "dive_${version}_linux_${arch}.deb"
+
+rm -f "dive_${version}_linux_${arch}.deb"
+
+command -v dive &&
+  echo "⚙️ Installed $(dive --version)" >&3
