@@ -20,5 +20,5 @@ pipx install pre-commit
 echo "🐍 yamllint" >&3
 pipx install yamllint
 
-echo "🐍 pip-tools (pip-compile & pip-sync)" >&3
-pipx install pip-tools
+echo "🐍 check-jsonschema" >&3
+pipx install check-jsonschema
