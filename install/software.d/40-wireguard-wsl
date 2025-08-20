@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Prevent APT from installing everything and the kitchen sink – the below is
+# sufficient for basic Wireguard operation
+sudo apt --no-install-recommends install \
+  wireguard-tools \
+  resolvconf

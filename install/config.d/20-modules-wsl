@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# WSL2 identifies as container, preventing the automatic loading of
+# kernel-modules – disregard this condition
+sudo sed -i 's/^ConditionVirtualization=!container/#&/' \
+  /lib/systemd/system/systemd-modules-load.service
+
+sudo systemctl daemon-reload
+sudo systemctl restart systemd-modules-load
