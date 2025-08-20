@@ -15,8 +15,8 @@
   [see below](#generateresolvconf)
 - Interop is enabled, but no Windows directories are added to the `PATH`
   automatically
-  - Instead this is done manually via
-    [`📄 ~/.profile.d/01-path-wsl`](../../../.profile.d/01-path-wsl)
+  - Instead this is done via
+    [`📄 ~/.profile.d/03-path-wsl`](../../../.profile.d/03-path-wsl)
 - Automatic mounting of Windows filesystems is _disabled_ – instead, the `C`-
   and `D`-drive are manually mounted via [`📄 /etc/fstab`](fstab)
   - This is done so the `D`-drive (`/mnt/d`) can be mounted with `fmask 111`
@@ -27,6 +27,8 @@
     to differentiate between drives there – mounting the `C`-drive
     with`fmask 111` (for all intents and purposes)
     [breaks interop](https://github.com/microsoft/WSL/issues/7933).
+- A mount-point for AppArmor (`/sys/kernel/security`) is created – see
+  [`📂 windows`](../../windows/README.md#wslconfig) for more details
 - A default username (`thijs`) is set
 
 #### Using Microsoft's `/init`
@@ -89,7 +91,7 @@ The [`📄 nftables.conf`](./nftables.conf) provides a sane default for a
 workstation; it's based on a combination of
 [Gentoo's](https://wiki.gentoo.org/wiki/Nftables/Examples#Typical_workstation_.28separate_IPv4_and_IPv6.29)
 and [Arch's](https://wiki.archlinux.org/title/Nftables#Workstation) typical
-workstation configurations.
+workstation configurations, with some (trail-and-error) modifications of my own.
 
 ❗**N.B.** After copying (relevant parts of) the file to
 `📄 /etc/nftables.conf`, run `sudo systemctl enable --now nftables` to ensure
@@ -99,16 +101,3 @@ The only (substantial) addition to the typical configuration is to allow
 incoming (IPv4) DNS-traffic. This is somehow required for containers running via
 the (Ubuntu-native) Docker-daemon to be able to access DNS. As of yet unclear
 exactly why, but probably related to WSL2's DNS-tunneling feature...
-
-Related to this, a workaround for
-[an issue in WSL2](https://github.com/microsoft/WSL/issues/10494) when using
-Mirrored-mode networking in combination with the Docker-daemon is provided in
-[`📄 systemd/system/network-mirrored.service`](./systemd/system/network-mirrored.service).
-
-Once copied into place, reload `systemd` manager configuration and enable the
-workaround:
-
-```shell
-sudo systemctl daemon-reload
-sudo systemctl enable --now network-mirrored
-```

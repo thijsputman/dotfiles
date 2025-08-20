@@ -18,6 +18,11 @@ _combination_ with **Windows 11 23H2**.
 - Enables sparse VHDXs for new WSL2-instances
   - In case of an existing WLS-instance:
     `wsl --manage <distro> --set-sparse true`
+- Adds the `kernelCommandLine` required for AppArmor to work
+  - Based on
+    [microsoft/WSL#8709](https://github.com/microsoft/WSL/issues/8709#issuecomment-3195645088);
+    see also [`📄 etc/fstab`](../linux/etc/README.md#wslconf--fstab) on the
+    Linux-side
 
 For more details on these options, see:
 <https://devblogs.microsoft.com/commandline/windows-subsystem-for-linux-september-2023-update/>.

@@ -5,6 +5,7 @@ dnsTunneling=true
 firewall=true
 networkingMode=mirrored
 swap=0
+kernelCommandLine=lsm=apparmor,landlock,lockdown,yama,loadpin,safesetid,integrity,selinux,tomoyo
 
 [experimental]
 autoMemoryReclaim=gradual
