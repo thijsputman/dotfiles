@@ -62,7 +62,8 @@ yubikey-attach() {
       find ~/.ssh -type f -name "*ecdsa-${yubikey_serial}*" |
         while read -r file; do
           local link_name="${file##*/}"
-          ln -sf "$file" "${link_name//-$yubikey_serial/}"
+          rm -f "$HOME/.ssh/${link_name//-$yubikey_serial/}"
+          ln -rs "$file" "$HOME/.ssh/${link_name//-$yubikey_serial/}"
         done
 
     fi
