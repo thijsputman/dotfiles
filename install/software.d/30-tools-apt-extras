@@ -2,7 +2,6 @@
 
 sudo apt-get update
 
-sudo DEBIAN_FRONTEND=noninteractive \
-  apt-get install -y \
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
   ffmpeg \
   imagemagick
