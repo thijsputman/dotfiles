@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+arch=$(uname -m)
+base=https://github.com/microsoft/edit/releases/download
+: "${version:=1.2.0}"
+
+wget -nv -O- \
+  "${base}/v${version}/edit-${version}-${arch}-linux-gnu.tar.zst" |
+  tar --zstd -xv
+mv -f edit ~/.local/bin/msedit
+
+command -v msedit &&
+  echo "⚙️ Installed $(msedit --version)" >&3
