@@ -16,43 +16,74 @@ gpg-tty() {
 }
 
 yubikey-attach() {
-  # Yubikey is not attached
+
+  # YubiKey not attached
+
   if [[ -n $USBIP_HOST && -n $USBIP_BUSID &&
-    ! $(sudo usbip port) =~ usbip://$USBIP_HOST:3240/$USBIP_BUSID ]] \
-    ; then
-    # Yubikey is not not plugged into the host-machine
-    if [[ ! $(usbip list -r "$USBIP_HOST" 2> /dev/null) =~ $USBIP_BUSID:\ Yubico\.com ]] \
-      ; then
-      read -n 1 -s -r -p "Insert Yubikey and press any key to continue..."
-      printf "\n"
-      yubikey-attach
-    # Attach Yubikey
+    ! $(sudo usbip port) =~ usbip://$USBIP_HOST:3240/$USBIP_BUSID ]]; then
+
+    # YubiKey not not plugged into the host-machine
+
+    if [[ ! $(usbip list -r "$USBIP_HOST" 2> /dev/null) =~ $USBIP_BUSID:\ Yubico\.com ]]; then
+
+      if zenity --question \
+        --text='Insert YubiKey and press "Yes" to continue...'; then
+        yubikey-attach
+      fi
+
+    # Attach YubiKey
+
     else
+
       sudo usbip attach -r "$USBIP_HOST" -b "$USBIP_BUSID"
-      # Check if the serial number of the GPG key stubs matches the serial
-      # number of the Yubikey — if not, update the GPG key stubs with the serial
-      # number of the attached Yubikey. This allows multiple physical Yubikeys
-      # to be used interchangeably.
-      if [ \
-        "$(gpg --card-status 2> /dev/null |
-          grep -oP 'Serial number \.\.\.\.: \K\d+')" != \
-        "$(gpg --card-status 2> /dev/null |
-          grep -m 1 -oP 'card-no: 0006 \K\d+')" \
-        ]; then
+
+      local yubikey_serial
+      yubikey_serial="$(
+        gpg --card-status 2> /dev/null |
+          grep -oP 'Serial number \.\.\.\.: \K\d+'
+      )"
+
+      if [[ ! $yubikey_serial =~ ^[0-9]+$ ]]; then
+        zenity --error --text="No (valid) YubiKey detected!"
+        return 1
+      fi
+
+      # If the serial-number of the GPG key stubs doesn't match the YubiKey's,
+      # update them – this allows multiple physical YubiKeys to be used
+      # interchangeably
+
+      if [[ $yubikey_serial != "$(gpg --card-status 2> /dev/null |
+        grep -m 1 -oP 'card-no: 0006 \K\d+')" ]]; then
         gpg-connect-agent "scd serialno" "learn --force" /bye > /dev/null
       fi
+
+      # Idem for (possible) FIDO-keys – symlink them into place
+
+      find ~/.ssh -type f -name "*ecdsa-${yubikey_serial}*" |
+        while read -r file; do
+          local link_name="${file##*/}"
+          ln -sf "$file" "${link_name//-$yubikey_serial/}"
+        done
+
     fi
+
   fi
+
 }
 
 yubikey-detach() {
-  # Yubikey is attached
+
+  # YubiKey is attached
+
   if [[ -n $USBIP_HOST && -n $USBIP_BUSID &&
     $(sudo usbip port) =~ usbip://$USBIP_HOST:3240/$USBIP_BUSID ]]; then
-    # This naively assumes the Yubikey is attached to port 00 — should at some
+
+    # This naively assumes the YubiKey is attached to port 00 — should at some
     # point make this smarter...
     sudo usbip detach -p 00 2> /dev/null
+
   fi
+
 }
 
 # Use GPG-Agent for SSH
