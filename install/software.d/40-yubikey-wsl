@@ -7,7 +7,6 @@ sudo DEBIAN_FRONTEND=noninteractive \
   apt-get install -y \
   hwdata \
   linux-tools-generic \
-  pinentry-gnome3 \
   scdaemon \
   yubikey-manager
 

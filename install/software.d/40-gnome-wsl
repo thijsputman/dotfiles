@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+sudo apt-get update
+
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  gnome-tweaks \
+  gnome-system-monitor \
+  ssh-askpass-gnome \
+  pinentry-gnome3 \
+  zenity
+
+{
+  echo 'ℹ️ Pin-entry and ask-pass alternatives:'
+  echo -n ' - '
+  readlink -f /etc/alternatives/pinentry
+  echo -n ' - '
+  readlink -f /etc/alternatives/ssh-askpass
+} >&3

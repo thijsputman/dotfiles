@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+export SSH_ASKPASS_REQUIRE=prefer
+export SSH_ASKPASS=/usr/bin/ssh-askpass
