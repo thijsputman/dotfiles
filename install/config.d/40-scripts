@@ -14,8 +14,10 @@ if
 then
 
   if ! [ -d "$HOME/.pyenv" ]; then
-    printf '⛔ Skipping "📄 scripts/pyenv-update-check.sh" — ' >&3
-    printf 'pyenv not properly configured...\n' >&3
+    {
+      printf '⛔ Skipping "📄 scripts/pyenv-update-check.sh" — '
+      printf 'pyenv not properly configured...\n'
+    } >&3
     return 0
   fi
 

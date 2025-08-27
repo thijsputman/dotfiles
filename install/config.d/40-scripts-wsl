@@ -8,8 +8,10 @@ if [ ! -e ~/.rclone ]; then
     ! command -v rclone &> /dev/null ||
       ! rclone listremotes | grep onedrive:
   then
-    printf '⛔ Skipping "📄 scripts/rclone.sh" — ' >&3
-    printf 'rclone not properly configured...\n' >&3
+    {
+      printf '⛔ Skipping "📄 scripts/rclone.sh" — '
+      printf 'rclone not properly configured...\n'
+    } >&3
     return 0
   fi
 

@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
 if [ ! -f /etc/apt/apt.conf.d/10periodic ]; then
-  printf '⛔ "📂 /etc/apt/apt.conf.d/10periodic" not found – ' >&3
-  printf 'ensure unattended-upgrades is configured properly...\n' >&3
+  {
+    printf '⛔ "📂 /etc/apt/apt.conf.d/10periodic" not found – '
+    printf 'ensure unattended-upgrades is configured properly...\n'
+  } >&3
   return 0
 fi
 
