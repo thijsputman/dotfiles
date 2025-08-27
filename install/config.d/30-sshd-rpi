@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+if [[ -f /etc/ssh/sshd_config ]]; then
+
+  if grep StreamLocalBindUnlink /etc/ssh/sshd_config; then
+
+    sudo sed -i "s/^#*StreamLocalBindUnlink.*/StreamLocalBindUnlink yes/" \
+      /etc/ssh/sshd_config
+
+  else
+
+    sudo tee -a /etc/ssh/sshd_config > /dev/null <<< \
+      "StreamLocalBindUnlink yes"
+
+  fi
+
+  sudo systemctl daemon-reload
+  sudo systemctl restart ssh
+
+fi
+
+{
+  printf '📢 SSHd configuration updated; '
+  printf 'open a *new* SSH-session to ensure everything went well...\n'
+} >&3
