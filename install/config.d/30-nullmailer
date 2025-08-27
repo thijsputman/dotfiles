@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+me=thijs
+domain=sgraastra.net
+hostname=$(hostname)
+username=${hostname,,}
+
+sudo tee /etc/mailname > /dev/null <<< "$username"
+
+sudo mkdir -p /etc/nullmailer
+
+sudo tee /etc/nullmailer/adminaddr > /dev/null <<< "$me@$domain"
+sudo tee /etc/nullmailer/allmailfrom > /dev/null <<< "$username@$domain"
+sudo tee /etc/nullmailer/defaultdomain > /dev/null <<< "$domain"
+sudo tee /etc/nullmailer/defaulthost > /dev/null <<< "$domain"
+
+echo "set from=\"$hostname <$username@$domain>\"" > ~/.mailrc
+sudo tee /root/.mailrc > /dev/null <<< \
+  "set from=\"$hostname <$username@$domain>\""
+
+{
+  echo "📧 \"nullmailer\" will use: $hostname <$username@$domain>"
+  echo "📢 AWS SES credentials need to be set manually:"
+  cat <<- 'EOF'
+					     sudo tee /etc/nullmailer/remotes > /dev/null <<< \
+					       email-smtp.us-east-1.amazonaws.com smtp --ssl --starttls --port=465 \
+					       --user=AKIA... \
+					       --pass=...
+					EOF
+  echo "🧪 Test using:"
+  echo "     echo "Lorem ipsum..." | mail -s \"Hello World!\" $me@$domain"
+} >&3

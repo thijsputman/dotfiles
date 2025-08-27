@@ -23,8 +23,6 @@ sudo DEBIAN_FRONTEND=noninteractive \
   nullmailer \
   traceroute
 
-echo '📢 "nullmailer" requires manual configuration... ' >&3
-
 # Unattended upgrades
 
 lsb_id=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
