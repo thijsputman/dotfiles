@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 
-sudo apt-get update
-
 if ! command -v snap; then
 
-  sudo DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y \
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
     snapd
 
 fi
@@ -16,8 +13,7 @@ fi
 
 if [[ ! $DISPLAY =~ localhost ]]; then
 
-  sudo DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y \
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
     xdg-desktop-portal \
     xdg-desktop-portal-gtk
 

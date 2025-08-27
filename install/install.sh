@@ -60,9 +60,11 @@ if [[ $folder == bins.d ]]; then
 
 fi
 
-# Preempt sudo for software installation (almost always required)
+# Preempt "sudo" and "apt-get update" for software installation (almost always
+# required)
 if [[ $folder == software.d ]]; then
   sudo -v
+  sudo apt-get update > /dev/null
 fi
 
 exit_code=0

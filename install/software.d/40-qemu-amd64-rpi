@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-sudo apt-get update
-
-sudo DEBIAN_FRONTEND=noninteractive \
-  apt-get install -y \
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
   binfmt-support \
   crossbuild-essential-amd64 \
   qemu-user-static
@@ -21,7 +18,7 @@ sudo tee /etc/apt/sources.list.d/ubuntu-amd64.sources > /dev/null << EOF
   Architectures: amd64
 EOF
 
-sudo apt update
+sudo apt-get update
 
 sudo DEBIAN_FRONTEND=noninteractive \
   apt-get install -y \
