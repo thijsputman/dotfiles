@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Disable Raspberry Pi's 5A minimum current warning
+sudo mkdir -p /etc/xdg/pemmican
+sudo touch /etc/xdg/pemmican/max_current.inhibit

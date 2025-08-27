@@ -3,8 +3,6 @@
 set -euo pipefail
 
 arch=$(dpkg --print-architecture)
-# <https://xkcd.com/927/>
-if [[ $arch == 'arm64' ]]; then arch=aarch64; fi
 
 base=https://github.com/wagoodman/dive/releases/download
 : "${version:=0.13.1}"

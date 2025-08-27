@@ -5,6 +5,7 @@ set -euo pipefail
 rclone sync ~/.gnupg/pubring.kbx onedrive:AppData/WSL/.gnupg
 rclone sync ~/.gnupg/trustedkeys.kbx onedrive:AppData/WSL/.gnupg
 
+rclone sync ~/.env onedrive:AppData/WSL
 rclone sync ~/.bash_history onedrive:AppData/WSL
 
 rclone sync ~/.config/codespell-custom.dict onedrive:AppData/WSL/.config
