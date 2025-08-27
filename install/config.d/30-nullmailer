@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if ! systemctl list-unit-files nullmailer.service; then
+  echo '⛔ Skipping nullmailer configuration; not present...' >&3
+  return 0
+fi
+
 me=thijs
 domain=sgraastra.net
 hostname=$(hostname)
