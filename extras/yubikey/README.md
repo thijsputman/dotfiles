@@ -28,7 +28,7 @@ Create an ephemeral Docker container (with all required prerequisites installed
 
 ```bash
 docker run --network none --privileged -v /dev/bus/usb:/dev/bus/usb \
-  --rm -it $(docker build --no-cache -q .)
+  --rm -it $(docker build -q .)
 ```
 
 Unless explicitly mentioned otherwise, all the below instructions assumes you
@@ -38,11 +38,12 @@ are running commands from _withint_ the container.
 Yubikey) on the host machine before attempting to start `pcscd` in the
 container...
 
-❗**N.B.** As of Ubuntu 24.04 (more specifically, GnuPG 2.4), GnuPG doesn't use
-`pcscd` to access the Yubikey anymore – so it's possible you don't have `pcscd`
-on your host machine at all. See [`📂 ~/.gnupg`](/.gnupg/README.md) for more
-details on what this change means for _using_ the Yubikey on Ubuntu 24.04; it
-shouldn't have any impact on the below instructions though...
+❗**N.B.** As of **Ubuntu 24.04** (more specifically, GnuPG 2.4), GnuPG doesn't
+use `pcscd` to access the Yubikey anymore – so it's possible you don't have
+`pcscd` on your host machine at all. See
+[`📂 ~/.gnupg`](/.gnupg/README.md#yubikey-support) for more details on what this
+change means for _using_ the Yubikey on Ubuntu 24.04; **it shouldn't have any
+impact on the below instructions.**
 
 The Docker container is used purely out of convenience (an easy way to tool up a
 clean/prepared environment). From a security perspective there is little benefit
@@ -57,7 +58,7 @@ Firstly, ensure `pcscd` is running inside the container and that you can
 communicate with the Yubikey:
 
 ```bash
-pcscd
+pcscd --disable-polkit
 ykman info
 ```
 
@@ -284,15 +285,28 @@ gpg --edit-key ______
 >> y
 ```
 
-Ensure `scdaemon` and `pcscd` are installed – might need to restart `gpg-agent`
-for it to pick things up properly:
+Ensure `scdaemon` and `pcscd` are installed; restart `gpg-agent` for it to pick
+things up properly:
+
+❗**N.B.** As of **Ubuntu 24.04** (more specifically, GnuPG 2.4), GnuPG doesn't
+use `pcscd` to access the Yubikey anymore – **skip the below step!**
 
 ```shell
 sudo apt install scdaemon pcscd
 gpgconf --kill gpg-agent
 gpg-connect-agent reloadagent /bye
+```
+
+Next, test whether GnuPG can access the Yubikey:
+
+```shell
 gpg --card-status
 ```
+
+❗**N.B.** If the above command doesn't work, _and_ you're running **Ubuntu
+24.04**, see [`📂 ~/.gnupg`](/.gnupg/README.md#gpg-configuration) for details on
+how to properly give GnuPG access to the Yubikey. On Ubuntu 22.04 this is
+handled by `pcscd`, and no further changes should be required.
 
 I personally only have it imported on my daily driver; using SSH agent
 forwarding to forward both the SSH and GPG agents to (trusted) remote machines.
