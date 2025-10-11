@@ -1,2 +1,3 @@
 [system-distro-env]
 WESTON_RDPRAIL_SHELL_APP_LIST_PATH=/home/thijs/.local/share/applications
+WESTON_RDPRAIL_SHELL_ALLOW_ZAP=true

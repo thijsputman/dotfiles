@@ -278,7 +278,7 @@ shows revoked and expired keys).
 Import the key to each machine where you intend to use it:
 
 ```bash
-gpg --import ~/gpg-0x\*.asc
+gpg --import ~/gpg-0x*.asc
 gpg --edit-key ______
 > trust
 >> 5

@@ -8,6 +8,10 @@ rclone sync ~/.gnupg/trustedkeys.kbx onedrive:AppData/WSL/.gnupg
 rclone sync ~/.env onedrive:AppData/WSL
 rclone sync ~/.bash_history onedrive:AppData/WSL
 
+rclone sync ~/.ssh/config onedrive:AppData/WSL/.ssh
+rclone sync ~/.ssh/known_hosts onedrive:AppData/WSL/.ssh
+rclone sync ~/.ssh/config.d onedrive:AppData/WSL/.ssh/config.d
+
 rclone sync ~/.config/codespell-custom.dict onedrive:AppData/WSL/.config
 
 rclone sync ~/.local/share/mcfly/history.db \
