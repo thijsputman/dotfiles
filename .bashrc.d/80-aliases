@@ -15,6 +15,16 @@ docker() {
   fi
 }
 
+# If "gnome-text-editor" is available, map it to "gedit" and fork
+gedit() {
+  if command -v gnome-text-editor &> /dev/null; then
+    (
+      gnome-text-editor "$@" &> /dev/null &
+      disown
+    )
+  fi
+}
+
 gh() {
   # If "act" is available, map it to "gh act"
   if [[ ${1,,} == act ]] && command -v act &> /dev/null; then

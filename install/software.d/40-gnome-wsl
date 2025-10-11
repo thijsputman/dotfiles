@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  gnome-tweaks \
   gnome-system-monitor \
+  gnome-text-editor \
+  gnome-tweaks \
   ssh-askpass-gnome \
   pinentry-gnome3 \
   zenity
+
+sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+  nautilus
 
 {
   echo '🔐 Pin-entry and ask-pass alternatives:'
