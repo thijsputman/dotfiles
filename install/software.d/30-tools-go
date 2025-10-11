@@ -12,7 +12,7 @@ echo "🐹 powerline-go" >&3
 go install github.com/justjanne/powerline-go@059f7f2 # v1.25
 
 echo "🐹 shfmt" >&3
-go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
+go install mvdan.cc/sh/v3/cmd/shfmt@v3.12.0
 
 echo "🐹 actionlint" >&3
 go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.3

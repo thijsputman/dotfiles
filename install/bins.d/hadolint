@@ -3,6 +3,7 @@
 set -euo pipefail
 
 arch=$(uname -m)
+if [[ $arch == aarch64 ]]; then arch=arm64; fi
 base=https://github.com/hadolint/hadolint/releases/download
 : "${version:=v2.12.0}"
 
