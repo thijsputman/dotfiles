@@ -30,3 +30,9 @@ if [ ! -e ~/.config/powerline-go/config.json ]; then
   ln -s -r "${base:?}/.config/powerline-go/config.json" \
     ~/.config/powerline-go/config.json
 fi
+
+if [ ! -e ~/.config/direnv/direnvrc ]; then
+  mkdir -p ~/.config/direnv
+  ln -s -r "${base:?}/.config/direnv/direnvrc" \
+    ~/.config/direnv/direnvrc
+fi

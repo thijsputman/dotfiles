@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+arch=$(dpkg --print-architecture)
+
+base=https://github.com/direnv/direnv/releases/download
+: "${version:=2.37.1}"
+
+wget -nv "${base}/v${version}/direnv.linux-$arch"
+mv -f "direnv.linux-$arch" ~/.local/bin/direnv
+chmod +x ~/.local/bin/direnv
+
+rm -f "direnv.linux-$arch"
+
+command -v direnv &&
+  echo "⚙️ Installed $(direnv --version)" >&3
