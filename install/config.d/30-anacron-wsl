@@ -1,17 +1,31 @@
 #!/usr/bin/env bash
 
-if [ ! -d ~/.anacron ]; then
+if ! command -v anacron; then
+  echo '⛔ Skipping "📂 ~/.anacron" — anacron not present...' >&3
+  return 0
+fi
 
-  if ! command -v anacron; then
-    echo '⛔ Skipping "📂 ~/.anacron" — anacron not present...' >&3
-    return 0
-  fi
+mkdir -p ~/.anacron/{etc,spool}
 
-  mkdir -p ~/.anacron/{etc,spool}
+if [[ ! -e ~/.anacron/etc/anacrontab ]]; then
   cp "${base:?}/.anacron/etc/anacrontab" ~/.anacron/etc/anacrontab
+fi
 
+if ! crontab -l | grep -q -F "@hourly /usr/sbin/anacron"; then
   # shellcheck disable=SC2016
   echo '@hourly /usr/sbin/anacron -s -t $HOME/.anacron/etc/anacrontab' \
     '-S $HOME/.anacron/spool' | crontab -
+fi
+
+# Allow anacron to run while on battery-power
+
+if [[ ! -e /etc/systemd/system/anacron.service.d/on-ac.conf ]]; then
+
+  sudo mkdir -p /etc/systemd/system/anacron.service.d
+  sudo tee /etc/systemd/system/anacron.service.d/on-ac.conf > /dev/null <<- 'EOF'
+			[Unit]
+			ConditionACPower=
+		EOF
+  sudo systemctl daemon-reload
 
 fi
