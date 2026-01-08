@@ -4,7 +4,7 @@ set -euo pipefail
 
 arch=$(uname -m)
 base=https://github.com/cantino/mcfly/releases/download
-: "${version:=v0.9.3}"
+: "${version:=v0.9.4}"
 
 wget -nv -O- \
   "${base}/${version}/mcfly-${version}-${arch}-unknown-linux-musl.tar.gz" |
