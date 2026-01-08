@@ -1,0 +1,6 @@
+[Unit]
+Description=Cache Yubikey-state
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/yubikey-cache-state.sh

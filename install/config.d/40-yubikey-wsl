@@ -12,3 +12,27 @@ if [ ! -e "$(readlink -f /usr/local/bin/usbip)" ]; then
   fi
 
 fi
+
+# Setup cached Yubikey state-tracking
+
+if [[ ! -e ~/.local/bin/yubikey-cache-state.sh ]]; then
+  ln -s -r "${base:?}/.local/bin/yubikey-cache-state.sh" \
+    ~/.local/bin/yubikey-cache-state.sh
+fi
+
+for file in "${base:?}"/.config/systemd/user/yubikey-cache-state.*; do
+  if [[ ! -e ~/.config/systemd/user/"${file##*/}" ]]; then
+    mkdir -p ~/.config/systemd/user
+    ln -s -r "${base:?}/.config/systemd/user/${file##*/}" \
+      ~/.config/systemd/user/"${file##*/}"
+  fi
+done
+
+systemctl --user enable --now yubikey-cache-state.timer
+
+# Install powerline-go Yubikey-state segment
+
+if [[ ! -e ~/.local/bin/powerline-go-yubikey ]]; then
+  ln -s -r "${base:?}/.local/bin/powerline-go-yubikey" \
+    ~/.local/bin/powerline-go-yubikey
+fi

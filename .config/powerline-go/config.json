@@ -5,6 +5,7 @@
     "user",
     "host",
     "ssh",
+    "yubikey",
     "cwd",
     "perms",
     "git",

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [[ -f ~/.yubikey-state ]]; then
+
+  state=$(< ~/.yubikey-state)
+
+  if [[ $state == attached ]]; then
+    echo '[{"content":"🔓","background":66}]'
+  elif [[ $state == detached ]]; then
+    echo '[{"content":"🔐","background":95}]'
+  fi
+
+fi

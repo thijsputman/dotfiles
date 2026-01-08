@@ -1,0 +1,9 @@
+[Unit]
+Description=Update cached Yubikey-state
+
+[Timer]
+OnBootSec=5
+OnUnitActiveSec=60
+
+[Install]
+WantedBy=timers.target
