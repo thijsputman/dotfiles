@@ -108,7 +108,7 @@ fi
 
 _yubikey-git() {
 
-  if [[ ${1,,} =~ ^(clone|commit|pull|push)$ ]]; then
+  if [[ ${1,,} =~ ^(clone|commit|pull|push|fetch)$ ]]; then
     yubikey-attach
     gpg-tty
   fi
