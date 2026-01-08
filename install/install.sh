@@ -5,7 +5,7 @@ set -euo pipefail
 
 base="$(dirname "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")")"
 
-# shellcheck disable=SC2317
+# shellcheck disable=SC2317,SC2329
 goodbye() {
 
   rc="$?"
