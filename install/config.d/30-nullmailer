@@ -27,10 +27,11 @@ sudo tee /root/.mailrc > /dev/null <<< \
   echo "📧 \"nullmailer\" will use: $hostname <$username@$domain>"
   echo "📢 AWS SES credentials need to be set manually:"
   cat <<- 'EOF'
-					     sudo tee /etc/nullmailer/remotes > /dev/null <<< \
+					     sudo tee /etc/nullmailer/remotes > /dev/null <<< "\
 					       email-smtp.us-east-1.amazonaws.com smtp --ssl --starttls --port=465 \
-					       --user=AKIA... \
-					       --pass=...
+					       --user=AKIA...\
+					       --pass=...\
+                 "
 					EOF
   echo "🧪 Test using:"
   echo "     echo "Lorem ipsum..." | mail -s \"Hello World!\" $me@$domain"
