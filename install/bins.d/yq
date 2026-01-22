@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+arch=$(dpkg --print-architecture)
+base=https://github.com/mikefarah/yq/releases/download
+: "${version:=v4.50.1}"
+
+wget -nv -O ~/.local/bin/yq \
+  "${base}/${version}/yq_linux_${arch}"
+chmod +x ~/.local/bin/yq
+
+command -v yq &&
+  echo "⚙️ Installed $(yq --version)" >&3

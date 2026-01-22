@@ -22,6 +22,3 @@ pipx install yamllint
 
 echo "🐍 check-jsonschema" >&3
 pipx install check-jsonschema
-
-echo "🐍 yq" >&3
-pipx install yq

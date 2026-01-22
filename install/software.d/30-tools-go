@@ -9,7 +9,7 @@ if ! [[ $PATH =~ (^|:)"$GOPATH/bin"(:|$) ]]; then
 fi
 
 echo "🐹 powerline-go" >&3
-go install github.com/justjanne/powerline-go@059f7f2 # v1.25
+go install github.com/justjanne/powerline-go@4a8abaa # v1.26
 
 echo "🐹 shfmt" >&3
 go install mvdan.cc/sh/v3/cmd/shfmt@v3.12.0
