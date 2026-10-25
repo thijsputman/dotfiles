@@ -1,0 +1,3 @@
+# 📧 Proton Mail sieve-filters
+
+Trying to keep the "Your package is on its way!"-spam down to a minimum...
