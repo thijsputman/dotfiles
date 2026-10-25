@@ -3,8 +3,8 @@
 .direnv
 .envrc
 .env
-.secret?
-.npmrc
+*.secret*
+*.key
 **/~$*
 __pycache__/
 NOTES*

@@ -3,18 +3,6 @@
 alias l='ls -lhF --group-directories-first'
 alias ll='ls -alhF --group-directories-first'
 
-alias '??'='gh copilot suggest -t shell'
-
-# If "docker-compose" is available, map it to "docker compose"
-docker() {
-  if [[ ${1,,} == compose ]] && command -v docker-compose &> /dev/null; then
-    shift
-    command docker-compose "$@"
-  else
-    command docker "$@"
-  fi
-}
-
 # If "gnome-text-editor" is available, map it to "gedit" and fork
 gedit() {
   if command -v gnome-text-editor &> /dev/null; then
@@ -22,16 +10,6 @@ gedit() {
       gnome-text-editor "$@" &> /dev/null &
       disown
     )
-  fi
-}
-
-gh() {
-  # If "act" is available, map it to "gh act"
-  if [[ ${1,,} == act ]] && command -v act &> /dev/null; then
-    shift
-    command act "$@"
-  else
-    command gh "$@"
   fi
 }
 
