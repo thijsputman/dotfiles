@@ -6,5 +6,10 @@ if ! [[ $PATH =~ (^|:)"$HOME/.local/bin"(:|$) ]]; then
   echo "⚠️ Add \"📂 $HOME/.local/bin\" to PATH... " >&3
 fi
 
+# Move NPM's cache to a more appropriate location
+npm config set cache ~/.cache/npm
+
+npm config set min-release-age 14
+
 npm config set prefix ~/.local/
 npm install -g npm

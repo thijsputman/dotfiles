@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
 sudo snap install --classic go
+
+# Move Go's cache to a more appropriate location
+mkdir -p "$HOME/.cache/go-mod"
+go env -w GOMODCACHE="$HOME/.cache/go-mod"

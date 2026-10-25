@@ -22,3 +22,6 @@ pipx install yamllint
 
 echo "🐍 check-jsonschema" >&3
 pipx install check-jsonschema
+
+echo "🐍 codespell" >&3
+pipx install codespell
