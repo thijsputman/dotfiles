@@ -69,10 +69,6 @@ yubikey-attach() {
     fi
 
   fi
-
-  # Force-update cached Yubikey-state
-  systemctl --user reset-failed yubikey-cache-state.service
-  systemctl --user start yubikey-cache-state.service
 }
 
 yubikey-detach() {
@@ -87,10 +83,6 @@ yubikey-detach() {
     sudo usbip detach -p 00 2> /dev/null
 
   fi
-
-  # Force-update cached Yubikey-state
-  systemctl --user reset-failed yubikey-cache-state.service
-  systemctl --user start yubikey-cache-state.service
 }
 
 # Use GPG-Agent for SSH
