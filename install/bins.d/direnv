@@ -5,7 +5,7 @@ set -euo pipefail
 arch=$(dpkg --print-architecture)
 
 base=https://github.com/direnv/direnv/releases/download
-: "${version:=2.37.1}"
+: "${version:=2.38.2}"
 
 wget -nv "${base}/v${version}/direnv.linux-$arch"
 mv -f "direnv.linux-$arch" ~/.local/bin/direnv
