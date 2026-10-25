@@ -5,6 +5,7 @@ if command -v mcfly &> /dev/null; then
   export MCFLY_FUZZY=2
   export MCFLY_RESULTS=$(($(tput lines) - 4))
   export MCFLY_INTERFACE_VIEW=BOTTOM
+  export MCFLY_PROMPT="❯"
 
   eval "$(mcfly init bash)"
 

@@ -1,0 +1,16 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+command_timeout = 800
+
+[directory]
+truncation_length = 7
+truncate_to_repo = false
+repo_root_style = 'cyan'
+before_repo_root_style = 'dimmed'
+truncation_symbol = '≡/'
+
+[docker_context]
+disabled = true
+
+[python]
+detect_extensions = []

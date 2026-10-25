@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+arch=$(uname -m)
+base=https://github.com/starship/starship/releases/download/
+: "${version:=v1.27.0}"
+
+wget -nv -O- \
+  "${base}/${version}/starship-${arch}-unknown-linux-musl.tar.gz" |
+  tar -xzv
+mv -f starship ~/.local/bin/starship
+
+command -v starship &&
+  echo "⚙️ Installed $(starship --version)" >&3
