@@ -27,7 +27,7 @@ yubikey-attach() {
     if [[ ! $(usbip list -r "$USBIP_HOST" 2> /dev/null) =~ $USBIP_BUSID:\ Yubico\.com ]]; then
 
       if zenity --question \
-        --text='Insert YubiKey and press "Yes" to continue...'; then
+        --text='Insert YubiKey and press "Yes" to continue...' 2> /dev/null; then
         yubikey-attach
       fi
 
@@ -44,7 +44,7 @@ yubikey-attach() {
       )"
 
       if [[ ! $yubikey_serial =~ ^[0-9]+$ ]]; then
-        zenity --error --text="No (valid) YubiKey detected!"
+        zenity --error --text="No (valid) YubiKey detected!" 2> /dev/null
         return 1
       fi
 
