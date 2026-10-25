@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+if [[ ! -e ~/.distroboxrc.d ]]; then
+  ln -s -r "${base:?}/.distroboxrc.d" ~/.distroboxrc.d
+fi

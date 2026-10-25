@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+if command -v node &> /dev/null; then
+
+  # If Node is installed _inside_ the distrobox, revert NPM's (global) prefix
+  # back to /usr/local (instead of ~/.local)
+
+  function npm() {
+    if [[ " $* " =~ [[:space:]]-g[[:space:]] ]]; then
+      command npm --prefix /usr/local "$@"
+    else
+      command npm "$@"
+    fi
+  }
+
+  function npx() {
+    if [[ " $* " =~ [[:space:]]-g[[:space:]] ]]; then
+      command npx --prefix /usr/local "$@"
+    else
+      command npx "$@"
+    fi
+  }
+
+  export -f npm npx
+
+fi

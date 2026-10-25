@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+# Based on:
+#   <https://raw.githubusercontent.com/89luca89/distrobox/main/extras/podman-host>
+
+container_id=""
+if [[ "$*" =~ [[:space:]][[:alnum:]]{64}[[:space:]] ]]; then
+  container_id="${BASH_REMATCH[0]}"
+  container_id="${container_id//[[:space:]]/}"
+fi
+
+if [[ "$*" == *exec* ]]; then
+
+  container_manager=$(
+    podman inspect --type container \
+      --format '{{ index .Config.Labels "manager" }}' \
+      "$container_id"
+  )
+
+  if [[ $container_manager == distrobox ]]; then
+
+    if [[ -n $container_id ]]; then
+      podman exec -u "$USER" "$container_id" /bin/sh -c '
+        if [ ! -L "${HOME}/.vscode-server" ]; then
+          if [ -e "${HOME}/.vscode-server" ]; then
+            mv "${HOME}/.vscode-server" /var/tmp
+          fi
+          if [ ! -d /var/tmp/.vscode-server ]; then
+            mkdir /var/tmp/.vscode-server
+          fi
+          ln -sf /var/tmp/.vscode-server "$HOME"
+        elif [ ! -e "${HOME}/.vscode-server" ]; then
+          mkdir /var/tmp/.vscode-server
+          ln -sf /var/tmp/.vscode-server "$HOME"
+        fi'
+    fi
+
+    new_args=()
+
+    for arg in "$@"; do
+
+      # Add (curated) current environment to exec-command
+
+      if [[ $arg == *exec* ]]; then
+
+        new_args+=("exec")
+
+        skip_env_patterns=(
+          'CONTAINER_ID'
+          'HOST'
+          'HOSTNAME'
+          'HOME'
+          'PATH'
+          'PROFILEREAD'
+          'SHELL'
+          'XDG_SEAT'
+          'XDG_VTNR'
+          '_.*'
+          'XDG_.*_DIRS'
+        )
+
+        IFS='|'
+        skip_env_regex="^(${skip_env_patterns[*]})$"
+        IFS=
+
+        while IFS= read -r -d '' current_env; do
+          if [[ ${current_env%%=*} =~ $skip_env_regex ]]; then
+            continue
+          fi
+          new_args+=("--env" "$current_env")
+        done < <(printenv -0)
+
+        # Work around a strange VS Code bug...
+        new_args+=("--env" "ELECTRON_RUN_AS_NODE=")
+
+      # Replace root with the current user
+      elif [[ $arg == *root:root* ]]; then
+        new_args+=("$(id -u):$(id -g)")
+      # Pass everything else along unmodified
+      else
+        new_args+=("${arg}")
+      fi
+
+    done
+
+    set -- "${new_args[@]}"
+
+    # For distrobox use Podman
+    exec podman "$@"
+
+  fi
+fi
+
+# Pass all "regular" commands through to Docker
+exec podman "$@"

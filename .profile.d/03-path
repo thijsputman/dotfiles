@@ -4,6 +4,18 @@
 
 path_add() {
 
+  position=end
+
+  case ${1-} in
+  start)
+    position=start
+    shift
+    ;;
+  end)
+    shift
+    ;;
+  esac
+
   for directory; do
 
     # Canonicalise symbolic links
@@ -15,8 +27,38 @@ path_add() {
 
     case ":$PATH:" in
     *":$directory:"*) : ;;
-    *) PATH=$PATH:$directory ;;
+    *)
+      case $position in
+      start) PATH=$directory${PATH:+:$PATH} ;;
+      end) PATH=${PATH:+$PATH:}$directory ;;
+      esac
+      ;;
     esac
+
+  done
+
+}
+
+path_remove() {
+
+  for directory; do
+
+    directory=$({ cd -- "$directory" && { pwd -P || pwd; }; } 2> /dev/null)
+
+    if [ -z "$directory" ]; then
+      continue
+    fi
+
+    PATH=$(
+      printf '%s' "${PATH-}" |
+        awk -v directory="$directory" '
+          BEGIN { RS = ":"; ORS = "" }
+          $0 != directory {
+            if (printed++) printf ":"
+            printf "%s", $0
+          }
+        '
+    )
 
   done
 

@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+if [ -n "${CONTAINER_ID:-}" ]; then
+
+  # Push ~/.local/bin to the end of the PATH, such that globally installed tools
+  # get priority – this makes sense inside a distrobox (as I probably don't want
+  # to use my local tools there)
+
+  path_remove "$HOME/.local/bin"
+  path_add end "$HOME/.local/bin"
+
+fi

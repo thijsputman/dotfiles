@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if ! command -v gnome-text-editor &> /dev/null; then
+  gnome-text-editor() {
+    distrobox-host-exec --yes gnome-text-editor "$@"
+  }
+fi

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# shellcheck source=/dev/null
+
+if [[ -v CONTAINER_ID && -d ~/.distroboxrc.d ]]; then
+
+  for file in "$HOME"/.distroboxrc.d/**; do
+    if [[ -x $file ]]; then source "$file"; fi
+  done
+
+else
+
+  # Delete stale ~/.vscode-server left behind by `distrobox-vscode`
+  if
+    [[ -L ~/.vscode-server && ! -e ~/.vscode-server ]] &&
+      command -v distrobox > /dev/null 2>&1 &&
+      ! distrobox list --no-color | grep -Fq 'Up'
+  then
+    rm -f ~/.vscode-server
+  fi
+
+fi
