@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Prevent GTK from loading the "atk-bridge"-module
+#   <https://askubuntu.com/a/1562441>
+export GTK_MODULES=
