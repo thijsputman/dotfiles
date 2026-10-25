@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [[ ! -e ~/.ssh/config ]]; then
+  ln -s -r "${base:?}/.ssh/config" ~/.ssh/config
+fi
+
+mkdir -p ~/.ssh/config.d ~/.ssh/sockets
+
+if [[ ! -e ~/.ssh/config.d/generic ]]; then
+  ln -s -r "${base:?}/.ssh/config.d/generic" ~/.ssh/config.d/generic
+fi
