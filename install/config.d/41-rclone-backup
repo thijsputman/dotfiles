@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Backup via rclone
+
+if [[ ! -e ~/.anacron/scripts/rclone-backup.sh ]]; then
+
+  if
+    ! command -v rclone &> /dev/null ||
+      ! rclone listremotes | grep onedrive:
+  then
+    {
+      printf '⛔ Skipping "📄 .anacron/scripts/rclone-backup.sh" — '
+      printf 'rclone not properly configured...\n'
+    } >&3
+    return 0
+  fi
+
+  # Run daily via anacron
+
+  if [[ -e ~/.anacron/etc/anacrontab ]]; then
+
+    mkdir -p ~/.anacron/scripts
+    ln -s -r "${base:?}/.anacron/scripts/rclone-backup.sh" \
+      ~/.anacron/scripts/rclone-backup.sh
+
+    echo "1  0  rclone-backup  $HOME/.anacron/scripts/rclone-backup.sh" \
+      >> ~/.anacron/etc/anacrontab
+  else
+    {
+      printf '⛔ Skipping "📄 .anacron/scripts/rclone-backup.sh" — '
+      printf 'anacron not properly configured...\n'
+    } >&3
+    return 0
+  fi
+
+fi

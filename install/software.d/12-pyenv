@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if ! [ -d "$HOME/.pyenv" ]; then
+if ! [[ -d $HOME/.pyenv ]]; then
 
   if ! [[ $PATH =~ (^|:)"$HOME/.pyenv"(:|$) ]]; then
     echo "⚠️ Add \"📂 $HOME/.pyenv\" to PATH... " >&3
@@ -24,5 +24,29 @@ if ! [ -d "$HOME/.pyenv" ]; then
     zlib1g-dev
 
   curl https://pyenv.run | bash
+
+fi
+
+# Run pyenv update check weekly via anacron
+
+if
+  [[ -e ~/.anacron/etc/anacrontab &&
+    ! -e ~/.anacron/scripts/pyenv-update-check.sh ]]
+then
+
+  if ! [[ -d $HOME/.pyenv ]]; then
+    {
+      printf '⛔ Skipping "📄 scripts/pyenv-update-check.sh" — '
+      printf 'pyenv not properly configured...\n'
+    } >&3
+    return 0
+  fi
+
+  mkdir -p ~/.anacron/scripts
+  ln -s -r "${base:?}/.anacron/scripts/pyenv-update-check.sh" \
+    ~/.anacron/scripts/pyenv-update-check.sh
+
+  echo "7  0  pyenv-update-check  $HOME/.anacron/scripts/pyenv-update-check.sh" \
+    >> ~/.anacron/etc/anacrontab
 
 fi

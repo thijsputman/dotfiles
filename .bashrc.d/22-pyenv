@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-if [ -d "$PYENV_ROOT" ]; then
-
+if [[ -d $PYENV_ROOT ]]; then
   eval "$(pyenv init -)"
-
 fi

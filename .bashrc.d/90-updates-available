@@ -24,7 +24,7 @@ fi
 
 # Notify when pyenv updates are available
 
-if [ -d "$PYENV_ROOT" ] && [ -s ~/.pyenv-update ]; then
+if [ -d "$PYENV_ROOT" ] && [ -s ~/.cache/pyenv-update ]; then
 
   if [[ "$HEADER_SHOWN" == motd* ]]; then
 
@@ -35,9 +35,9 @@ if [ -d "$PYENV_ROOT" ] && [ -s ~/.pyenv-update ]; then
       cd "$PYENV_ROOT" &&
         [[ $(git rev-parse HEAD) != $(git rev-parse '@{u}') ]]
     ); then
-      printf '%s\n\n' "$(< ~/.pyenv-update)"
+      printf '%s\n\n' "$(< ~/.cache/pyenv-update)"
     else
-      rm ~/.pyenv-update
+      rm ~/.cache/pyenv-update
     fi
 
   fi

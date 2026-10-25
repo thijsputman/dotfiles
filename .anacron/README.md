@@ -12,8 +12,8 @@ A `📄 anacrontab` is created on a per-user basis in `📂 ~/.anacron/etc` and
 `anacron` is instructed to execute this `@hourly` using the user's regular
 `crontab`.
 
-See [`📄 install/parts.d/25-anacron-wsl`](/install/parts.d/25-anacron-wsl) for
-full installation "instructions"...
+See [`📄 install/config.d/30-anacron`](/install/config.d/30-anacron) for full
+installation "instructions"...
 
 ## Usage
 
@@ -31,3 +31,9 @@ journalctl -b -u cron
 
 Note the usage of the **`cron`** unit and _not_ the `anacron` unit (as it is
 `cron` that actually executes — and captures the output of — `anacron`).
+
+### `📂 scripts`
+
+Once the per-user `📄 anacrontab` [is activated](#installation), the scripts in
+[`📂 scripts`](scripts/) are automatically installed by various
+installation-parts – these scripts should not be installed manually...

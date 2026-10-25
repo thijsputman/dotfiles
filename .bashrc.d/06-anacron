@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [[ -n $HEADER_SHOWN ]]; then
+
+  if
+    [[ ! -f ~/.anacron/spool/rclone-backup ]] ||
+      ((EPOCHSECONDS - $(
+        stat -c %Y -- ~/.anacron/spool/rclone-backup 2> /dev/null
+      ) >= 7 * 24 * 60 * 60))
+  then
+    printf "\033[0;33mWARNING:\033[0m " >&2
+    printf 'No rclone-backup was made in the past 7-days!' >&2
+    printf "\n\n" >&2
+  fi
+
+fi

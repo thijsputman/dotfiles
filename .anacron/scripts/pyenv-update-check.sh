@@ -2,24 +2,23 @@
 
 set -euo pipefail
 
-if [ -d "$HOME/.pyenv" ]; then
+if [[ -d $HOME/.pyenv ]]; then
 
   logger -t pyenv "Checking for updates..."
 
-  rm -f ~/.pyenv-update
+  rm -f ~/.cache/pyenv-update
 
   cd "$HOME/.pyenv" || exit
   git remote update > /dev/null 2>&1
 
-  if [[ $(git rev-parse HEAD) != $(git rev-parse '@{u}') ]] &&
-    true; then
+  if [[ $(git rev-parse HEAD) != $(git rev-parse '@{u}') ]] && true; then
 
     status=$(git status | head -n 2 | tail -n 1)
 
     if [[ $status == *behind* ]]; then
 
-      echo "${status/Your branch/pyenv}" >> ~/.pyenv-update
-      printf 'To upgrade run: pyenv update' >> ~/.pyenv-update
+      echo "${status/Your branch/pyenv}" >> ~/.cache/pyenv-update
+      printf 'To upgrade run: pyenv update' >> ~/.cache/pyenv-update
 
       logger -t pyenv "Update available!"
 
